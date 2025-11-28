@@ -289,6 +289,97 @@
       line-height: 1.4;
     }
 
+    /* DEFINITIONS TOGGLE + PANEL */
+
+    .defs-row {
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .defs-toggle {
+      border: none;
+      background: transparent;
+      color: rgba(148, 163, 184, 0.7);
+      font-size: 0.72rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      padding: 0.1rem 0.3rem;
+    }
+
+    .defs-toggle span.icon {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    .defs-toggle span.label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .defs-toggle:hover {
+      color: rgba(209, 213, 219, 0.95);
+    }
+
+    .defs-panel {
+      margin-top: 0.35rem;
+      border-radius: var(--radius-lg);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      padding: 0.65rem 0.7rem;
+      font-size: 0.74rem;
+      color: var(--fg-muted);
+      display: none;
+    }
+
+    .defs-panel.open {
+      display: block;
+    }
+
+    .defs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.4rem;
+    }
+
+    .defs-header-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(229, 231, 235, 0.9);
+    }
+
+    .defs-header-note {
+      font-size: 0.68rem;
+      color: rgba(148, 163, 184, 0.9);
+    }
+
+    .defs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.45rem 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .defs-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .defs-item-title {
+      font-size: 0.73rem;
+      color: rgba(248, 250, 252, 0.9);
+      margin-bottom: 0.1rem;
+    }
+
+    .defs-item-body {
+      font-size: 0.72rem;
+      color: var(--fg-muted);
+    }
+
     /* MAIN LAYOUT */
 
     .main-grid {
@@ -744,6 +835,93 @@
       Loading current fragility narrative…
     </div>
 
+    <!-- DEFINITIONS TOGGLE + PANEL -->
+    <div class="defs-row">
+      <button class="defs-toggle" id="defs-toggle">
+        <span class="icon">🛈</span>
+        <span class="label">Definitions</span>
+      </button>
+    </div>
+    <section class="defs-panel" id="defs-panel">
+      <div class="defs-header">
+        <div class="defs-header-title">Key Terms</div>
+        <div class="defs-header-note">Quick glossary for PLT concepts · Hover over ⓘ icons for context in-place.</div>
+      </div>
+      <div class="defs-grid">
+        <div>
+          <div class="defs-item-title">Dryness</div>
+          <div class="defs-item-body">
+            How “quiet” the tape is relative to normal — realised volatility and intraday ranges vs typical levels.
+            High dryness = calm price action where risk quietly builds because positioning and options can be crowded.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">IV vs RV</div>
+          <div class="defs-item-body">
+            Implied volatility from options (what traders are pricing) vs realised volatility (what actually happened).
+            Elevated or critical IV vs RV = options are rich vs realised moves, often reflecting hedging demand / fear premia.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Crowding / Gamma</div>
+          <div class="defs-item-body">
+            How concentrated open interest and gamma exposure are around current spot. Critical crowding = heavy dealer
+            gamma hedging nearby; intraday flows can pin or accelerate moves when spot moves through loaded strikes.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Put–Call Positioning (PCR)</div>
+          <div class="defs-item-body">
+            Put–call open interest balance and where risk is parked. One-sided PCR (too many puts or calls) means
+            unwinds and dealer hedging can add fuel to moves when the market surprises the crowd.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Shock Score (S)</div>
+          <div class="defs-item-body">
+            How “jumpy” the tape has been: gaps, intraday range, and volume vs history. Elevated or critical = markets
+            are already in a shocky state, making follow-through and overshoots more likely.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Contagion Score (K)</div>
+          <div class="defs-item-body">
+            Breadth, co-movement, and correlation across sectors / assets. High contagion = moves in one pocket of the
+            market quickly spill into others — good for trend trades, bad for complacent carry.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Regime C · Criticality</div>
+          <div class="defs-item-body">
+            System-wide fragility from dryness, IV vs RV, crowding, and PCR rolled up into a single state.
+            Critical = small shocks can create large, non-linear moves; low = shocks are more easily absorbed.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Regime S / K / D</div>
+          <div class="defs-item-body">
+            <b>S</b> captures shockiness (gap/range/volume), <b>K</b> captures contagion / breadth, and <b>D</b> captures directional bias:
+            trend vs mean reversion. Together with C, they summarise how jumpy, connected, and directional NIFTY feels.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Long vs Short Gamma</div>
+          <div class="defs-item-body">
+            Long gamma = buying optionality (e.g., long options) and benefiting from realised moves.
+            Short gamma = selling optionality and betting moves stay contained. In fragile regimes, short gamma is
+            higher risk, especially overnight.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Breakout / Breakdown Plans</div>
+          <div class="defs-item-body">
+            Systematic levels for trend trades (long breakout / short breakdown) using spot, stops, and targets.
+            R multiples show reward vs risk if the plan plays out to T1 or T2, so you know if the setup is worth taking.
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- MAIN GRID -->
     <div class="main-grid">
       <!-- LEFT: TABS -->
@@ -793,7 +971,7 @@
                 <th>
                   Crowding / Gamma
                   <span class="info-dot"
-                        data-tooltip="How concentrated open interest is around spot. Critical = heavy gamma &amp; crowding near current level.">
+                        data-tooltip="How loaded options gamma &amp; OI are around spot. Critical = heavy gamma near current level.">
                     i
                   </span>
                 </th>
@@ -806,7 +984,7 @@
                 <th>
                   Put–Call Positioning
                   <span class="info-dot"
-                        data-tooltip="Put–call OI tension. Low = balanced, high = one-sided risk skew.">
+                        data-tooltip="Put–call OI tension. Low = balanced, high = one-sided risk skew susceptible to squeezes/unwinds.">
                     i
                   </span>
                 </th>
@@ -819,7 +997,7 @@
                 <th>
                   Shock Score
                   <span class="info-dot"
-                        data-tooltip="Gap, intraday range, and volume vs recent history.">
+                        data-tooltip="Gap, intraday range, and volume vs recent history. Higher = more jumpy, shock-prone tape.">
                     i
                   </span>
                 </th>
@@ -832,7 +1010,7 @@
                 <th>
                   Contagion Score
                   <span class="info-dot"
-                        data-tooltip="Breadth, co-movement, and index correlation.">
+                        data-tooltip="Breadth and co-movement across sectors and assets; higher = moves spread faster.">
                     i
                   </span>
                 </th>
@@ -944,17 +1122,12 @@
   </div>
 
   <script>
-    const SNAPSHOT_URL = "nifty_snapshot.json";
-    const NEWS_URL = "news.json";
+    const SNAPSHOT_URL = "data/nifty_snapshot.json";
+    const NEWS_URL =  "data/news.json";
 
     function setText(id, value) {
       const el = document.getElementById(id);
       if (el) el.textContent = value ?? "—";
-    }
-
-    function formatNumber(n, digits = 2) {
-      if (n == null || isNaN(n)) return "—";
-      return Number(n).toFixed(digits);
     }
 
     function formatChangePct(curr, prev) {
@@ -983,7 +1156,6 @@
       const direction = regime.direction || {};
       const optionsState = data.options_state || {};
       const spot = optionsState.spot_levels || {};
-      const breakout = optionsState.breakout_scores || {};
       const longPlan = optionsState.long_plan || {};
       const shortPlan = optionsState.short_plan || {};
       const regimeMeta = regime.regime || {};
@@ -1332,8 +1504,20 @@
       });
     }
 
+    // DEFINITIONS TOGGLE
+    function initDefinitions() {
+      const toggle = document.getElementById("defs-toggle");
+      const panel = document.getElementById("defs-panel");
+      if (!toggle || !panel) return;
+
+      toggle.addEventListener("click", () => {
+        panel.classList.toggle("open");
+      });
+    }
+
     (function init() {
       initTabs();
+      initDefinitions();
       loadSnapshot();
       loadNews();
     })();
