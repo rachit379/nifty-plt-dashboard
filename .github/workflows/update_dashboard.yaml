@@ -1,15 +1,21 @@
 name: Update Snapshot and Deploy
 
 on:
+  # 🔁 run every 5 minutes
   schedule:
-    # 8AM & 8PM IST = 02:30 & 14:30 UTC
-    - cron: "30 2,14 * * *"
+    - cron: "*/5 * * * *"
+  # manual trigger from Actions tab
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
+
+# recommended for Pages workflows
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -29,10 +35,11 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Generate NIFTY snapshot JSON
+      - name: Generate NIFTY snapshot & news JSON
         run: |
           python generate_snapshot.py
-          ls -R docs/data
+          python generate_news.py
+          ls -R docs
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -42,7 +49,11 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4

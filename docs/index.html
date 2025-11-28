@@ -306,101 +306,134 @@
       .arms-grid { grid-template-columns: minmax(0, 1fr); }
     }
 
-/* ==== VISUAL ENHANCEMENTS ==== */
+    /* ==== VISUAL ENHANCEMENTS ==== */
 
-/* Softer glassmorphism feel on all cards */
-.card {
-  position: relative;
-  backdrop-filter: blur(14px);
-  background: radial-gradient(circle at top left, #111827 0, #020617 70%);
-  border-radius: 0.9rem;
-  border: 1px solid rgba(31, 41, 55, 0.85);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7);
-  transition:
-    transform 0.15s ease-out,
-    box-shadow 0.15s ease-out,
-    border-color 0.15s ease-out,
-    background 0.2s ease-out;
-}
+    /* Softer glassmorphism feel on all cards */
+    .card {
+      position: relative;
+      backdrop-filter: blur(14px);
+      background: radial-gradient(circle at top left, #111827 0, #020617 70%);
+      border-radius: 0.9rem;
+      border: 1px solid rgba(31, 41, 55, 0.85);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7);
+      transition:
+        transform 0.15s ease-out,
+        box-shadow 0.15s ease-out,
+        border-color 0.15s ease-out,
+        background 0.2s ease-out;
+    }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.85);
-  border-color: rgba(148, 163, 184, 0.7);
-}
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.85);
+      border-color: rgba(148, 163, 184, 0.7);
+    }
 
-/* Top summary feels a bit more “panel-like” */
-.summary-card {
-  margin-bottom: 1.2rem;
-  padding: 1rem 1.1rem 1.3rem;
-}
+    /* Top summary feels a bit more “panel-like” */
+    .summary-card {
+      margin-bottom: 1.2rem;
+      padding: 1rem 1.1rem 1.3rem;
+    }
 
-/* Compact the arms and align text nicely */
-.arm-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 200px;
-}
+    /* Compact the arms and align text nicely */
+    .arm-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 200px;
+    }
 
-.arm-title-row {
-  margin-bottom: 0.35rem;
-}
+    .arm-title-row {
+      margin-bottom: 0.35rem;
+    }
 
-/* Category-based colour accents for summary + 4 arms */
-#summary-card[data-category="Low"],
-.arm-card[data-category="Low"] {
-  border-top: 2px solid var(--low);
-  box-shadow: 0 18px 50px rgba(22, 163, 74, 0.25);
-}
+    /* Category-based colour accents for summary + 4 arms */
+    #summary-card[data-category="Low"],
+    .arm-card[data-category="Low"] {
+      border-top: 2px solid var(--low);
+      box-shadow: 0 18px 50px rgba(22, 163, 74, 0.25);
+    }
 
-#summary-card[data-category="Moderate"],
-.arm-card[data-category="Moderate"] {
-  border-top: 2px solid var(--moderate);
-  box-shadow: 0 18px 50px rgba(234, 179, 8, 0.25);
-}
+    #summary-card[data-category="Moderate"],
+    .arm-card[data-category="Moderate"] {
+      border-top: 2px solid var(--moderate);
+      box-shadow: 0 18px 50px rgba(234, 179, 8, 0.25);
+    }
 
-#summary-card[data-category="Elevated"],
-.arm-card[data-category="Elevated"] {
-  border-top: 2px solid var(--elevated);
-  box-shadow: 0 18px 50px rgba(251, 146, 60, 0.3);
-}
+    #summary-card[data-category="Elevated"],
+    .arm-card[data-category="Elevated"] {
+      border-top: 2px solid var(--elevated);
+      box-shadow: 0 18px 50px rgba(251, 146, 60, 0.3);
+    }
 
-#summary-card[data-category="Critical"],
-.arm-card[data-category="Critical"] {
-  border-top: 2px solid var(--critical);
-  box-shadow: 0 20px 65px rgba(239, 68, 68, 0.35);
-}
+    #summary-card[data-category="Critical"],
+    .arm-card[data-category="Critical"] {
+      border-top: 2px solid var(--critical);
+      box-shadow: 0 20px 65px rgba(239, 68, 68, 0.35);
+    }
 
-/* If N/A, keep it neutral and subtle */
-#summary-card[data-category="N/A"],
-.arm-card[data-category="N/A"],
-#summary-card:not([data-category]),
-.arm-card:not([data-category]) {
-  border-top: 2px solid rgba(55, 65, 81, 0.9);
-}
+    /* If N/A, keep it neutral and subtle */
+    #summary-card[data-category="N/A"],
+    .arm-card[data-category="N/A"],
+    #summary-card:not([data-category]),
+    .arm-card:not([data-category]) {
+      border-top: 2px solid rgba(55, 65, 81, 0.9);
+    }
 
-/* Make key numbers stand out slightly more in summary */
-#summary-triggers-grid .summary-value,
-#summary-regime-grid .summary-value {
-  font-size: 0.85rem;
-}
+    /* Make key numbers stand out slightly more in summary */
+    #summary-triggers-grid .summary-value,
+    #summary-regime-grid .summary-value {
+      font-size: 0.85rem;
+    }
 
-#summary-triggers-grid .summary-value:nth-child(2),
-#summary-regime-grid .summary-value:nth-child(2) {
-  font-size: 0.9rem;
-  font-weight: 600;
-}
+    #summary-triggers-grid .summary-value:nth-child(2),
+    #summary-regime-grid .summary-value:nth-child(2) {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
 
-/* Sidebar: slightly tighter spacing */
-.sidebar-card {
-  padding-top: 0.9rem;
-}
+    /* Sidebar: slightly tighter spacing */
+    .sidebar-card {
+      padding-top: 0.9rem;
+    }
 
-.rss-item {
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.45rem;
-}
+    .rss-item {
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.45rem;
+    }
+
+    /* ==== ARM SUB-METRICS ==== */
+
+    .arm-submetrics {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0;
+      font-size: 0.75rem;
+    }
+
+    .arm-submetrics li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      margin-top: 0.18rem;
+      color: var(--fg-muted);
+    }
+
+    .submetric-label {
+      flex: 1 1 auto;
+    }
+
+    .submetric-value {
+      font-variant-numeric: tabular-nums;
+      margin-left: auto;
+      margin-right: 0.35rem;
+      color: var(--fg);
+    }
+
+    .arm-submetrics .pill {
+      font-size: 0.65rem;
+      padding: 0.06rem 0.45rem;
+    }
   </style>
 </head>
 <body>
@@ -448,6 +481,7 @@
             <span id="arm-C-pill"></span>
           </div>
           <div id="arm-C-body"></div>
+          <ul class="arm-submetrics" id="arm-C-sub"></ul>
         </section>
 
         <section class="card arm-card" id="arm-shocks">
@@ -456,6 +490,7 @@
             <span id="arm-S-pill"></span>
           </div>
           <div id="arm-S-body"></div>
+          <ul class="arm-submetrics" id="arm-S-sub"></ul>
         </section>
 
         <section class="card arm-card" id="arm-contagion">
@@ -464,6 +499,7 @@
             <span id="arm-K-pill"></span>
           </div>
           <div id="arm-K-body"></div>
+          <ul class="arm-submetrics" id="arm-K-sub"></ul>
         </section>
 
         <section class="card arm-card" id="arm-direction">
@@ -472,6 +508,7 @@
             <span id="arm-D-pill"></span>
           </div>
           <div id="arm-D-body"></div>
+          <ul class="arm-submetrics" id="arm-D-sub"></ul>
         </section>
       </div>
 
@@ -515,65 +552,66 @@
       return n.toFixed(digits);
     }
 
-    // ----- Snapshot rendering -----
+    // ----- Snapshot helpers -----
 
     function extractInputs(regimeState) {
-  const rs = regimeState || {};
-  const inputs = rs.inputs || {};
+      const rs = regimeState || {};
+      const inputs = rs.inputs || {};
 
-  function cleanValue(v) {
-    if (v === null || v === undefined) return null;
-    const n = Number(v);
-    return Number.isNaN(n) ? null : n;
-  }
+      function cleanValue(v) {
+        if (v === null || v === undefined) return null;
+        const n = Number(v);
+        return Number.isNaN(n) ? null : n;
+      }
 
-  function fromInputsOrArm(key) {
-    // 1) First try regime_state.inputs.C / S / K / D (already in your JSON)
-    const existing = inputs[key];
-    if (existing) {
-      const raw = existing.value ?? existing.score ?? null;
-      const value = cleanValue(raw);
-      const category = existing.category || existing.bucket || "N/A";
-      const explanation =
-        existing.explanation || existing.note || existing.summary || "";
-      return { value, category, explanation };
+      function fromInputsOrArm(key) {
+        // 1) First try regime_state.inputs.C / S / K / D (already in your JSON)
+        const existing = inputs[key];
+        if (existing) {
+          const raw = existing.value ?? existing.score ?? null;
+          const value = cleanValue(raw);
+          const category = existing.category || existing.bucket || "N/A";
+          const explanation =
+            existing.explanation || existing.note || existing.summary || "";
+          return { value, category, explanation };
+        }
+
+        // 2) Fallback to detailed sections (criticality / shocks / contagion / direction)
+        let src = null;
+        if (key === "C") {
+          src = rs.criticality?.categories?.C || rs.criticality || null;
+        } else if (key === "S") {
+          src = rs.shocks?.categories?.S || rs.shocks || null;
+        } else if (key === "K") {
+          src = rs.contagion?.categories?.K || rs.contagion || null;
+        } else if (key === "D") {
+          src = rs.direction?.categories?.D || rs.direction || null;
+        }
+
+        if (!src) {
+          return { value: null, category: "N/A", explanation: "" };
+        }
+
+        const raw = src.value ?? src.score ?? null;
+        const value = cleanValue(raw);
+        const category = src.category || src.bucket || "N/A";
+        const explanation =
+          src.explanation ||
+          src.note ||
+          rs.regime?.directional_context?.bias ||
+          "";
+        return { value, category, explanation };
+      }
+
+      return {
+        C: fromInputsOrArm("C"),
+        S: fromInputsOrArm("S"),
+        K: fromInputsOrArm("K"),
+        D: fromInputsOrArm("D"),
+      };
     }
 
-    // 2) Fallback to detailed sections (criticality / shocks / contagion / direction)
-    let src = null;
-    if (key === "C") {
-      src = rs.criticality?.categories?.C || rs.criticality || null;
-    } else if (key === "S") {
-      src = rs.shocks?.categories?.S || rs.shocks || null;
-    } else if (key === "K") {
-      src = rs.contagion?.categories?.K || rs.contagion || null;
-    } else if (key === "D") {
-      src = rs.direction?.categories?.D || rs.direction || null;
-    }
-
-    if (!src) {
-      return { value: null, category: "N/A", explanation: "" };
-    }
-
-    const raw = src.value ?? src.score ?? null;
-    const value = cleanValue(raw);
-    const category = src.category || src.bucket || "N/A";
-    const explanation =
-      src.explanation ||
-      src.note ||
-      rs.regime?.directional_context?.bias ||
-      "";
-    return { value, category, explanation };
-  }
-
-  return {
-    C: fromInputsOrArm("C"),
-    S: fromInputsOrArm("S"),
-    K: fromInputsOrArm("K"),
-    D: fromInputsOrArm("D"),
-  };
-}
-
+    // ----- Summary rendering -----
 
     function renderSummary(snapshot) {
       const regimeState = snapshot.regime_state || {};
@@ -583,12 +621,12 @@
       const shortPlan = optionsState.short_plan || {};
       const opt = optionsState.options || {};
       const inputs = extractInputs(regimeState);
-      // Color-code the top summary card using C(t) bucket
-	const summaryCard = document.getElementById("summary-card");
-	if (summaryCard) {
-  	summaryCard.setAttribute("data-category", inputs.C.category || "N/A");
-}
 
+      // Color-code the top summary card using C(t) bucket
+      const summaryCard = document.getElementById("summary-card");
+      if (summaryCard) {
+        summaryCard.setAttribute("data-category", inputs.C.category || "N/A");
+      }
 
       // Regime block
       const regime = regimeState.regime || {};
@@ -660,56 +698,115 @@
         optLines.length ? optLines.map(esc).join("<br>") : "No options stance / candidates available.";
     }
 
+    // ----- Arms (C, S, K, D) -----
+
     function renderArms(snapshot) {
-  const regimeState = snapshot.regime_state || {};
-  const inputs = extractInputs(regimeState);
+      const regimeState = snapshot.regime_state || {};
+      const inputs = extractInputs(regimeState);
 
-  const cardIdMap = {
-    C: "arm-criticality",
-    S: "arm-shocks",
-    K: "arm-contagion",
-    D: "arm-direction",
-  };
+      const cardIdMap = {
+        C: "arm-criticality",
+        S: "arm-shocks",
+        K: "arm-contagion",
+        D: "arm-direction",
+      };
 
-  function fillArm(key, label, obj, neutralDefault = false) {
-    const pillId = "arm-" + key + "-pill";
-    const bodyId = "arm-" + key + "-body";
+      function fillArm(key, obj, neutralDefault = false) {
+        const pillId = "arm-" + key + "-pill";
+        const bodyId = "arm-" + key + "-body";
 
-    // Badge
-    document.getElementById(pillId).innerHTML = badge(
-      obj.category || (neutralDefault ? "Neutral" : "N/A"),
-      neutralDefault
-    );
+        // Badge
+        document.getElementById(pillId).innerHTML = badge(
+          obj.category || (neutralDefault ? "Neutral" : "N/A"),
+          neutralDefault
+        );
 
-    // Body text
-    const valStr = fmtNum(obj.value, label === "D" ? 2 : 2);
-    const expl = obj.explanation || "";
-    const html = `
-      <div class="metric-row">
-        <span class="metric-label">Score</span>
-        <span class="metric-value">${valStr}</span>
-      </div>
-      <div class="metric-note">${esc(expl || "No explanation available.")}</div>
-    `;
-    document.getElementById(bodyId).innerHTML = html;
+        // Body text
+        const valStr = fmtNum(obj.value, 2);
+        const expl = obj.explanation || "";
+        const html = `
+          <div class="metric-row">
+            <span class="metric-label">Score</span>
+            <span class="metric-value">${valStr}</span>
+          </div>
+          <div class="metric-note">${esc(expl || "No explanation available.")}</div>
+        `;
+        document.getElementById(bodyId).innerHTML = html;
 
-    // NEW: set data-category for colour-coding the card
-    const cardId = cardIdMap[key];
-    const cardEl = cardId ? document.getElementById(cardId) : null;
-    if (cardEl) {
-      cardEl.setAttribute(
-        "data-category",
-        obj.category || (neutralDefault ? "Neutral" : "N/A")
-      );
+        // set data-category for colour-coding the card
+        const cardId = cardIdMap[key];
+        const cardEl = cardId ? document.getElementById(cardId) : null;
+        if (cardEl) {
+          cardEl.setAttribute(
+            "data-category",
+            obj.category || (neutralDefault ? "Neutral" : "N/A")
+          );
+        }
+      }
+
+      function renderSubmetrics(listId, categories, mapping) {
+        const listEl = document.getElementById(listId);
+        if (!listEl) return;
+        listEl.innerHTML = "";
+        if (!categories) return;
+
+        mapping.forEach(([key, label]) => {
+          const info = categories[key];
+          if (!info) return;
+
+          const raw = info.value ?? info.score ?? null;
+          const valStr = fmtNum(raw, 2);
+          const cat = info.category || "N/A";
+
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <span class="submetric-label">${esc(label)}</span>
+            <span class="submetric-value">${valStr}</span>
+            ${badge(cat)}
+          `;
+          listEl.appendChild(li);
+        });
+      }
+
+      // Fill main arms
+      fillArm("C", inputs.C);
+      fillArm("S", inputs.S);
+      fillArm("K", inputs.K);
+      fillArm("D", inputs.D, true);
+
+      // Sub-metrics for each arm
+      const critCats = regimeState.criticality?.categories || {};
+      const shockCats = regimeState.shocks?.categories || {};
+      const contCats = regimeState.contagion?.categories || {};
+      const dirCats = regimeState.direction?.categories || {};
+
+      renderSubmetrics("arm-C-sub", critCats, [
+        ["dryness_score",  "Dryness"],
+        ["ivrv_score",     "IV vs RV"],
+        ["crowding_score", "Crowding near spot"],
+        ["pcr_score",      "Positioning (PCR)"],
+      ]);
+
+      renderSubmetrics("arm-S-sub", shockCats, [
+        ["gap_score",      "Overnight gap"],
+        ["intraday_score", "Intraday range"],
+        ["volume_score",   "Volume"],
+      ]);
+
+      renderSubmetrics("arm-K-sub", contCats, [
+        ["breadth_sync_score", "Breadth sync"],
+        ["wide_move_score",    "Wide movers"],
+        ["index_corr_score",   "Index corr"],
+      ]);
+
+      renderSubmetrics("arm-D-sub", dirCats, [
+        ["far_oi_bias",  "Far OI bias"],
+        ["near_oi_bias", "Near OI bias"],
+        ["pcr_bias",     "PCR bias"],
+      ]);
     }
-  }
 
-  fillArm("C", "C", inputs.C);
-  fillArm("S", "S", inputs.S);
-  fillArm("K", "K", inputs.K);
-  fillArm("D", "D", inputs.D, true);
-}
-
+    // ----- RSS / news -----
 
     function renderRSS(news) {
       const listEl = document.getElementById("rss-list");
@@ -753,6 +850,8 @@
       });
       summaryEl.innerHTML = summaryItems.join("<br>");
     }
+
+    // ----- Data loaders -----
 
     async function loadSnapshot() {
       try {
