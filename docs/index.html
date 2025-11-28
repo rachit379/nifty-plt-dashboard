@@ -518,21 +518,62 @@
     // ----- Snapshot rendering -----
 
     function extractInputs(regimeState) {
-      const inputs = regimeState.inputs || regimeState.factors || {};
-      const normalize = obj => {
-        if (!obj) return { value: null, category: "N/A", explanation: "" };
-        const value = obj.value ?? obj.score ?? obj.C ?? obj.S ?? obj.K ?? obj.D ?? null;
-        const category = obj.category || obj.bucket || obj.label || null;
-        const explanation = obj.explanation || obj.note || obj.summary || "";
-        return { value, category, explanation };
-      };
-      return {
-        C: normalize(inputs.C || inputs.criticality),
-        S: normalize(inputs.S || inputs.shocks),
-        K: normalize(inputs.K || inputs.contagion),
-        D: normalize(inputs.D || inputs.direction)
-      };
+  const rs = regimeState || {};
+  const inputs = rs.inputs || {};
+
+  function cleanValue(v) {
+    if (v === null || v === undefined) return null;
+    const n = Number(v);
+    return Number.isNaN(n) ? null : n;
+  }
+
+  function fromInputsOrArm(key) {
+    // 1) First try regime_state.inputs.C / S / K / D (already in your JSON)
+    const existing = inputs[key];
+    if (existing) {
+      const raw = existing.value ?? existing.score ?? null;
+      const value = cleanValue(raw);
+      const category = existing.category || existing.bucket || "N/A";
+      const explanation =
+        existing.explanation || existing.note || existing.summary || "";
+      return { value, category, explanation };
     }
+
+    // 2) Fallback to detailed sections (criticality / shocks / contagion / direction)
+    let src = null;
+    if (key === "C") {
+      src = rs.criticality?.categories?.C || rs.criticality || null;
+    } else if (key === "S") {
+      src = rs.shocks?.categories?.S || rs.shocks || null;
+    } else if (key === "K") {
+      src = rs.contagion?.categories?.K || rs.contagion || null;
+    } else if (key === "D") {
+      src = rs.direction?.categories?.D || rs.direction || null;
+    }
+
+    if (!src) {
+      return { value: null, category: "N/A", explanation: "" };
+    }
+
+    const raw = src.value ?? src.score ?? null;
+    const value = cleanValue(raw);
+    const category = src.category || src.bucket || "N/A";
+    const explanation =
+      src.explanation ||
+      src.note ||
+      rs.regime?.directional_context?.bias ||
+      "";
+    return { value, category, explanation };
+  }
+
+  return {
+    C: fromInputsOrArm("C"),
+    S: fromInputsOrArm("S"),
+    K: fromInputsOrArm("K"),
+    D: fromInputsOrArm("D"),
+  };
+}
+
 
     function renderSummary(snapshot) {
       const regimeState = snapshot.regime_state || {};

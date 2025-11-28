@@ -66,8 +66,6 @@ import yfinance as yf
 # Bharat-sm-data imports
 from Technical.NSE import NSE as TechNSE
 from Derivatives.NSE import NSE as DerivNSE
-from Fundamentals import MoneyControl
-
 
 # -----------------------------------------------------------------------------
 # 1) NIFTY history via yfinance (^NSEI) and realized volatility
@@ -99,7 +97,32 @@ def get_nifty_history_yf(
 
     df = df.sort_index()
     return df
+def fetch_india_vix_yf(
+    years: int = 3,
+    interval: str = "1d",
+    ticker: str = "^INDIAVIX",
+) -> pd.DataFrame:
+    """
+    Fetch India VIX from Yahoo Finance (^INDIAVIX) for the last `years` years.
 
+    Returns:
+        DataFrame indexed by Date with columns:
+        [Open, High, Low, Close, Adj Close, Volume]
+    """
+    end = date.today()
+    start = end - timedelta(days=365 * years)
+
+    df = yf.download(
+        ticker,
+        start=start,
+        end=end,
+        interval=interval,
+        auto_adjust=False,
+        progress=False,
+    )
+
+    df = df.sort_index()
+    return df
 
 def compute_realized_vol_features(
     price_df: pd.DataFrame,
@@ -210,7 +233,7 @@ def fetch_nifty_derivatives_state(
     """
     Use Bharat-sm-data to fetch:
 
-    - India VIX (from Moneycontrol)
+    - India VIX (via yfinance ^INDIAVIX)
     - NIFTY option chain for nearest expiry
     - PCR (OI & Volume)
     - All indices + filtered row for NIFTY
@@ -220,7 +243,6 @@ def fetch_nifty_derivatives_state(
     """
     tech = TechNSE()
     deriv = DerivNSE()
-    moneycontrol = MoneyControl()
 
     index_name = INDEX_NAME_MAP.get(index_ticker, index_ticker)
 
@@ -238,12 +260,8 @@ def fetch_nifty_derivatives_state(
         if name_col is not None:
             index_row = all_indices_df[all_indices_df[name_col] == index_name]
 
-    # 2) India VIX (Moneycontrol) – daily if possible, else 1-min
-    try:
-        india_vix_df = moneycontrol.get_india_vix(interval="1d")
-    except Exception as e:
-        print(f"[WARN] MoneyControl.get_india_vix('1d') failed: {e}")
-        india_vix_df = _safe_df(moneycontrol.get_india_vix, interval="1")
+    # 2) India VIX via yfinance (^INDIAVIX)
+    india_vix_df = fetch_india_vix_yf(years=3, interval="1d")
 
     # 3) Option chain & PCR for nearest expiry
     try:
@@ -295,6 +313,7 @@ def fetch_nifty_derivatives_state(
         "pcr_volume": pcr_volume,
         "block_deals": block_deals_df,
     }
+
 
 
 # -----------------------------------------------------------------------------
@@ -481,19 +500,31 @@ def compute_simple_state_features(
 
     # India VIX: use last 'c' from daily data (index value, in percent)
     india_vix_df = der_state["india_vix"]
-    if not india_vix_df.empty and "c" in india_vix_df.columns:
-        vix_last = float(india_vix_df["c"].iloc[-1])  # e.g. 11.61 (%)
-    else:
-        vix_last = np.nan
+    vix_last = np.nan
 
-    # Convert VIX to decimal before comparing to RV (which is already decimal)
-    if vix_last and not np.isnan(vix_last):
+    if isinstance(india_vix_df, pd.DataFrame) and not india_vix_df.empty:
+        # MoneyControl-style (if you ever reintroduce it)
+        if "c" in india_vix_df.columns:
+            vix_last = float(india_vix_df["c"].iloc[-1])
+        # yfinance-style
+        elif "Close" in india_vix_df.columns:
+            vix_last = float(india_vix_df["Close"].iloc[-1])
+        elif "Adj Close" in india_vix_df.columns:
+            vix_last = float(india_vix_df["Adj Close"].iloc[-1])
+
+        # Convert VIX to decimal before comparing to RV (which is already decimal)
+    if vix_last is not None and not np.isnan(vix_last):
         vix_dec = vix_last / 100.0  # 11.61 -> 0.1161
     else:
         vix_dec = np.nan
 
-    # Simple IV/RV ratio using 20d RV
-    if rv_20 and not np.isnan(rv_20) and vix_dec and not np.isnan(vix_dec):
+        # Simple IV/RV ratio using 20d RV
+    if (
+            rv_20 is not None
+            and not np.isnan(rv_20)
+            and vix_dec is not None
+            and not np.isnan(vix_dec)
+    ):
         iv_rv_ratio_20 = vix_dec / rv_20  # ~1.4 if IV > RV
     else:
         iv_rv_ratio_20 = np.nan

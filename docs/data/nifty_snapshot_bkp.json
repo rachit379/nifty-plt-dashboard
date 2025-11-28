@@ -1,8 +1,8 @@
 {
-  "generated_at": "2025-11-28T21:23:41",
+  "generated_at": "2025-11-28T20:33:55",
   "regime_state": {
     "as_of": {
-      "critical": "2025-11-28T21:23:23",
+      "critical": "2025-11-28T20:33:48",
       "shock": "2025-11-27",
       "contagion": "2025-11-28",
       "direction": "2025-11-27"
@@ -182,28 +182,6 @@
         "D_category": "Neutral",
         "D_value": 0.10974671534642033,
         "bias": "none"
-      }
-    },
-    "inputs": {
-      "C": {
-        "value": 0.7179847810574163,
-        "category": "Elevated",
-        "explanation": "System shows elevated fragility; modest shocks can cause outsized moves."
-      },
-      "S": {
-        "value": 0.19102723872322458,
-        "category": "Low",
-        "explanation": "No meaningful shock\u2014price and volume are well within recent norms."
-      },
-      "K": {
-        "value": 0.40256410256410247,
-        "category": "Moderate",
-        "explanation": "Co-movement is at a normal level\u2014some common factor, but not dominating."
-      },
-      "D": {
-        "value": NaN,
-        "category": "N/A",
-        "explanation": "Not enough data to interpret directional bias."
       }
     }
   },
