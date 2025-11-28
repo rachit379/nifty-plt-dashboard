@@ -927,7 +927,7 @@
     }
   
 
-/* SNAPSHOT + EVENTS GRID */
+/* SNAPSHOT + EVENTS GRID (unused, kept for reference) */
 .snapshot-events-grid {
   margin-top: 1rem;
   display: grid;
@@ -1069,3 +1069,18 @@
   font-size: 0.74rem;
   color: var(--fg-muted);
 }
+
+    /* SNAPSHOT + EVENTS COLUMN */
+    .nifty-events-column {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .nifty-events-column {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }

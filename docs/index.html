@@ -148,51 +148,52 @@
     </section>
 
     
-<!-- SNAPSHOT + EVENTS ROW -->
-<div class="snapshot-events-grid">
-  <section class="nifty-card">
-    <div class="nifty-header">
-      <div class="nifty-label">Nifty 50 Snapshot</div>
-      <div class="nifty-asof" id="spot-asof">Spot levels as of —</div>
-    </div>
-    <div class="nifty-main">
-      <div>
-        <div class="nifty-spot" id="nifty-spot">—</div>
-        <div class="nifty-change" id="nifty-change"></div>
-      </div>
-      <div class="nifty-range" id="nifty-range">Day range —</div>
-    </div>
-    <div class="nifty-mini-grid">
-      <div class="mini-stat">
-        <div class="mini-stat-label">20D Range</div>
-        <div class="mini-stat-value" id="range-20d">—</div>
-      </div>
-      <div class="mini-stat">
-        <div class="mini-stat-label">52W Range</div>
-        <div class="mini-stat-value" id="range-52w">—</div>
-      </div>
-      <div class="mini-stat">
-        <div class="mini-stat-label">ATR(14)</div>
-        <div class="mini-stat-value" id="atr-14">—</div>
-      </div>
-    </div>
-  </section>
-  <section class="panel events-panel">
-    <div class="panel-header">
-      <h2>Upcoming Events</h2>
-      <p class="panel-subtitle">Key macro releases · toggle India / Global</p>
-    </div>
-    <div class="events-filter-row">
-      <button class="events-filter-button active" data-scope="INR">India</button>
-      <button class="events-filter-button" data-scope="USD">Global</button>
-    </div>
-    <div class="events-list" id="events-list">
-      <div class="events-empty">Loading events…</div>
-    </div>
-  </section>
-</div>
+<!-- SNAPSHOT + EVENTS BLOCK -->
+    <div class="nifty-events-column">
+      <section class="nifty-card">
+        <div class="nifty-header">
+          <div class="nifty-label">Nifty 50 Snapshot</div>
+          <div class="nifty-asof" id="spot-asof">Spot levels as of —</div>
+        </div>
+        <div class="nifty-main">
+          <div>
+            <div class="nifty-spot" id="nifty-spot">—</div>
+            <div class="nifty-change" id="nifty-change"></div>
+          </div>
+          <div class="nifty-range" id="nifty-range">Day range —</div>
+        </div>
+        <div class="nifty-mini-grid">
+          <div class="mini-stat">
+            <div class="mini-stat-label">20D Range</div>
+            <div class="mini-stat-value" id="range-20d">—</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">52W Range</div>
+            <div class="mini-stat-value" id="range-52w">—</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">ATR(14)</div>
+            <div class="mini-stat-value" id="atr-14">—</div>
+          </div>
+        </div>
+      </section>
 
-    <!-- MAIN GRID -->
+      <section class="panel events-panel">
+        <div class="panel-header">
+          <h2>Upcoming Events</h2>
+          <p class="panel-subtitle">Key macro releases · toggle India / Global</p>
+        </div>
+        <div class="events-filter-row">
+          <button class="events-filter-button active" data-scope="INR">India</button>
+          <button class="events-filter-button" data-scope="USD">Global</button>
+        </div>
+        <div class="events-list" id="events-list">
+          <div class="events-empty">Loading events…</div>
+        </div>
+      </section>
+    </div>
+
+        <!-- MAIN GRID -->
     <div class="main-grid">
       <!-- LEFT: TABS -->
       <section class="panel">
