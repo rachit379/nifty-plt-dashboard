@@ -1,23 +1,23 @@
 {
-  "generated_at": "2025-11-28T21:23:41",
+  "generated_at": "2025-11-28T23:32:02",
   "regime_state": {
     "as_of": {
-      "critical": "2025-11-28T21:23:23",
+      "critical": "2025-11-28T23:31:23",
       "shock": "2025-11-27",
       "contagion": "2025-11-28",
       "direction": "2025-11-27"
     },
     "criticality": {
-      "score": 0.7179847810574163,
+      "score": 0.725798678160178,
       "components": {
         "dryness_score": 0.6777067734780949,
-        "ivrv_score": 0.8731287368984453,
+        "ivrv_score": 0.9043843253094918,
         "crowding_score": 0.9028456112603122,
         "pcr_score": 0.24529215533595838
       },
       "categories": {
         "C": {
-          "value": 0.7179847810574163,
+          "value": 0.725798678160178,
           "category": "Elevated",
           "explanation": "System shows elevated fragility; modest shocks can cause outsized moves."
         },
@@ -27,7 +27,7 @@
           "explanation": "Realized volatility is below average\u2014conditions are calm enough for risk to quietly build."
         },
         "ivrv_score": {
-          "value": 0.8731287368984453,
+          "value": 0.9043843253094918,
           "category": "Critical",
           "explanation": "Implied volatility is extremely rich vs realized\u2014strong tension or hedging pressure in the options market."
         },
@@ -186,7 +186,7 @@
     },
     "inputs": {
       "C": {
-        "value": 0.7179847810574163,
+        "value": 0.725798678160178,
         "category": "Elevated",
         "explanation": "System shows elevated fragility; modest shocks can cause outsized moves."
       },
@@ -201,9 +201,9 @@
         "explanation": "Co-movement is at a normal level\u2014some common factor, but not dominating."
       },
       "D": {
-        "value": NaN,
-        "category": "N/A",
-        "explanation": "Not enough data to interpret directional bias."
+        "value": 0.10974671534642033,
+        "category": "Neutral",
+        "explanation": "Positioning is broadly balanced between bullish and bearish."
       }
     }
   },

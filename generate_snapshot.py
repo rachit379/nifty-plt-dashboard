@@ -10,8 +10,9 @@ Builds a single JSON snapshot for the GitHub dashboard:
 
 from pathlib import Path
 from datetime import datetime
-import json
 from typing import Any, Dict, Optional
+import json
+import math
 
 import numpy as np
 
@@ -26,7 +27,12 @@ from PLT_Critical import (
 from PLT_Shocks import get_nifty_shock_state
 from PLT_Contagion import get_nifty_contagion_state
 from PLT_Direction import get_nifty_direction_state
-import math
+
+
+# ---------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------
+
 
 def _clean_numbers(obj):
     """
@@ -41,10 +47,6 @@ def _clean_numbers(obj):
         if math.isnan(obj) or math.isinf(obj):
             return None
     return obj
-
-# ---------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------
 
 
 def _json_default(obj):
@@ -220,15 +222,20 @@ def build_inputs_block() -> Dict[str, Dict[str, Any]]:
 
     # ----- D(t): Direction -----
     dir_state = get_nifty_direction_state()
-    D_raw = _first(dir_state, ["score", "direction_score", "D", "d_score"])
+    dir_cats = dir_state.get("directional_categories", {}) or {}
+    D_entry = dir_cats.get("D", {}) if isinstance(dir_cats, dict) else {}
+
+    D_raw = D_entry.get("value")
+    if D_raw is None:
+        D_raw = dir_state.get("directional_score")
+
     try:
         D_value = float(D_raw) if D_raw is not None else np.nan
     except Exception:
         D_value = np.nan
-    D_category = _bucket_direction(D_value)
-    D_expl = dir_state.get("explanation") or dir_state.get(
-        "direction_explanation", ""
-    ) or _expl_direction(D_category)
+
+    D_category = D_entry.get("category") or _bucket_direction(D_value)
+    D_expl = D_entry.get("explanation") or _expl_direction(D_category)
 
     return {
         "C": {
@@ -269,6 +276,16 @@ def build_snapshot() -> Dict[str, Any]:
     # Build / refresh C,S,K,D inputs for the UI
     inputs = build_inputs_block()
     existing_inputs = regime_state.get("inputs", {})
+
+    # If for some reason new D is NaN, fall back to regime_state.inputs.D
+    try:
+        new_D_val = inputs.get("D", {}).get("value")
+        if new_D_val is None or np.isnan(new_D_val):
+            if "D" in existing_inputs:
+                inputs["D"] = existing_inputs["D"]
+    except TypeError:
+        pass
+
     merged_inputs = {**existing_inputs, **inputs}
     regime_state["inputs"] = merged_inputs
 
@@ -278,18 +295,17 @@ def build_snapshot() -> Dict[str, Any]:
         "options_state": options_state,
     }
 
-import json
-from pathlib import Path
+
+# ---------------------------------------------------------------------
+# Main entrypoint
+# ---------------------------------------------------------------------
+
+
 def main():
     snap = build_snapshot()
-    snap = _clean_numbers(snap)  # <<—— sanitize NaN / Inf
+    snap = _clean_numbers(snap)  # sanitize NaN / Inf
 
-    # 👉 OPTION A: keep writing to docs/data/nifty_snapshot.json
     out_dir = Path("docs") / "data"
-
-    # 👉 OPTION B (if your frontend fetches ./nifty_snapshot.json):
-    # out_dir = Path("docs")
-
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "nifty_snapshot.json"
 
@@ -298,3 +314,7 @@ def main():
         encoding="utf-8",
     )
     print(f"Wrote snapshot -> {out_path}")
+
+
+if __name__ == "__main__":
+    main()
