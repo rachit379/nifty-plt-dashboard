@@ -305,23 +305,68 @@
       border-radius: var(--radius-pill);
       border: 1px solid rgba(55, 65, 81, 0.95);
       background: rgba(15, 23, 42, 0.96);
-      color: #e5e7eb;
+      color: #f9fafb !important;
+    }
+
+    .regime-sub-pill span {
+      color: #f9fafb !important;
+    }
+
+    .regime-sub-pill.low {
+      border-color: rgba(22, 163, 74, 0.9);
+      background: rgba(22, 163, 74, 0.18);
+    }
+    .regime-sub-pill.moderate {
+      border-color: rgba(249, 115, 22, 0.9);
+      background: rgba(249, 115, 22, 0.18);
+    }
+    .regime-sub-pill.elevated {
+      border-color: rgba(250, 204, 21, 0.9);
+      background: rgba(250, 204, 21, 0.18);
+    }
+    .regime-sub-pill.critical {
+      border-color: rgba(248, 113, 113, 0.9);
+      background: rgba(248, 113, 113, 0.22);
+    }
+    .regime-sub-pill.neutral {
+      border-color: rgba(148, 163, 184, 0.85);
+      background: rgba(30, 41, 59, 0.95);
     }
 
     .regime-sub-label {
       text-transform: uppercase;
       letter-spacing: 0.08em;
       font-size: 0.68rem;
-      color: rgba(209, 213, 219, 0.9);
+      color: rgba(248, 250, 252, 0.9);
     }
 
     .regime-sub-value {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color: #e5e7eb;
     }
 
     .regime-sub-cat {
       font-size: 0.68rem;
       opacity: 0.9;
+      color: #e5e7eb;
+    }
+
+    .regime-sub-defs {
+      margin-top: 0.35rem;
+      font-size: 0.72rem;
+      color: var(--fg-muted);
+      max-width: 52rem;
+      line-height: 1.35;
+    }
+
+    .regime-sub-defs-item {
+      margin-bottom: 0.18rem;
+    }
+
+    .regime-sub-defs-label {
+      font-weight: 500;
+      color: #e5e7eb;
+      margin-right: 0.25rem;
     }
 
     /* DEFINITIONS TOGGLE + PANEL */
@@ -335,7 +380,7 @@
     .defs-toggle {
       border: none;
       background: transparent;
-      color: rgba(249, 250, 251, 0.9); /* brighter text */
+      color: #e5e7eb !important;
       font-size: 0.72rem;
       display: inline-flex;
       align-items: center;
@@ -355,7 +400,7 @@
     }
 
     .defs-toggle:hover {
-      color: #ffffff;
+      color: #ffffff !important;
     }
 
     .defs-panel {
@@ -746,6 +791,73 @@
       color: #e5e7eb;
       transform: translateY(-1px);
     }
+    .news-sentiment {
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+}
+
+.sentiment-score-circle {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 650;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.95);
+  color: #e5e7eb;
+}
+
+.sentiment-score-circle.positive {
+  border-color: rgba(34, 197, 94, 0.9);
+  background: rgba(34, 197, 94, 0.18);
+  color: #bbf7d0;
+}
+
+.sentiment-score-circle.negative {
+  border-color: rgba(239, 68, 68, 0.9);
+  background: rgba(239, 68, 68, 0.18);
+  color: #fecaca;
+}
+
+.sentiment-score-circle.neutral {
+  border-color: rgba(148, 163, 184, 0.9);
+  background: rgba(30, 41, 59, 0.95);
+  color: #e5e7eb;
+}
+
+.sentiment-pill {
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(55, 65, 81, 0.9);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.sentiment-pill.positive {
+  border-color: rgba(34, 197, 94, 0.9);
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+}
+
+.sentiment-pill.negative {
+  border-color: rgba(239, 68, 68, 0.9);
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+}
+
+.sentiment-pill.neutral {
+  border-color: rgba(148, 163, 184, 0.9);
+  background: rgba(30, 41, 59, 0.9);
+  color: var(--fg-muted);
+}
 
     .news-list {
       display: flex;
@@ -895,9 +1007,8 @@
     <div class="regime-explainer" id="regime-explainer">
       Loading current fragility narrative…
     </div>
-    <div class="regime-submetrics" id="regime-submetrics">
-      <!-- filled by JS when you click chips -->
-    </div>
+    <div class="regime-submetrics" id="regime-submetrics"></div>
+    <div class="regime-sub-defs" id="regime-sub-defs"></div>
 
     <!-- DEFINITIONS TOGGLE + PANEL -->
     <div class="defs-row">
@@ -1129,8 +1240,7 @@
             <div class="pill" id="pill-vol">Vol regime: —</div>
             <div class="pill" id="pill-bias">Directional bias: —</div>
           </div>
-          <ul class="note-list" id="intraday-notes">
-          </ul>
+          <ul class="note-list" id="intraday-notes"></ul>
         </div>
 
         <!-- OPTIONS TAB -->
@@ -1183,8 +1293,7 @@
             </div>
           </div>
 
-          <div class="options-note" id="options-notes">
-          </div>
+          <div class="options-note" id="options-notes"></div>
         </div>
       </section>
 
@@ -1241,49 +1350,39 @@
       return "neutral";
     }
 
-    let globalRegimePieces = null;
+    let globalSubmetricDefs = {};
 
     function updateSubmetricPills(component) {
-      const container = document.getElementById("regime-submetrics");
-      if (!container || !globalRegimePieces) return;
-      container.innerHTML = "";
+      const pillsContainer = document.getElementById("regime-submetrics");
+      const defsContainer = document.getElementById("regime-sub-defs");
+      if (!pillsContainer || !defsContainer) return;
 
-      const pills = [];
-      const { critCats, shocksCats, contagionCats, directionCats } = globalRegimePieces;
+      pillsContainer.innerHTML = "";
+      defsContainer.innerHTML = "";
 
-      const add = (obj, label) => {
-        if (!obj) return;
-        pills.push({
-          label,
-          value: obj.value,
-          cat: obj.category
-        });
-      };
+      const list = globalSubmetricDefs[component] || [];
+      if (!list.length) return;
 
-      if (component === "C") {
-        add(critCats.dryness_score, "Dryness");
-        add(critCats.ivrv_score, "IV vs RV");
-        add(critCats.crowding_score, "Crowding");
-        add(critCats.pcr_score, "PCR");
-      } else if (component === "S") {
-        add(shocksCats.S, "Shock score");
-      } else if (component === "K") {
-        add(contagionCats.K, "Contagion score");
-      } else if (component === "D") {
-        add(directionCats.D, "Direction");
-      }
+      list.forEach((item) => {
+        const obj = item.obj || {};
+        const cls = categoryClass(obj.category);
 
-      if (!pills.length) return;
-
-      pills.forEach((p) => {
         const pill = document.createElement("div");
-        pill.className = "regime-sub-pill";
+        pill.className = "regime-sub-pill " + cls;
         pill.innerHTML = `
-          <span class="regime-sub-label">${p.label}</span>
-          <span class="regime-sub-value">${p.value != null ? p.value.toFixed(2) : "—"}</span>
-          <span class="regime-sub-cat">${p.cat || "—"}</span>
+          <span class="regime-sub-label">${item.label}</span>
+          <span class="regime-sub-value">${obj.value != null ? obj.value.toFixed(2) : "—"}</span>
+          <span class="regime-sub-cat">${obj.category || "—"}</span>
         `;
-        container.appendChild(pill);
+        pillsContainer.appendChild(pill);
+
+        const def = document.createElement("div");
+        def.className = "regime-sub-defs-item";
+        def.innerHTML = `
+          <span class="regime-sub-defs-label">${item.label}:</span>
+          <span>${obj.explanation || "No explanation available."}</span>
+        `;
+        defsContainer.appendChild(def);
       });
     }
 
@@ -1305,7 +1404,30 @@
       const contagionCats = contagion.categories || {};
       const directionCats = (direction && direction.categories) || {};
 
-      globalRegimePieces = { critCats, shocksCats, contagionCats, directionCats };
+      // Map of all submetrics per arm (for pills + definitions)
+      globalSubmetricDefs = {
+        C: [
+          { label: "Dryness", obj: critCats.dryness_score || {} },
+          { label: "IV vs RV", obj: critCats.ivrv_score || {} },
+          { label: "Crowding", obj: critCats.crowding_score || {} },
+          { label: "PCR", obj: critCats.pcr_score || {} },
+        ],
+        S: [
+          { label: "Gap score", obj: shocksCats.gap_score || {} },
+          { label: "Intraday score", obj: shocksCats.intraday_score || {} },
+          { label: "Volume score", obj: shocksCats.volume_score || {} },
+        ],
+        K: [
+          { label: "Breadth sync", obj: contagionCats.breadth_sync_score || {} },
+          { label: "Wide move", obj: contagionCats.wide_move_score || {} },
+          { label: "Index corr", obj: contagionCats.index_corr_score || {} },
+        ],
+        D: [
+          { label: "Far OI bias", obj: directionCats.far_oi_bias || {} },
+          { label: "Near OI bias", obj: directionCats.near_oi_bias || {} },
+          { label: "PCR bias", obj: directionCats.pcr_bias || {} },
+        ],
+      };
 
       // Top hero
       setText("regime-name", regimeMeta.name || "—");
@@ -1337,31 +1459,26 @@
       setText("range-52w", range52);
       setText("atr-14", spot.atr_14 != null ? spot.atr_14.toFixed(1) : "—");
 
-      // Criticality components
-      const dryness = critCats.dryness_score || {};
-      const ivrv = critCats.ivrv_score || {};
-      const crowding = critCats.crowding_score || {};
-      const pcr = critCats.pcr_score || {};
-
-      const S = shocksCats.S || {};
-      const K = contagionCats.K || {};
+      // Categories for each main arm
+      const S_main = shocksCats.S || {};
+      const K_main = contagionCats.K || {};
+      const C_main = critCats.C || {};
+      const D_main = directionCats.D || {};
 
       // Regime chip categories
-      const Cmain = critCats.C || {};
-      const Dmain = directionCats.D || {};
-      setText("chip-cat-C", Cmain.category || "—");
-      setText("chip-cat-S", S.category || "—");
-      setText("chip-cat-K", K.category || "—");
-      setText("chip-cat-D", Dmain.category || "—");
+      setText("chip-cat-C", C_main.category || "—");
+      setText("chip-cat-S", S_main.category || "—");
+      setText("chip-cat-K", K_main.category || "—");
+      setText("chip-cat-D", D_main.category || "—");
 
-      document.getElementById("chip-dot-C").className = "chip-dot " + categoryClass(Cmain.category);
-      document.getElementById("chip-dot-S").className = "chip-dot " + categoryClass(S.category);
-      document.getElementById("chip-dot-K").className = "chip-dot " + categoryClass(K.category);
-      document.getElementById("chip-dot-D").className = "chip-dot " + categoryClass(Dmain.category);
+      document.getElementById("chip-dot-C").className = "chip-dot " + categoryClass(C_main.category);
+      document.getElementById("chip-dot-S").className = "chip-dot " + categoryClass(S_main.category);
+      document.getElementById("chip-dot-K").className = "chip-dot " + categoryClass(K_main.category);
+      document.getElementById("chip-dot-D").className = "chip-dot " + categoryClass(D_main.category);
 
       // Default explainer = criticality + its submetrics
       document.getElementById("regime-explainer").textContent =
-        Cmain.explanation || "System criticality explanation unavailable.";
+        C_main.explanation || "System criticality explanation unavailable.";
       updateSubmetricPills("C");
 
       // Summary tab metrics
@@ -1384,15 +1501,15 @@
         }
       }
 
-      setMetric("metric-dryness", dryness);
-      setMetric("metric-ivrv", ivrv);
-      setMetric("metric-crowding", crowding);
-      setMetric("metric-pcr", pcr);
+      setMetric("metric-dryness", critCats.dryness_score || {});
+      setMetric("metric-ivrv", critCats.ivrv_score || {});
+      setMetric("metric-crowding", critCats.crowding_score || {});
+      setMetric("metric-pcr", critCats.pcr_score || {});
 
-      const shockScore = S.value;
-      const contScore = K.value;
-      const shockBadgeClass = categoryClass(S.category);
-      const contBadgeClass = categoryClass(K.category);
+      const shockScore = S_main.value;
+      const contScore = K_main.value;
+      const shockBadgeClass = categoryClass(S_main.category);
+      const contBadgeClass = categoryClass(K_main.category);
 
       setText("metric-shock-score", shockScore != null ? shockScore.toFixed(2) : "—");
       setText("metric-contagion-score", contScore != null ? contScore.toFixed(2) : "—");
@@ -1404,11 +1521,11 @@
 
       if (shockBadgeEl) {
         shockBadgeEl.className = "metric-badge " + shockBadgeClass;
-        shockBadgeEl.innerHTML = `<span class="metric-badge-dot"></span>${S.category || "—"}`;
+        shockBadgeEl.innerHTML = `<span class="metric-badge-dot"></span>${S_main.category || "—"}`;
       }
       if (contBadgeEl) {
         contBadgeEl.className = "metric-badge " + contBadgeClass;
-        contBadgeEl.innerHTML = `<span class="metric-badge-dot"></span>${K.category || "—"}`;
+        contBadgeEl.innerHTML = `<span class="metric-badge-dot"></span>${K_main.category || "—"}`;
       }
       if (shockBarEl) {
         const v = typeof shockScore === "number" ? Math.max(0, Math.min(1, shockScore)) : null;
@@ -1588,36 +1705,54 @@
       }
 
       items.slice(0, 18).forEach((n) => {
-        const bucket = classifyNewsItem(n);
-        const article = document.createElement("article");
-        article.className = "news-item";
+  const bucket = classifyNewsItem(n);
+  const article = document.createElement("article");
+  article.className = "news-item";
 
-        const tagLabel =
-          bucket === "macro"
-            ? "Macro"
-            : bucket === "index"
-            ? "Index"
-            : bucket === "stocks"
-            ? "Stocks"
-            : bucket === "fx"
-            ? "FX / Commodities"
-            : bucket === "flows"
-            ? "Flows / Policy"
-            : "Other";
+  const tagLabel =
+    bucket === "macro"
+      ? "Macro"
+      : bucket === "index"
+      ? "Index"
+      : bucket === "stocks"
+      ? "Stocks"
+      : bucket === "fx"
+      ? "FX / Commodities"
+      : bucket === "flows"
+      ? "Flows / Policy"
+      : "Other";
 
-        article.innerHTML = `
-          <div class="news-title-row">
-            <span class="news-tag">${tagLabel}</span>
-            <div class="news-title">
-              <a href="${n.link || "#"}" target="_blank" rel="noopener noreferrer">${n.title || "Untitled"}</a>
-            </div>
-          </div>
-          <div class="news-meta">
-            ${n.source || ""}${n.published ? " · " + n.published : ""}
-          </div>
-        `;
-        container.appendChild(article);
-      });
+  const score = typeof n.sentiment_score === "number" ? n.sentiment_score : null;
+  const label = (n.sentiment_label || "neutral").toLowerCase();
+  const mag = score != null ? Math.round(Math.abs(score) * 100) / 10 : null; // 0.95 -> 9.5
+  const magText = mag != null ? mag.toFixed(1) : "—";
+  const sentimentClass =
+    label === "positive" ? "positive" :
+    label === "negative" ? "negative" :
+    "neutral";
+
+  article.innerHTML = `
+    <div class="news-title-row">
+      <span class="news-tag">${tagLabel}</span>
+      <div class="news-title">
+        <a href="${n.link || "#"}" target="_blank" rel="noopener noreferrer">${n.title || "Untitled"}</a>
+      </div>
+    </div>
+    <div class="news-meta">
+      ${n.source || ""}${n.published ? " · " + n.published : ""}
+    </div>
+    <div class="news-sentiment">
+      <div class="sentiment-score-circle ${sentimentClass}">
+        ${magText}
+      </div>
+      <span class="sentiment-pill ${sentimentClass}">
+        ${(label || "neutral").toUpperCase()}
+      </span>
+    </div>
+  `;
+
+  container.appendChild(article);
+});
     }
 
     async function loadNews() {
