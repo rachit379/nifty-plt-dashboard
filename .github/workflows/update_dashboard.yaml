@@ -2,7 +2,7 @@ name: Update Snapshot and Deploy
 
 on:
   schedule:
-    # Runs twice per day: 8AM & 8PM India time (02:30 & 14:30 UTC)
+    # 8AM & 8PM IST = 02:30 & 14:30 UTC
     - cron: "30 2,14 * * *"
   workflow_dispatch:
 
@@ -17,10 +17,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -35,7 +35,7 @@ jobs:
           ls -R docs/data
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: docs
 
@@ -45,4 +45,4 @@ jobs:
 
     steps:
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
