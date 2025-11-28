@@ -194,9 +194,41 @@
     </div>
 
         <!-- MAIN GRID -->
-    <div class="main-grid">
-      <!-- LEFT: TABS -->
-      <section class="panel">
+    <div class="main-grid">\n  <div class="main-col main-left">\n      <section class="panel snapshot-panel">
+        <div class="panel-header">
+          <h2>NIFTY 50 Snapshot</h2>
+          <p class="panel-subtitle">Spot, range, and realised volatility context</p>
+        </div>
+        <div class="snapshot-body">
+          <div class="snapshot-main">
+            <div class="snapshot-spot">
+              <div class="snapshot-label">Index</div>
+              <div class="snapshot-value" id="nifty-spot">—</div>
+            </div>
+            <div class="snapshot-change-block">
+              <div class="snapshot-label">Change</div>
+              <div class="snapshot-change" id="nifty-change">—</div>
+              <div class="snapshot-range" id="nifty-range">—</div>
+            </div>
+          </div>
+          <div class="snapshot-grid">
+            <div class="snapshot-card">
+              <div class="snapshot-card-label">20D Range</div>
+              <div class="snapshot-card-range" id="nifty-20d-range">—</div>
+            </div>
+            <div class="snapshot-card">
+              <div class="snapshot-card-label">52W Range</div>
+              <div class="snapshot-card-range" id="nifty-52w-range">—</div>
+            </div>
+            <div class="snapshot-card">
+              <div class="snapshot-card-label">ATR(14)</div>
+              <div class="snapshot-card-range" id="nifty-atr">—</div>
+            </div>
+          </div>
+          <div class="snapshot-asof" id="spot-asof">Spot levels as of —</div>
+        </div>
+      </section>
+<section class="panel">
         <div class="panel-header">
           <h2>State &amp; Playbook</h2>
           <p class="panel-subtitle">From systemic fragility to intraday &amp; options decisions</p>
@@ -394,7 +426,20 @@
       </section>
 
       <!-- RIGHT: NEWS -->
-      <section class="panel">
+      \n  </div>\n  <div class="main-col main-right">\n      <section class="panel events-panel">
+        <div class="panel-header">
+          <h2>Upcoming Events</h2>
+          <p class="panel-subtitle">Key macro releases · toggle India / Global</p>
+        </div>
+        <div class="events-filter-row">
+          <button class="events-filter-button active" data-scope="INR">India</button>
+          <button class="events-filter-button" data-scope="USD">Global</button>
+        </div>
+        <div class="events-list" id="events-list">
+          <div class="events-empty">Loading events…</div>
+        </div>
+      </section>
+<section class="panel">
         <div class="panel-header">
           <h2>Market &amp; NIFTY News</h2>
           <p class="panel-subtitle">Filtered for context — macro, index, stocks, flows &amp; policy</p>
@@ -417,7 +462,7 @@
           Indicative only; not advice. Always cross-check with full data and your own judgement.
         </div>
       </section>
-    </div>
+\n  </div>\n</div>\n    </div>
   </div>
 
   
