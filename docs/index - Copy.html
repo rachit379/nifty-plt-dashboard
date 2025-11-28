@@ -86,24 +86,11 @@
     }
 
     .card {
-      position: relative;
-      backdrop-filter: blur(14px);
       background: radial-gradient(circle at top left, #111827 0, #020617 70%);
       border-radius: 0.9rem;
       padding: 0.9rem 1rem 1rem;
-      border: 1px solid rgba(31,41,55,0.85);
-      box-shadow: 0 16px 45px rgba(0,0,0,0.7);
-      transition:
-        transform 0.15s ease-out,
-        box-shadow 0.15s ease-out,
-        border-color 0.15s ease-out,
-        background 0.2s ease-out;
-    }
-
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 22px 60px rgba(0,0,0,0.85);
-      border-color: rgba(148,163,184,0.7);
+      border: 1px solid rgba(31,41,55,0.95);
+      box-shadow: 0 14px 45px rgba(0,0,0,0.6);
     }
 
     .card h2 {
@@ -122,8 +109,7 @@
     }
 
     .summary-card {
-      margin-bottom: 1.2rem;
-      padding: 1rem 1.1rem 1.3rem;
+      margin-bottom: 1rem;
       display: grid;
       grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 1.2fr);
       gap: 0.9rem;
@@ -170,21 +156,6 @@
       text-align: right;
     }
 
-    /* Triggers: table-like rows, no borders */
-    .summary-rows {
-      display: flex;
-      flex-direction: column;
-      gap: 0.18rem;
-      font-size: 0.8rem;
-    }
-
-    .summary-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) auto;
-      column-gap: 0.75rem;
-      align-items: baseline;
-    }
-
     .summary-headlines {
       font-size: 0.78rem;
       color: var(--fg-muted);
@@ -212,10 +183,7 @@
     }
 
     .arm-card {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 210px;
+      min-height: 190px;
     }
 
     .arm-title-row {
@@ -223,7 +191,7 @@
       justify-content: space-between;
       align-items: baseline;
       gap: 0.5rem;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.25rem;
     }
 
     .arm-title {
@@ -245,95 +213,12 @@
 
     .metric-value {
       font-variant-numeric: tabular-nums;
-      text-align: right;
     }
 
     .metric-note {
       font-size: 0.75rem;
       color: var(--fg-muted);
       margin-top: 0.15rem;
-    }
-
-    /* Detail rows: label | value | pill */
-    .metric-row-detail {
-      display: grid;
-      grid-template-columns: minmax(0, 1.5fr) auto auto;
-      column-gap: 0.55rem;
-      align-items: center;
-      font-size: 0.78rem;
-      margin-top: 0.15rem;
-    }
-
-    .metric-row-detail .metric-label {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .metric-row-detail .metric-value {
-      text-align: right;
-    }
-
-    .metric-row-detail .metric-pill {
-      justify-self: flex-end;
-    }
-
-    /* Tooltip on metric labels */
-    .metric-label[data-tooltip] {
-      position: relative;
-      cursor: help;
-    }
-
-    .metric-label[data-tooltip]::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      left: 0;
-      bottom: 120%;
-      transform: translateY(4px);
-      max-width: 230px;
-      font-size: 0.7rem;
-      line-height: 1.3;
-      white-space: normal;
-      padding: 0.35rem 0.45rem;
-      border-radius: 0.4rem;
-      background: #020617;
-      color: var(--fg);
-      border: 1px solid var(--border);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.7);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 20;
-      transition: opacity 0.12s ease-out;
-    }
-
-    .metric-label[data-tooltip]:hover::after {
-      opacity: 1;
-    }
-
-    /* Tiny meter bar under each arm */
-    .meter {
-      position: relative;
-      margin-top: 0.4rem;
-      height: 6px;
-      border-radius: 999px;
-      background: linear-gradient(to right, var(--low), var(--moderate), var(--elevated), var(--critical));
-      opacity: 0.9;
-      overflow: hidden;
-    }
-
-    .meter.direction {
-      background: linear-gradient(to right, #7f1d1d, var(--neutral), #166534);
-    }
-
-    .meter-thumb {
-      position: absolute;
-      top: 50%;
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      transform: translate(-50%, -50%);
-      background: #f9fafb;
-      box-shadow: 0 0 0 2px rgba(15,23,42,0.9), 0 0 12px rgba(248,250,252,0.7);
     }
 
     .pill {
@@ -360,24 +245,23 @@
     .sidebar-card {
       max-height: 620px;
       overflow-y: auto;
-      padding-top: 0.9rem;
     }
 
     .rss-list {
       list-style: none;
       padding: 0;
-      margin: 0.45rem 0 0;
+      margin: 0.3rem 0 0;
     }
 
     .rss-item {
-      margin-bottom: 0.45rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1px dashed rgba(31,41,55,0.5);
+      margin-bottom: 0.55rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid rgba(31,41,55,0.65);
     }
 
     .rss-title {
       font-size: 0.8rem;
-      margin-bottom: 0.1rem;
+      margin-bottom: 0.15rem;
     }
 
     .rss-title a {
@@ -422,7 +306,48 @@
       .arms-grid { grid-template-columns: minmax(0, 1fr); }
     }
 
-    /* Category-based colour accents */
+    /* ==== VISUAL ENHANCEMENTS ==== */
+
+    /* Softer glassmorphism feel on all cards */
+    .card {
+      position: relative;
+      backdrop-filter: blur(14px);
+      background: radial-gradient(circle at top left, #111827 0, #020617 70%);
+      border-radius: 0.9rem;
+      border: 1px solid rgba(31, 41, 55, 0.85);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7);
+      transition:
+        transform 0.15s ease-out,
+        box-shadow 0.15s ease-out,
+        border-color 0.15s ease-out,
+        background 0.2s ease-out;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.85);
+      border-color: rgba(148, 163, 184, 0.7);
+    }
+
+    /* Top summary feels a bit more “panel-like” */
+    .summary-card {
+      margin-bottom: 1.2rem;
+      padding: 1rem 1.1rem 1.3rem;
+    }
+
+    /* Compact the arms and align text nicely */
+    .arm-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 200px;
+    }
+
+    .arm-title-row {
+      margin-bottom: 0.35rem;
+    }
+
+    /* Category-based colour accents for summary + 4 arms */
     #summary-card[data-category="Low"],
     .arm-card[data-category="Low"] {
       border-top: 2px solid var(--low);
@@ -447,11 +372,67 @@
       box-shadow: 0 20px 65px rgba(239, 68, 68, 0.35);
     }
 
+    /* If N/A, keep it neutral and subtle */
     #summary-card[data-category="N/A"],
     .arm-card[data-category="N/A"],
     #summary-card:not([data-category]),
     .arm-card:not([data-category]) {
       border-top: 2px solid rgba(55, 65, 81, 0.9);
+    }
+
+    /* Make key numbers stand out slightly more in summary */
+    #summary-triggers-grid .summary-value,
+    #summary-regime-grid .summary-value {
+      font-size: 0.85rem;
+    }
+
+    #summary-triggers-grid .summary-value:nth-child(2),
+    #summary-regime-grid .summary-value:nth-child(2) {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* Sidebar: slightly tighter spacing */
+    .sidebar-card {
+      padding-top: 0.9rem;
+    }
+
+    .rss-item {
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.45rem;
+    }
+
+    /* ==== ARM SUB-METRICS ==== */
+
+    .arm-submetrics {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0;
+      font-size: 0.75rem;
+    }
+
+    .arm-submetrics li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      margin-top: 0.18rem;
+      color: var(--fg-muted);
+    }
+
+    .submetric-label {
+      flex: 1 1 auto;
+    }
+
+    .submetric-value {
+      font-variant-numeric: tabular-nums;
+      margin-left: auto;
+      margin-right: 0.35rem;
+      color: var(--fg);
+    }
+
+    .arm-submetrics .pill {
+      font-size: 0.65rem;
+      padding: 0.06rem 0.45rem;
     }
   </style>
 </head>
@@ -481,7 +462,7 @@
       </div>
       <div id="summary-triggers">
         <div class="summary-block-title">NIFTY Triggers &amp; Structure</div>
-        <div class="summary-rows" id="summary-triggers-rows"></div>
+        <div class="summary-grid" id="summary-triggers-grid"></div>
       </div>
       <div id="summary-options-headlines">
         <div class="summary-block-title">Options Stance &amp; Headlines</div>
@@ -500,6 +481,7 @@
             <span id="arm-C-pill"></span>
           </div>
           <div id="arm-C-body"></div>
+          <ul class="arm-submetrics" id="arm-C-sub"></ul>
         </section>
 
         <section class="card arm-card" id="arm-shocks">
@@ -508,6 +490,7 @@
             <span id="arm-S-pill"></span>
           </div>
           <div id="arm-S-body"></div>
+          <ul class="arm-submetrics" id="arm-S-sub"></ul>
         </section>
 
         <section class="card arm-card" id="arm-contagion">
@@ -516,6 +499,7 @@
             <span id="arm-K-pill"></span>
           </div>
           <div id="arm-K-body"></div>
+          <ul class="arm-submetrics" id="arm-K-sub"></ul>
         </section>
 
         <section class="card arm-card" id="arm-direction">
@@ -524,6 +508,7 @@
             <span id="arm-D-pill"></span>
           </div>
           <div id="arm-D-body"></div>
+          <ul class="arm-submetrics" id="arm-D-sub"></ul>
         </section>
       </div>
 
@@ -567,83 +552,6 @@
       return n.toFixed(digits);
     }
 
-    // Component definitions for tooltips
-    const ARM_COMPONENTS = {
-      C: [
-        {
-          key: "dryness_score",
-          label: "Dryness",
-          tooltip: "How quiet realised volatility is vs its own history. Higher = calmer tape, more risk can build quietly."
-        },
-        {
-          key: "ivrv_score",
-          label: "IV vs RV",
-          tooltip: "Richness of implied volatility vs realised. High values = options are expensive vs recent moves."
-        },
-        {
-          key: "crowding_score",
-          label: "Crowding",
-          tooltip: "How concentrated open interest is around spot. High crowding = high gamma / positioning risk."
-        },
-        {
-          key: "pcr_score",
-          label: "Put–Call Skew",
-          tooltip: "Index-wide put–call open interest balance, mapped to a tension score."
-        }
-      ],
-      S: [
-        {
-          key: "gap_score",
-          label: "Overnight gap",
-          tooltip: "Size of the open gap vs recent history, scaled to [0,1]."
-        },
-        {
-          key: "intraday_score",
-          label: "Intraday range",
-          tooltip: "How large today’s high–low range is vs the recent distribution."
-        },
-        {
-          key: "volume_score",
-          label: "Volume",
-          tooltip: "How unusual today’s volume is vs the last ~60 sessions."
-        }
-      ],
-      K: [
-        {
-          key: "breadth_sync_score",
-          label: "Breadth sync",
-          tooltip: "How in-sync advances/declines are across NIFTY names."
-        },
-        {
-          key: "wide_move_score",
-          label: "Wide moves",
-          tooltip: "Share of stocks making very large moves on the day."
-        },
-        {
-          key: "index_corr_score",
-          label: "Index correlation",
-          tooltip: "Cross-index correlation – how much everything trades like one macro book."
-        }
-      ],
-      D: [
-        {
-          key: "far_oi_bias",
-          label: "Far OTM OI bias",
-          tooltip: "Far OTM puts vs calls (90–98% and 102–110% of spot). Captures downside cushioning vs upside overwriting."
-        },
-        {
-          key: "near_oi_bias",
-          label: "Near-OTM OI bias",
-          tooltip: "Put/call balance just around spot. Shows where dealers sit near the money."
-        },
-        {
-          key: "pcr_bias",
-          label: "PCR bias",
-          tooltip: "Deviation of put–call OI ratio from 1. High = put-heavy, low = call-heavy."
-        }
-      ]
-    };
-
     // ----- Snapshot helpers -----
 
     function extractInputs(regimeState) {
@@ -657,6 +565,7 @@
       }
 
       function fromInputsOrArm(key) {
+        // 1) First try regime_state.inputs.C / S / K / D (already in your JSON)
         const existing = inputs[key];
         if (existing) {
           const raw = existing.value ?? existing.score ?? null;
@@ -667,11 +576,17 @@
           return { value, category, explanation };
         }
 
+        // 2) Fallback to detailed sections (criticality / shocks / contagion / direction)
         let src = null;
-        if (key === "C") src = rs.criticality?.categories?.C || rs.criticality || null;
-        else if (key === "S") src = rs.shocks?.categories?.S || rs.shocks || null;
-        else if (key === "K") src = rs.contagion?.categories?.K || rs.contagion || null;
-        else if (key === "D") src = rs.direction?.categories?.D || rs.direction || null;
+        if (key === "C") {
+          src = rs.criticality?.categories?.C || rs.criticality || null;
+        } else if (key === "S") {
+          src = rs.shocks?.categories?.S || rs.shocks || null;
+        } else if (key === "K") {
+          src = rs.contagion?.categories?.K || rs.contagion || null;
+        } else if (key === "D") {
+          src = rs.direction?.categories?.D || rs.direction || null;
+        }
 
         if (!src) {
           return { value: null, category: "N/A", explanation: "" };
@@ -696,26 +611,7 @@
       };
     }
 
-    function meterHtml(key, val) {
-      if (val === null || val === undefined || Number.isNaN(Number(val))) return "";
-      let pct;
-      const n = Number(val);
-      if (key === "D") {
-        // Map [-1,1] to [0,100]
-        pct = ((n + 1) / 2) * 100;
-      } else {
-        pct = n * 100;
-      }
-      pct = Math.max(0, Math.min(100, pct));
-      const extraClass = key === "D" ? " direction" : "";
-      return `
-        <div class="meter${extraClass}">
-          <div class="meter-thumb" style="left:${pct.toFixed(1)}%;"></div>
-        </div>
-      `;
-    }
-
-    // ----- Rendering: top summary -----
+    // ----- Summary rendering -----
 
     function renderSummary(snapshot) {
       const regimeState = snapshot.regime_state || {};
@@ -760,33 +656,23 @@
         <div class="summary-value">${fmtNum(inputs.D.value, 2)} ${badge(inputs.D.category || "Neutral", true)}</div>
       `;
 
-      // Triggers / levels block as neat rows
-      const tRows = document.getElementById("summary-triggers-rows");
+      // Triggers / levels block
+      const tGrid = document.getElementById("summary-triggers-grid");
       if (Object.keys(levels).length) {
-        tRows.innerHTML = `
-          <div class="summary-row">
-            <div class="summary-label">Close</div>
-            <div class="summary-value">${fmtNum(levels.close)}</div>
-          </div>
-          <div class="summary-row">
-            <div class="summary-label">20d High / Low</div>
-            <div class="summary-value">${fmtNum(levels.high_20d)} / ${fmtNum(levels.low_20d)}</div>
-          </div>
-          <div class="summary-row">
-            <div class="summary-label">ATR(14)</div>
-            <div class="summary-value">${fmtNum(levels.atr_14)}</div>
-          </div>
-          <div class="summary-row">
-            <div class="summary-label">Long breakout</div>
-            <div class="summary-value">${fmtNum(longPlan.entry_spot)} / ${fmtNum(longPlan.stop_spot)} / ${fmtNum(longPlan.target1_spot)}+</div>
-          </div>
-          <div class="summary-row">
-            <div class="summary-label">Short breakdown</div>
-            <div class="summary-value">${fmtNum(shortPlan.entry_spot)} / ${fmtNum(shortPlan.stop_spot)} / ${fmtNum(shortPlan.target1_spot)}+</div>
-          </div>
+        tGrid.innerHTML = `
+          <div class="summary-label">Close</div>
+          <div class="summary-value">${fmtNum(levels.close)}</div>
+          <div class="summary-label">20d High / Low</div>
+          <div class="summary-value">${fmtNum(levels.high_20d)} / ${fmtNum(levels.low_20d)}</div>
+          <div class="summary-label">ATR(14)</div>
+          <div class="summary-value">${fmtNum(levels.atr_14)}</div>
+          <div class="summary-label">Long breakout</div>
+          <div class="summary-value">${fmtNum(longPlan.entry_spot)} / ${fmtNum(longPlan.stop_spot)} / ${fmtNum(longPlan.target1_spot)}+</div>
+          <div class="summary-label">Short breakdown</div>
+          <div class="summary-value">${fmtNum(shortPlan.entry_spot)} / ${fmtNum(shortPlan.stop_spot)} / ${fmtNum(shortPlan.target1_spot)}+</div>
         `;
       } else {
-        tRows.innerHTML = `<div class="summary-row"><div class="summary-label">Levels</div><div class="summary-value">No data.</div></div>`;
+        tGrid.innerHTML = `<div class="summary-label">Levels</div><div class="summary-value">No data.</div>`;
       }
 
       // Options stance block
@@ -812,7 +698,7 @@
         optLines.length ? optLines.map(esc).join("<br>") : "No options stance / candidates available.";
     }
 
-    // ----- Rendering: 4 arms -----
+    // ----- Arms (C, S, K, D) -----
 
     function renderArms(snapshot) {
       const regimeState = snapshot.regime_state || {};
@@ -825,57 +711,29 @@
         D: "arm-direction",
       };
 
-      const categoriesSrc = {
-        C: regimeState.criticality?.categories || {},
-        S: regimeState.shocks?.categories || {},
-        K: regimeState.contagion?.categories || {},
-        D: regimeState.direction?.categories || {},
-      };
-
-      function buildComponentRows(key) {
-        const compDefs = ARM_COMPONENTS[key] || [];
-        const cats = categoriesSrc[key] || {};
-        let html = "";
-        compDefs.forEach(def => {
-          const info = cats[def.key] || {};
-          const val = info.value;
-          const cat = info.category || "N/A";
-          html += `
-            <div class="metric-row-detail">
-              <span class="metric-label" data-tooltip="${esc(def.tooltip)}">${esc(def.label)}</span>
-              <span class="metric-value">${fmtNum(val, 2)}</span>
-              <span class="metric-pill">${badge(cat)}</span>
-            </div>
-          `;
-        });
-        return html;
-      }
-
       function fillArm(key, obj, neutralDefault = false) {
         const pillId = "arm-" + key + "-pill";
         const bodyId = "arm-" + key + "-body";
 
+        // Badge
         document.getElementById(pillId).innerHTML = badge(
           obj.category || (neutralDefault ? "Neutral" : "N/A"),
           neutralDefault
         );
 
+        // Body text
         const valStr = fmtNum(obj.value, 2);
         const expl = obj.explanation || "";
-        const meter = meterHtml(key, obj.value);
-        const rows = buildComponentRows(key);
-
         const html = `
           <div class="metric-row">
             <span class="metric-label">Score</span>
             <span class="metric-value">${valStr}</span>
           </div>
           <div class="metric-note">${esc(expl || "No explanation available.")}</div>
-          ${meter}
-          ${rows}
         `;
         document.getElementById(bodyId).innerHTML = html;
 
+        // set data-category for colour-coding the card
         const cardId = cardIdMap[key];
         const cardEl = cardId ? document.getElementById(cardId) : null;
         if (cardEl) {
@@ -886,26 +744,83 @@
         }
       }
 
+      function renderSubmetrics(listId, categories, mapping) {
+        const listEl = document.getElementById(listId);
+        if (!listEl) return;
+        listEl.innerHTML = "";
+        if (!categories) return;
+
+        mapping.forEach(([key, label]) => {
+          const info = categories[key];
+          if (!info) return;
+
+          const raw = info.value ?? info.score ?? null;
+          const valStr = fmtNum(raw, 2);
+          const cat = info.category || "N/A";
+
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <span class="submetric-label">${esc(label)}</span>
+            <span class="submetric-value">${valStr}</span>
+            ${badge(cat)}
+          `;
+          listEl.appendChild(li);
+        });
+      }
+
+      // Fill main arms
       fillArm("C", inputs.C);
       fillArm("S", inputs.S);
       fillArm("K", inputs.K);
       fillArm("D", inputs.D, true);
+
+      // Sub-metrics for each arm
+      const critCats = regimeState.criticality?.categories || {};
+      const shockCats = regimeState.shocks?.categories || {};
+      const contCats = regimeState.contagion?.categories || {};
+      const dirCats = regimeState.direction?.categories || {};
+
+      renderSubmetrics("arm-C-sub", critCats, [
+        ["dryness_score",  "Dryness"],
+        ["ivrv_score",     "IV vs RV"],
+        ["crowding_score", "Crowding near spot"],
+        ["pcr_score",      "Positioning (PCR)"],
+      ]);
+
+      renderSubmetrics("arm-S-sub", shockCats, [
+        ["gap_score",      "Overnight gap"],
+        ["intraday_score", "Intraday range"],
+        ["volume_score",   "Volume"],
+      ]);
+
+      renderSubmetrics("arm-K-sub", contCats, [
+        ["breadth_sync_score", "Breadth sync"],
+        ["wide_move_score",    "Wide movers"],
+        ["index_corr_score",   "Index corr"],
+      ]);
+
+      renderSubmetrics("arm-D-sub", dirCats, [
+        ["far_oi_bias",  "Far OI bias"],
+        ["near_oi_bias", "Near OI bias"],
+        ["pcr_bias",     "PCR bias"],
+      ]);
     }
 
-    // ----- News rendering -----
+    // ----- RSS / news -----
 
     function renderRSS(news) {
       const listEl = document.getElementById("rss-list");
       listEl.innerHTML = "";
       const items = Array.isArray(news.items) ? news.items.slice() : [];
 
+      // Sort newest first if published available
       items.sort((a,b) => {
         const da = Date.parse(a.published || "") || 0;
         const db = Date.parse(b.published || "") || 0;
         return db - da;
       });
 
-      const top = items.slice(0, 12);
+      const top = items.slice(0, 20);
       if (!top.length) {
         listEl.innerHTML = '<li class="rss-item"><div class="rss-title">No headlines available.</div></li>';
         return;
@@ -925,7 +840,7 @@
         listEl.appendChild(li);
       });
 
-      // Also push 3 headlines into top summary
+      // Also push 2–3 headlines into top summary
       const summaryEl = document.getElementById("summary-headlines");
       const summaryItems = top.slice(0, 3).map(i => {
         const t = esc(i.title || "");
@@ -935,6 +850,8 @@
       });
       summaryEl.innerHTML = summaryItems.join("<br>");
     }
+
+    // ----- Data loaders -----
 
     async function loadSnapshot() {
       try {
@@ -962,7 +879,7 @@
       } catch (err) {
         console.error(err);
         document.getElementById("rss-list").innerHTML =
-          '<li class="rss-item"><div class="rss-title">No news.json found. Check docs/data/news.json or the RSS workflow.</div></li>';
+          '<li class="rss-item"><div class="rss-title">No news.json found. Add docs/data/news.json or wire a GitHub Action to fetch RSS.</div></li>';
         document.getElementById("summary-headlines").textContent =
           "Headlines not available.";
       }
@@ -971,8 +888,6 @@
     document.addEventListener("DOMContentLoaded", () => {
       loadSnapshot();
       loadNews();
-      // news every 5 minutes
-      setInterval(loadNews, 5 * 60 * 1000);
     });
   </script>
 </body>
