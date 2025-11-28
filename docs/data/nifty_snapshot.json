@@ -1,0 +1,270 @@
+{
+  "generated_at": "2025-11-28T20:33:55",
+  "regime_state": {
+    "as_of": {
+      "critical": "2025-11-28T20:33:48",
+      "shock": "2025-11-27",
+      "contagion": "2025-11-28",
+      "direction": "2025-11-27"
+    },
+    "criticality": {
+      "score": 0.7179847810574163,
+      "components": {
+        "dryness_score": 0.6777067734780949,
+        "ivrv_score": 0.8731287368984453,
+        "crowding_score": 0.9028456112603122,
+        "pcr_score": 0.24529215533595838
+      },
+      "categories": {
+        "C": {
+          "value": 0.7179847810574163,
+          "category": "Elevated",
+          "explanation": "System shows elevated fragility; modest shocks can cause outsized moves."
+        },
+        "dryness_score": {
+          "value": 0.6777067734780949,
+          "category": "Elevated",
+          "explanation": "Realized volatility is below average\u2014conditions are calm enough for risk to quietly build."
+        },
+        "ivrv_score": {
+          "value": 0.8731287368984453,
+          "category": "Critical",
+          "explanation": "Implied volatility is extremely rich vs realized\u2014strong tension or hedging pressure in the options market."
+        },
+        "crowding_score": {
+          "value": 0.9028456112603122,
+          "category": "Critical",
+          "explanation": "Open interest is extremely concentrated near spot\u2014very high gamma/crowding risk around the current level."
+        },
+        "pcr_score": {
+          "value": 0.24529215533595838,
+          "category": "Low",
+          "explanation": "Put\u2013call open interest is near balanced\u2014no strong one-sided positioning."
+        }
+      }
+    },
+    "shocks": {
+      "score": 0.19102723872322458,
+      "features": {
+        "window_days": 60,
+        "gap_today": 0.002135034404567182,
+        "gap_abs_today": 0.002135034404567182,
+        "gap_median": 0.0016422705711134503,
+        "gap_p95": 0.004946956154633964,
+        "gap_score": 0.14911065546174757,
+        "intraday_range_today": 0.0064318600855593835,
+        "intraday_range_median": 0.007151205025144304,
+        "intraday_range_p95": 0.010646637809297248,
+        "intraday_score": 0.0,
+        "volume_today": 240300.0,
+        "volume_log_today": 12.38964342172456,
+        "volume_log_mu": 12.50275465046075,
+        "volume_log_sigma": 0.4533271497132325,
+        "volume_z": -0.24951346683678974,
+        "volume_score": 0.43794325512841853
+      },
+      "categories": {
+        "S": {
+          "value": 0.19102723872322458,
+          "category": "Low",
+          "explanation": "No meaningful shock\u2014price and volume are well within recent norms."
+        },
+        "gap_score": {
+          "value": 0.14911065546174757,
+          "category": "Low",
+          "explanation": "Overnight gap is small relative to typical recent gaps."
+        },
+        "intraday_score": {
+          "value": 0.0,
+          "category": "Low",
+          "explanation": "Intraday range is tight\u2014no unusual swing during the session."
+        },
+        "volume_score": {
+          "value": 0.43794325512841853,
+          "category": "Moderate",
+          "explanation": "Volume is somewhat above average."
+        }
+      }
+    },
+    "contagion": {
+      "score": 0.40256410256410247,
+      "components": {
+        "breadth_sync_score": 0.2564102564102562,
+        "wide_move_score": 0.0,
+        "index_corr_score": 1.0
+      },
+      "categories": {
+        "K": {
+          "value": 0.40256410256410247,
+          "category": "Moderate",
+          "explanation": "Co-movement is at a normal level\u2014some common factor, but not dominating."
+        },
+        "breadth_sync_score": {
+          "value": 0.2564102564102562,
+          "category": "Low",
+          "explanation": "Advancers and decliners are fairly balanced\u2014no dominant one-sided move across stocks."
+        },
+        "wide_move_score": {
+          "value": 0.0,
+          "category": "Low",
+          "explanation": "Only a small fraction of stocks had large moves\u2014most names were relatively quiet."
+        },
+        "index_corr_score": {
+          "value": 1.0,
+          "category": "Critical",
+          "explanation": "Indices are extremely correlated\u2014market is largely trading as a single risk-on/risk-off block."
+        }
+      }
+    },
+    "direction": {
+      "score": 0.10974671534642033,
+      "components": {
+        "far_oi_bias": 0.13022640115443587,
+        "near_oi_bias": 0.0565360460202012,
+        "pcr_bias": 0.17520868238282744
+      },
+      "categories": {
+        "D": {
+          "value": 0.10974671534642033,
+          "category": "Neutral",
+          "explanation": "Positioning is broadly balanced between bullish and bearish."
+        },
+        "far_oi_bias": {
+          "value": 0.13022640115443587,
+          "category": "Neutral",
+          "explanation": "Far OTM put and call OI are broadly balanced."
+        },
+        "near_oi_bias": {
+          "value": 0.0565360460202012,
+          "category": "Neutral",
+          "explanation": "Near-OTM put and call OI near spot are roughly balanced."
+        },
+        "pcr_bias": {
+          "value": 0.17520868238282744,
+          "category": "Neutral",
+          "explanation": "Put\u2013call ratio is near 1\u2014no strong tilt toward puts or calls."
+        }
+      }
+    },
+    "regime": {
+      "name": "Loaded, Waiting for a Shock",
+      "description": "System looks fragile/loaded (high criticality) but recent shocks have been small\u2014conditions where a normal catalyst can trigger outsized moves. Co-movement is at a normal level\u2014both index and stock-specific trades are viable.",
+      "intraday": {
+        "mode": "prep-for-breakout",
+        "enable_mean_reversion": false,
+        "enable_breakout_trend": true,
+        "volatility_scaling": "normal",
+        "directional_bias": "none",
+        "notes": [
+          "Be selective but ready to trade breakouts with follow-through.",
+          "Avoid overtrading minor intraday wiggles\u2014wait for decisive moves.",
+          "Use alerts around key levels on NIFTY/BANKNIFTY.",
+          "Moderate contagion: balanced opportunity between index-level and stock-level ideas.",
+          "Directional positioning is broadly balanced\u2014let intraday price action drive long vs short bias."
+        ]
+      },
+      "options": {
+        "allow_short_gamma_intraday": false,
+        "allow_short_gamma_overnight": false,
+        "allow_long_gamma": true,
+        "notes": [
+          "Fragility + no shock favours long gamma / long vol structures.",
+          "Consider small-size long straddles/strangles in NIFTY with clear exits.",
+          "Avoid naked short options; use defined-risk spreads if selling.",
+          "No strong directional tilt from index options; favour symmetric structures or spreads hedged by levels."
+        ]
+      },
+      "contagion_context": {
+        "K_category": "Moderate",
+        "K_value": 0.40256410256410247
+      },
+      "directional_context": {
+        "D_category": "Neutral",
+        "D_value": 0.10974671534642033,
+        "bias": "none"
+      }
+    }
+  },
+  "options_state": {
+    "as_of": {
+      "spot_levels": "2025-11-27",
+      "options_expiry": "2025-12-02"
+    },
+    "spot_levels": {
+      "close": 26215.55078125,
+      "prev_close": 26205.30078125,
+      "prev_high": 26215.150390625,
+      "prev_low": 25842.94921875,
+      "high_20d": 26310.44921875,
+      "low_20d": 25318.44921875,
+      "high_52w": 26310.44921875,
+      "low_52w": 21743.650390625,
+      "atr_14": 202.79282924107142,
+      "ma_20": 25869.94267578125,
+      "ma_50": 25534.299140625
+    },
+    "breakout_scores": {
+      "L_long": {
+        "score": 0.9495037840686806,
+        "category": "Hot",
+        "explanation": "Price is very close to (or sitting on) recent highs in an uptrend\u2014strong long-breakout candidate."
+      },
+      "L_short": {
+        "score": 0.20394189760647377,
+        "category": "Cold",
+        "explanation": "Price is far from recent lows or trend is not supportive\u2014no urgent short-breakdown setup."
+      },
+      "components": {
+        "prox_long": 0.9278625486695438,
+        "prox_short": 0.29134556800924827,
+        "trend_up": 1.0
+      }
+    },
+    "long_plan": {
+      "direction": "long",
+      "spot_now": 26215.55078125,
+      "entry_spot": 26351.007784598216,
+      "stop_spot": 26148.214955357143,
+      "target1_spot": 26553.80061383929,
+      "target2_spot": 26756.593443080357,
+      "risk_per_contract_points": 202.79282924107247,
+      "R_multiple_target1": 1.0,
+      "R_multiple_target2": 1.999999999999982,
+      "L_long_score": 0.9495037840686806,
+      "L_long_category": "Hot",
+      "L_long_explanation": "Price is very close to (or sitting on) recent highs in an uptrend\u2014strong long-breakout candidate."
+    },
+    "short_plan": {
+      "direction": "short",
+      "spot_now": 26215.55078125,
+      "entry_spot": 25277.890652901784,
+      "stop_spot": 25480.683482142857,
+      "target1_spot": 25075.09782366071,
+      "target2_spot": 24872.304994419643,
+      "risk_per_contract_points": 202.79282924107247,
+      "R_multiple_target1": 1.0,
+      "R_multiple_target2": 1.999999999999982,
+      "L_short_score": 0.20394189760647377,
+      "L_short_category": "Cold",
+      "L_short_explanation": "Price is far from recent lows or trend is not supportive\u2014no urgent short-breakdown setup."
+    },
+    "options": {
+      "long_up_call": {
+        "type": "CE",
+        "strike": 26200.0,
+        "expiry": "2025-12-02T00:00:00",
+        "last_price": 113.85,
+        "open_interest": 108640.0,
+        "iv": 8.79
+      },
+      "long_down_put": {
+        "type": "PE",
+        "strike": 26200.0,
+        "expiry": "2025-12-02T00:00:00",
+        "last_price": 63.85,
+        "open_interest": 145987.0,
+        "iv": 7.27
+      }
+    }
+  }
+}

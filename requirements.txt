@@ -1,0 +1,10 @@
+# Core numerics & data handling
+numpy
+pandas
+
+# Market data
+yfinance
+Bharat-sm-data
+
+# RSS → news.json
+feedparser

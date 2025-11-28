@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NIFTY 50 — Power-Law Tension Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-alt: #050816;
+      --bg-card: #0b1020;
+      --bg-card-soft: #11172b;
+      --fg: #f9fafb;
+      --fg-muted: #9ca3af;
+      --accent: #60a5fa;
+      --border: #1f2937;
+      --low: #16a34a;
+      --moderate: #eab308;
+      --elevated: #fb923c;
+      --critical: #ef4444;
+      --neutral: #6b7280;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: radial-gradient(circle at top left, #111827 0, #020617 50%, #000 100%);
+      color: var(--fg);
+    }
+
+    .shell {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 2.25rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      align-items: baseline;
+    }
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--fg-muted);
+    }
+
+    .meta {
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+      text-align: right;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.12rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.9);
+      color: var(--fg-muted);
+    }
+
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.78rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 0.35rem;
+      background: #020617;
+      border: 1px solid #1f2937;
+      color: var(--fg-muted);
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #111827 0, #020617 70%);
+      border-radius: 0.9rem;
+      padding: 0.9rem 1rem 1rem;
+      border: 1px solid rgba(31,41,55,0.95);
+      box-shadow: 0 14px 45px rgba(0,0,0,0.6);
+    }
+
+    .card h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .card h3 {
+      margin: 0.55rem 0 0.25rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .summary-card {
+      margin-bottom: 1rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 1.2fr);
+      gap: 0.9rem;
+      align-items: flex-start;
+    }
+
+    .summary-block-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.2rem;
+    }
+
+    .summary-regime-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .summary-regime-sub {
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0.35rem 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .summary-label {
+      color: var(--fg-muted);
+    }
+
+    .summary-value {
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .summary-headlines {
+      font-size: 0.78rem;
+      color: var(--fg-muted);
+    }
+
+    .summary-headlines a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .summary-headlines a:hover {
+      text-decoration: underline;
+    }
+
+    .main-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(270px, 1.1fr);
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .arms-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .arm-card {
+      min-height: 190px;
+    }
+
+    .arm-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .arm-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.8rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .metric-label {
+      color: var(--fg-muted);
+    }
+
+    .metric-value {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-note {
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+      margin-top: 0.15rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.12rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border: 1px solid transparent;
+    }
+
+    .pill.Low        { background: rgba(22,163,74,0.15);  color: var(--low);        border-color: rgba(22,163,74,0.4); }
+    .pill.Moderate   { background: rgba(234,179,8,0.1);   color: var(--moderate);   border-color: rgba(234,179,8,0.45); }
+    .pill.Elevated   { background: rgba(251,146,60,0.12); color: var(--elevated);   border-color: rgba(251,146,60,0.5); }
+    .pill.Critical   { background: rgba(239,68,68,0.12);  color: var(--critical);   border-color: rgba(239,68,68,0.55); }
+    .pill.Neutral    { background: rgba(107,114,128,0.18);color: var(--neutral);    border-color: rgba(107,114,128,0.5); }
+    .pill.NA         { background: rgba(55,65,81,0.3);    color: var(--fg-muted);   border-color: rgba(55,65,81,0.6); }
+
+    .sidebar-card {
+      max-height: 620px;
+      overflow-y: auto;
+    }
+
+    .rss-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.3rem 0 0;
+    }
+
+    .rss-item {
+      margin-bottom: 0.55rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid rgba(31,41,55,0.65);
+    }
+
+    .rss-title {
+      font-size: 0.8rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .rss-title a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .rss-title a:hover {
+      text-decoration: underline;
+    }
+
+    .rss-meta {
+      font-size: 0.7rem;
+      color: var(--fg-muted);
+    }
+
+    footer {
+      margin-top: 1.2rem;
+      font-size: 0.7rem;
+      color: var(--fg-muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    @media (max-width: 960px) {
+      .summary-card {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .main-layout {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .sidebar-card {
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header { flex-direction: column; align-items: flex-start; }
+      .meta { text-align: left; }
+      .arms-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div>
+        <div class="title">NIFTY 50 — Power-Law Tension Dashboard</div>
+        <div class="subtitle">Criticality · Shocks · Contagion · Direction · Levels &amp; Options</div>
+      </div>
+      <div class="meta">
+        <div id="last-updated">Loading snapshot…</div>
+        <div><span class="tag">Source <span class="kbd">docs/data/nifty_snapshot.json</span></span></div>
+      </div>
+    </header>
+
+    <!-- Top: summary (regime + NIFTY plan + quick headlines) -->
+    <section class="card summary-card" id="summary-card">
+      <div id="summary-regime">
+        <div class="summary-block-title">Regime &amp; Bias</div>
+        <div class="summary-regime-name">
+          <span id="summary-regime-name-text">—</span>
+          <span id="summary-regime-badge"></span>
+        </div>
+        <div id="summary-regime-sub" class="summary-regime-sub">Waiting for data…</div>
+        <div class="summary-grid" id="summary-regime-grid"></div>
+      </div>
+      <div id="summary-triggers">
+        <div class="summary-block-title">NIFTY Triggers &amp; Structure</div>
+        <div class="summary-grid" id="summary-triggers-grid"></div>
+      </div>
+      <div id="summary-options-headlines">
+        <div class="summary-block-title">Options Stance &amp; Headlines</div>
+        <div id="summary-options-lines" class="summary-headlines" style="margin-bottom:0.5rem;">Loading options stance…</div>
+        <div class="summary-block-title" style="margin-top:0.4rem;">Latest Headlines</div>
+        <div id="summary-headlines" class="summary-headlines">Waiting for news feed…</div>
+      </div>
+    </section>
+
+    <!-- Middle: 2×2 arms + right RSS sidebar -->
+    <div class="main-layout">
+      <div class="arms-grid">
+        <section class="card arm-card" id="arm-criticality">
+          <div class="arm-title-row">
+            <div class="arm-title">Criticality C(t)</div>
+            <span id="arm-C-pill"></span>
+          </div>
+          <div id="arm-C-body"></div>
+        </section>
+
+        <section class="card arm-card" id="arm-shocks">
+          <div class="arm-title-row">
+            <div class="arm-title">Shocks S(t)</div>
+            <span id="arm-S-pill"></span>
+          </div>
+          <div id="arm-S-body"></div>
+        </section>
+
+        <section class="card arm-card" id="arm-contagion">
+          <div class="arm-title-row">
+            <div class="arm-title">Contagion K(t)</div>
+            <span id="arm-K-pill"></span>
+          </div>
+          <div id="arm-K-body"></div>
+        </section>
+
+        <section class="card arm-card" id="arm-direction">
+          <div class="arm-title-row">
+            <div class="arm-title">Direction D(t)</div>
+            <span id="arm-D-pill"></span>
+          </div>
+          <div id="arm-D-body"></div>
+        </section>
+      </div>
+
+      <aside class="card sidebar-card" id="rss-card">
+        <h2>Market Headlines (India)</h2>
+        <div class="metric-note">
+          Feeds: Yahoo Finance India, ZeeBiz, Financial Express, BL, CNBC TV18, Mint.
+        </div>
+        <ul class="rss-list" id="rss-list">
+          <li class="rss-item"><div class="rss-title">Loading headlines…</div></li>
+        </ul>
+      </aside>
+    </div>
+
+    <footer>
+      <div>Backend: PLT_Critical · PLT_Shocks · PLT_Contagion · PLT_Direction · PLT_Levels · PLT_Nifty_OptionTriggers.</div>
+      <div>Static GitHub Pages dashboard · For research use only · Not trading advice.</div>
+    </footer>
+  </div>
+
+  <script>
+    // ----- Utilities -----
+    function esc(str) {
+      return String(str ?? "").replace(/[&<>"]/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"
+      }[c]));
+    }
+
+    function badge(category, neutralDefault=false) {
+      if (!category && neutralDefault) category = "Neutral";
+      if (!category) return '<span class="pill NA">N/A</span>';
+      const allowed = ["Low","Moderate","Elevated","Critical","Neutral"];
+      const cls = allowed.includes(category) ? category : "NA";
+      return `<span class="pill ${cls}">${esc(category)}</span>`;
+    }
+
+    function fmtNum(v, digits=2) {
+      if (v === null || v === undefined || Number.isNaN(v)) return "—";
+      const n = Number(v);
+      if (!Number.isFinite(n)) return "—";
+      return n.toFixed(digits);
+    }
+
+    // ----- Snapshot rendering -----
+
+    function extractInputs(regimeState) {
+      const inputs = regimeState.inputs || regimeState.factors || {};
+      const normalize = obj => {
+        if (!obj) return { value: null, category: "N/A", explanation: "" };
+        const value = obj.value ?? obj.score ?? obj.C ?? obj.S ?? obj.K ?? obj.D ?? null;
+        const category = obj.category || obj.bucket || obj.label || null;
+        const explanation = obj.explanation || obj.note || obj.summary || "";
+        return { value, category, explanation };
+      };
+      return {
+        C: normalize(inputs.C || inputs.criticality),
+        S: normalize(inputs.S || inputs.shocks),
+        K: normalize(inputs.K || inputs.contagion),
+        D: normalize(inputs.D || inputs.direction)
+      };
+    }
+
+    function renderSummary(snapshot) {
+      const regimeState = snapshot.regime_state || {};
+      const optionsState = snapshot.options_state || {};
+      const levels = optionsState.spot_levels || {};
+      const longPlan = optionsState.long_plan || {};
+      const shortPlan = optionsState.short_plan || {};
+      const opt = optionsState.options || {};
+      const inputs = extractInputs(regimeState);
+
+      // Regime block
+      const regime = regimeState.regime || {};
+      const regimeName = regime.name || regime.label || regime.regime || "Unknown regime";
+      const regimeSummary = regime.summary || regime.description || "";
+
+      document.getElementById("summary-regime-name-text").textContent = regimeName;
+      document.getElementById("summary-regime-badge").innerHTML = badge(inputs.C.category || "N/A");
+
+      const subLines = [];
+      if (regimeSummary) subLines.push(regimeSummary);
+      const intraday = regime.intraday_playbook || regime.intraday || {};
+      if (intraday.mode) subLines.push("Mode: " + intraday.mode);
+      if (intraday.directional_bias) subLines.push("Bias: " + intraday.directional_bias);
+      document.getElementById("summary-regime-sub").textContent =
+        subLines.length ? subLines.join(" · ") : "Regime details not available.";
+
+      const rGrid = document.getElementById("summary-regime-grid");
+      rGrid.innerHTML = `
+        <div class="summary-label">C(t) Criticality</div>
+        <div class="summary-value">${fmtNum(inputs.C.value)} ${badge(inputs.C.category)}</div>
+        <div class="summary-label">S(t) Shocks</div>
+        <div class="summary-value">${fmtNum(inputs.S.value)} ${badge(inputs.S.category)}</div>
+        <div class="summary-label">K(t) Contagion</div>
+        <div class="summary-value">${fmtNum(inputs.K.value)} ${badge(inputs.K.category)}</div>
+        <div class="summary-label">D(t) Direction</div>
+        <div class="summary-value">${fmtNum(inputs.D.value, 2)} ${badge(inputs.D.category || "Neutral", true)}</div>
+      `;
+
+      // Triggers / levels block
+      const tGrid = document.getElementById("summary-triggers-grid");
+      if (Object.keys(levels).length) {
+        tGrid.innerHTML = `
+          <div class="summary-label">Close</div>
+          <div class="summary-value">${fmtNum(levels.close)}</div>
+          <div class="summary-label">20d High / Low</div>
+          <div class="summary-value">${fmtNum(levels.high_20d)} / ${fmtNum(levels.low_20d)}</div>
+          <div class="summary-label">ATR(14)</div>
+          <div class="summary-value">${fmtNum(levels.atr_14)}</div>
+          <div class="summary-label">Long breakout</div>
+          <div class="summary-value">${fmtNum(longPlan.entry_spot)} / ${fmtNum(longPlan.stop_spot)} / ${fmtNum(longPlan.target1_spot)}+</div>
+          <div class="summary-label">Short breakdown</div>
+          <div class="summary-value">${fmtNum(shortPlan.entry_spot)} / ${fmtNum(shortPlan.stop_spot)} / ${fmtNum(shortPlan.target1_spot)}+</div>
+        `;
+      } else {
+        tGrid.innerHTML = `<div class="summary-label">Levels</div><div class="summary-value">No data.</div>`;
+      }
+
+      // Options stance block
+      const optLines = [];
+      const optionsPlaybook = (regime.options_playbook || regime.options || {});
+      if (optionsPlaybook.allow_long_gamma !== undefined)
+        optLines.push("Long gamma: " + (optionsPlaybook.allow_long_gamma ? "Yes" : "No"));
+      if (optionsPlaybook.allow_short_gamma_intraday !== undefined)
+        optLines.push("Short gamma (day): " + (optionsPlaybook.allow_short_gamma_intraday ? "Yes" : "No"));
+      if (optionsPlaybook.allow_short_gamma_overnight !== undefined)
+        optLines.push("Short gamma (overnight): " + (optionsPlaybook.allow_short_gamma_overnight ? "Yes" : "No"));
+
+      const ce = opt.long_up_call || null;
+      const pe = opt.long_down_put || null;
+      if (ce) {
+        optLines.push(`Bullish: ${fmtNum(ce.strike,0)} CE, LTP ${fmtNum(ce.last_price)} (OI ${ce.open_interest?.toLocaleString?.() || ce.open_interest})`);
+      }
+      if (pe) {
+        optLines.push(`Bearish: ${fmtNum(pe.strike,0)} PE, LTP ${fmtNum(pe.last_price)} (OI ${pe.open_interest?.toLocaleString?.() || pe.open_interest})`);
+      }
+
+      document.getElementById("summary-options-lines").innerHTML =
+        optLines.length ? optLines.map(esc).join("<br>") : "No options stance / candidates available.";
+    }
+
+    function renderArms(snapshot) {
+      const regimeState = snapshot.regime_state || {};
+      const inputs = extractInputs(regimeState);
+
+      function fillArm(idPrefix, label, obj, neutralDefault=false) {
+        const pillId = "arm-" + idPrefix + "-pill";
+        const bodyId = "arm-" + idPrefix + "-body";
+        document.getElementById(pillId).innerHTML = badge(obj.category || (neutralDefault ? "Neutral" : "N/A"), neutralDefault);
+
+        const valStr = fmtNum(obj.value, label === "D" ? 2 : 2);
+        const expl = obj.explanation || "";
+        const html = `
+          <div class="metric-row">
+            <span class="metric-label">Score</span>
+            <span class="metric-value">${valStr}</span>
+          </div>
+          <div class="metric-note">${esc(expl || "No explanation available.")}</div>
+        `;
+        document.getElementById(bodyId).innerHTML = html;
+      }
+
+      fillArm("C", "C", inputs.C);
+      fillArm("S", "S", inputs.S);
+      fillArm("K", "K", inputs.K);
+      fillArm("D", "D", inputs.D, true);
+    }
+
+    function renderRSS(news) {
+      const listEl = document.getElementById("rss-list");
+      listEl.innerHTML = "";
+      const items = Array.isArray(news.items) ? news.items.slice() : [];
+
+      // Sort newest first if published available
+      items.sort((a,b) => {
+        const da = Date.parse(a.published || "") || 0;
+        const db = Date.parse(b.published || "") || 0;
+        return db - da;
+      });
+
+      const top = items.slice(0, 20);
+      if (!top.length) {
+        listEl.innerHTML = '<li class="rss-item"><div class="rss-title">No headlines available.</div></li>';
+        return;
+      }
+
+      top.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "rss-item";
+        const source = item.source || "";
+        const published = item.published ? new Date(item.published).toLocaleString() : "";
+        li.innerHTML = `
+          <div class="rss-title">
+            <a href="${esc(item.link || "#")}" target="_blank" rel="noopener noreferrer">${esc(item.title || "")}</a>
+          </div>
+          <div class="rss-meta">${esc(source)}${published ? " · " + esc(published) : ""}</div>
+        `;
+        listEl.appendChild(li);
+      });
+
+      // Also push 2–3 headlines into top summary
+      const summaryEl = document.getElementById("summary-headlines");
+      const summaryItems = top.slice(0, 3).map(i => {
+        const t = esc(i.title || "");
+        const s = esc(i.source || "");
+        const href = esc(i.link || "#");
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer">${t}</a><span class="summary-label"> · ${s}</span>`;
+      });
+      summaryEl.innerHTML = summaryItems.join("<br>");
+    }
+
+    async function loadSnapshot() {
+      try {
+        const res = await fetch("data/nifty_snapshot.json?_=" + Date.now());
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const snap = await res.json();
+        document.getElementById("last-updated").textContent =
+          "Snapshot generated at: " + (snap.generated_at || "unknown");
+
+        renderSummary(snap);
+        renderArms(snap);
+      } catch (err) {
+        console.error(err);
+        document.getElementById("last-updated").textContent =
+          "Failed to load snapshot. Check JSON / console.";
+      }
+    }
+
+    async function loadNews() {
+      try {
+        const res = await fetch("data/news.json?_=" + Date.now());
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const news = await res.json();
+        renderRSS(news);
+      } catch (err) {
+        console.error(err);
+        document.getElementById("rss-list").innerHTML =
+          '<li class="rss-item"><div class="rss-title">No news.json found. Add docs/data/news.json or wire a GitHub Action to fetch RSS.</div></li>';
+        document.getElementById("summary-headlines").textContent =
+          "Headlines not available.";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadSnapshot();
+      loadNews();
+    });
+  </script>
+</body>
+</html>
