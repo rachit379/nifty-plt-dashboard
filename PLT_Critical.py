@@ -62,6 +62,8 @@ from typing import Dict, Any, Tuple
 import numpy as np
 import pandas as pd
 import yfinance as yf
+import requests
+import time
 
 # Bharat-sm-data imports
 from Technical.NSE import NSE as TechNSE
@@ -70,6 +72,87 @@ from Derivatives.NSE import NSE as DerivNSE
 # -----------------------------------------------------------------------------
 # 1) NIFTY history via yfinance (^NSEI) and realized volatility
 # -----------------------------------------------------------------------------
+# ------------------------------------------------------------------
+# CI-SAFE OPTION CHAIN FETCH (direct NSE API)
+# ------------------------------------------------------------------
+
+import requests
+import pandas as pd
+import time
+
+def fetch_option_chain_direct(symbol="NIFTY", max_retries=3, sleep_sec=1.0):
+    """
+    Fetch option chain directly from NSE's public API.
+    Works on GitHub Actions without needing NSE cookies or session reuse.
+    Returns: (nearest_expiry: str, df: pd.DataFrame)
+    """
+
+    url = f"https://www.nseindia.com/api/option-chain-indices?symbol={symbol}"
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/121.0.0.0 Safari/537.36"
+        ),
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.nseindia.com/option-chain",
+    }
+
+    session = requests.Session()
+
+    # First GET to capture cookies
+    for _ in range(max_retries):
+        try:
+            session.get("https://www.nseindia.com", headers=headers, timeout=5)
+            break
+        except Exception:
+            time.sleep(sleep_sec)
+
+    # Real request
+    for _ in range(max_retries):
+        try:
+            r = session.get(url, headers=headers, timeout=5)
+            data = r.json()
+            break
+        except Exception:
+            data = None
+            time.sleep(sleep_sec)
+
+    if not data:
+        return None, pd.DataFrame()
+
+    try:
+        expiry_list = data["records"]["expiryDates"]
+        nearest_expiry = expiry_list[0]
+        records = data["records"]["data"]
+
+        filtered = [row for row in records if row["expiryDate"] == nearest_expiry]
+
+        # Convert to DataFrame
+        rows = []
+        for row in filtered:
+            strike = float(row["strikePrice"])
+            ce = row.get("CE", {}) or {}
+            pe = row.get("PE", {}) or {}
+
+            rows.append({
+                "strikePrice": strike,
+                "CE_openInterest": ce.get("openInterest"),
+                "CE_lastPrice": ce.get("lastPrice"),
+                "CE_impliedVol": ce.get("impliedVolatility"),
+                "PE_openInterest": pe.get("openInterest"),
+                "PE_lastPrice": pe.get("lastPrice"),
+                "PE_impliedVol": pe.get("impliedVolatility"),
+            })
+
+        df = pd.DataFrame(rows).sort_values("strikePrice")
+
+        return nearest_expiry, df
+
+    except Exception:
+        return None, pd.DataFrame()
+
 
 def get_nifty_history_yf(
     years: int = 3,
@@ -272,12 +355,53 @@ def fetch_nifty_derivatives_state(
         expiry_dt = None
 
     if expiry_dt is not None:
-        option_chain_df = _safe_df(
-            deriv.get_option_chain,
-            ticker=index_ticker,
-            expiry=expiry_dt,
-            is_index=True,
-        )
+        # Try direct NSE first (CI-safe)
+        expiry_direct, oc_direct = fetch_option_chain_direct(index_ticker)
+
+        if oc_direct is not None and isinstance(oc_direct, pd.DataFrame) and not oc_direct.empty:
+            option_chain_df = oc_direct
+            pcr_oi = None  # You will compute PCR manually from oc_direct (below)
+            pcr_volume = None
+            ce_oi = oc_direct["CE_openInterest"].fillna(0).sum()
+            pe_oi = oc_direct["PE_openInterest"].fillna(0).sum()
+
+            if ce_oi > 0:
+                pcr_oi = pe_oi / ce_oi
+            else:
+                pcr_oi = None
+        else:
+            # Fallback: Bharat-sm-data (works locally)
+            try:
+                expiry_raw = deriv.get_options_expiry(ticker=index_ticker, is_index=True)
+                expiry_dt = _normalize_expiry(expiry_raw)
+            except Exception:
+                expiry_dt = None
+
+            if expiry_dt is not None:
+                option_chain_df = _safe_df(
+                    deriv.get_option_chain,
+                    ticker=index_ticker,
+                    expiry=expiry_dt,
+                    is_index=True,
+                )
+                pcr_oi = _safe_scalar(
+                    deriv.get_pcr,
+                    ticker=index_ticker,
+                    is_index=True,
+                    on_field="OI",
+                    expiry=expiry_dt,
+                )
+                pcr_volume = _safe_scalar(
+                    deriv.get_pcr,
+                    ticker=index_ticker,
+                    is_index=True,
+                    on_field="Volume",
+                    expiry=expiry_dt,
+                )
+            else:
+                option_chain_df = pd.DataFrame()
+                pcr_oi = None
+                pcr_volume = None
 
         pcr_oi = _safe_scalar(
             deriv.get_pcr,

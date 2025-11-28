@@ -26,7 +26,21 @@ from PLT_Critical import (
 from PLT_Shocks import get_nifty_shock_state
 from PLT_Contagion import get_nifty_contagion_state
 from PLT_Direction import get_nifty_direction_state
+import math
 
+def _clean_numbers(obj):
+    """
+    Recursively replace NaN/Inf with None so the JSON is strict and
+    parseable in the browser.
+    """
+    if isinstance(obj, dict):
+        return {k: _clean_numbers(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_clean_numbers(v) for v in obj]
+    if isinstance(obj, float):
+        if math.isnan(obj) or math.isinf(obj):
+            return None
+    return obj
 
 # ---------------------------------------------------------------------
 # Helpers
@@ -264,17 +278,23 @@ def build_snapshot() -> Dict[str, Any]:
         "options_state": options_state,
     }
 
-
+import json
+from pathlib import Path
 def main():
     snap = build_snapshot()
+    snap = _clean_numbers(snap)  # <<—— sanitize NaN / Inf
+
+    # 👉 OPTION A: keep writing to docs/data/nifty_snapshot.json
     out_dir = Path("docs") / "data"
+
+    # 👉 OPTION B (if your frontend fetches ./nifty_snapshot.json):
+    # out_dir = Path("docs")
+
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "nifty_snapshot.json"
+
     out_path.write_text(
-        json.dumps(snap, indent=2, default=_json_default), encoding="utf-8"
+        json.dumps(snap, indent=2, default=_json_default),
+        encoding="utf-8",
     )
     print(f"Wrote snapshot -> {out_path}")
-
-
-if __name__ == "__main__":
-    main()
