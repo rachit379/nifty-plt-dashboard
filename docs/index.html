@@ -289,6 +289,41 @@
       line-height: 1.4;
     }
 
+    .regime-submetrics {
+      margin-top: 0.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      font-size: 0.73rem;
+    }
+
+    .regime-sub-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      background: rgba(15, 23, 42, 0.96);
+      color: #e5e7eb;
+    }
+
+    .regime-sub-label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.68rem;
+      color: rgba(209, 213, 219, 0.9);
+    }
+
+    .regime-sub-value {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .regime-sub-cat {
+      font-size: 0.68rem;
+      opacity: 0.9;
+    }
+
     /* DEFINITIONS TOGGLE + PANEL */
 
     .defs-row {
@@ -300,7 +335,7 @@
     .defs-toggle {
       border: none;
       background: transparent;
-      color: rgba(148, 163, 184, 0.7);
+      color: rgba(249, 250, 251, 0.9); /* brighter text */
       font-size: 0.72rem;
       display: inline-flex;
       align-items: center;
@@ -310,8 +345,8 @@
     }
 
     .defs-toggle span.icon {
-      font-size: 0.8rem;
-      opacity: 0.8;
+      font-size: 0.85rem;
+      opacity: 0.85;
     }
 
     .defs-toggle span.label {
@@ -320,7 +355,7 @@
     }
 
     .defs-toggle:hover {
-      color: rgba(209, 213, 219, 0.95);
+      color: #ffffff;
     }
 
     .defs-panel {
@@ -476,19 +511,18 @@
     .metric-table th,
     .metric-table td {
       padding: 0.35rem 0.4rem;
-      text-align: left;
       vertical-align: middle;
     }
 
     .metric-table th {
+      text-align: left;
       font-weight: 500;
       color: var(--fg-muted);
       font-size: 0.78rem;
-      width: 58%;
+      width: 42%;
     }
 
     .metric-table td {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       font-size: 0.78rem;
       color: #e5e7eb;
     }
@@ -499,6 +533,17 @@
 
     .metric-table tr:nth-child(even) {
       background: rgba(15, 23, 42, 0.7);
+    }
+
+    .metric-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .metric-value {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      min-width: 3.1rem;
     }
 
     .metric-badge {
@@ -521,6 +566,22 @@
       height: 0.45rem;
       border-radius: 50%;
       background: currentColor;
+    }
+
+    .metric-bar {
+      flex: 1;
+      height: 0.3rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      overflow: hidden;
+    }
+
+    .metric-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(to right, var(--safe), var(--warn), var(--danger));
+      transition: width 180ms ease-out;
     }
 
     .metric-note {
@@ -834,6 +895,9 @@
     <div class="regime-explainer" id="regime-explainer">
       Loading current fragility narrative…
     </div>
+    <div class="regime-submetrics" id="regime-submetrics">
+      <!-- filled by JS when you click chips -->
+    </div>
 
     <!-- DEFINITIONS TOGGLE + PANEL -->
     <div class="defs-row">
@@ -950,8 +1014,13 @@
                   </span>
                 </th>
                 <td>
-                  <span id="metric-dryness-value">—</span>
-                  <span id="metric-dryness-badge"></span>
+                  <div class="metric-cell">
+                    <span class="metric-value" id="metric-dryness-value">—</span>
+                    <span id="metric-dryness-badge"></span>
+                    <div class="metric-bar">
+                      <div id="metric-dryness-bar" class="metric-bar-fill"></div>
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -963,8 +1032,13 @@
                   </span>
                 </th>
                 <td>
-                  <span id="metric-ivrv-value">—</span>
-                  <span id="metric-ivrv-badge"></span>
+                  <div class="metric-cell">
+                    <span class="metric-value" id="metric-ivrv-value">—</span>
+                    <span id="metric-ivrv-badge"></span>
+                    <div class="metric-bar">
+                      <div id="metric-ivrv-bar" class="metric-bar-fill"></div>
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -976,8 +1050,13 @@
                   </span>
                 </th>
                 <td>
-                  <span id="metric-crowding-value">—</span>
-                  <span id="metric-crowding-badge"></span>
+                  <div class="metric-cell">
+                    <span class="metric-value" id="metric-crowding-value">—</span>
+                    <span id="metric-crowding-badge"></span>
+                    <div class="metric-bar">
+                      <div id="metric-crowding-bar" class="metric-bar-fill"></div>
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -989,8 +1068,13 @@
                   </span>
                 </th>
                 <td>
-                  <span id="metric-pcr-value">—</span>
-                  <span id="metric-pcr-badge"></span>
+                  <div class="metric-cell">
+                    <span class="metric-value" id="metric-pcr-value">—</span>
+                    <span id="metric-pcr-badge"></span>
+                    <div class="metric-bar">
+                      <div id="metric-pcr-bar" class="metric-bar-fill"></div>
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -1002,8 +1086,13 @@
                   </span>
                 </th>
                 <td>
-                  <span id="metric-shock-score">—</span>
-                  <span id="metric-shock-badge"></span>
+                  <div class="metric-cell">
+                    <span class="metric-value" id="metric-shock-score">—</span>
+                    <span id="metric-shock-badge"></span>
+                    <div class="metric-bar">
+                      <div id="metric-shock-bar" class="metric-bar-fill"></div>
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -1015,8 +1104,13 @@
                   </span>
                 </th>
                 <td>
-                  <span id="metric-contagion-score">—</span>
-                  <span id="metric-contagion-badge"></span>
+                  <div class="metric-cell">
+                    <span class="metric-value" id="metric-contagion-score">—</span>
+                    <span id="metric-contagion-badge"></span>
+                    <div class="metric-bar">
+                      <div id="metric-contagion-bar" class="metric-bar-fill"></div>
+                    </div>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -1123,7 +1217,7 @@
 
   <script>
     const SNAPSHOT_URL = "data/nifty_snapshot.json";
-    const NEWS_URL =  "data/news.json";
+    const NEWS_URL = "data/news.json";
 
     function setText(id, value) {
       const el = document.getElementById(id);
@@ -1147,6 +1241,52 @@
       return "neutral";
     }
 
+    let globalRegimePieces = null;
+
+    function updateSubmetricPills(component) {
+      const container = document.getElementById("regime-submetrics");
+      if (!container || !globalRegimePieces) return;
+      container.innerHTML = "";
+
+      const pills = [];
+      const { critCats, shocksCats, contagionCats, directionCats } = globalRegimePieces;
+
+      const add = (obj, label) => {
+        if (!obj) return;
+        pills.push({
+          label,
+          value: obj.value,
+          cat: obj.category
+        });
+      };
+
+      if (component === "C") {
+        add(critCats.dryness_score, "Dryness");
+        add(critCats.ivrv_score, "IV vs RV");
+        add(critCats.crowding_score, "Crowding");
+        add(critCats.pcr_score, "PCR");
+      } else if (component === "S") {
+        add(shocksCats.S, "Shock score");
+      } else if (component === "K") {
+        add(contagionCats.K, "Contagion score");
+      } else if (component === "D") {
+        add(directionCats.D, "Direction");
+      }
+
+      if (!pills.length) return;
+
+      pills.forEach((p) => {
+        const pill = document.createElement("div");
+        pill.className = "regime-sub-pill";
+        pill.innerHTML = `
+          <span class="regime-sub-label">${p.label}</span>
+          <span class="regime-sub-value">${p.value != null ? p.value.toFixed(2) : "—"}</span>
+          <span class="regime-sub-cat">${p.cat || "—"}</span>
+        `;
+        container.appendChild(pill);
+      });
+    }
+
     // Apply snapshot JSON
     function applySnapshot(data) {
       const regime = data.regime_state || {};
@@ -1159,6 +1299,13 @@
       const longPlan = optionsState.long_plan || {};
       const shortPlan = optionsState.short_plan || {};
       const regimeMeta = regime.regime || {};
+
+      const critCats = crit.categories || {};
+      const shocksCats = shocks.categories || {};
+      const contagionCats = contagion.categories || {};
+      const directionCats = (direction && direction.categories) || {};
+
+      globalRegimePieces = { critCats, shocksCats, contagionCats, directionCats };
 
       // Top hero
       setText("regime-name", regimeMeta.name || "—");
@@ -1191,20 +1338,17 @@
       setText("atr-14", spot.atr_14 != null ? spot.atr_14.toFixed(1) : "—");
 
       // Criticality components
-      const critCats = crit.categories || {};
       const dryness = critCats.dryness_score || {};
       const ivrv = critCats.ivrv_score || {};
       const crowding = critCats.crowding_score || {};
       const pcr = critCats.pcr_score || {};
 
-      const shocksCats = shocks.categories || {};
       const S = shocksCats.S || {};
-      const contagionCats = contagion.categories || {};
       const K = contagionCats.K || {};
 
       // Regime chip categories
       const Cmain = critCats.C || {};
-      const Dmain = direction.categories?.D || {};
+      const Dmain = directionCats.D || {};
       setText("chip-cat-C", Cmain.category || "—");
       setText("chip-cat-S", S.category || "—");
       setText("chip-cat-K", K.category || "—");
@@ -1215,14 +1359,17 @@
       document.getElementById("chip-dot-K").className = "chip-dot " + categoryClass(K.category);
       document.getElementById("chip-dot-D").className = "chip-dot " + categoryClass(Dmain.category);
 
-      // Default explainer = criticality
+      // Default explainer = criticality + its submetrics
       document.getElementById("regime-explainer").textContent =
         Cmain.explanation || "System criticality explanation unavailable.";
+      updateSubmetricPills("C");
 
       // Summary tab metrics
       function setMetric(rowId, obj) {
         const valueEl = document.getElementById(rowId + "-value");
         const badgeEl = document.getElementById(rowId + "-badge");
+        const barEl = document.getElementById(rowId + "-bar");
+
         if (valueEl) {
           valueEl.textContent = obj.value != null ? obj.value.toFixed(2) : "—";
         }
@@ -1230,6 +1377,10 @@
           const cls = categoryClass(obj.category);
           badgeEl.className = "metric-badge " + cls;
           badgeEl.innerHTML = `<span class="metric-badge-dot"></span>${obj.category || "—"}`;
+        }
+        if (barEl) {
+          const v = typeof obj.value === "number" ? Math.max(0, Math.min(1, obj.value)) : null;
+          barEl.style.width = v != null ? (v * 100).toFixed(0) + "%" : "0%";
         }
       }
 
@@ -1248,6 +1399,9 @@
 
       const shockBadgeEl = document.getElementById("metric-shock-badge");
       const contBadgeEl = document.getElementById("metric-contagion-badge");
+      const shockBarEl = document.getElementById("metric-shock-bar");
+      const contBarEl = document.getElementById("metric-contagion-bar");
+
       if (shockBadgeEl) {
         shockBadgeEl.className = "metric-badge " + shockBadgeClass;
         shockBadgeEl.innerHTML = `<span class="metric-badge-dot"></span>${S.category || "—"}`;
@@ -1255,6 +1409,14 @@
       if (contBadgeEl) {
         contBadgeEl.className = "metric-badge " + contBadgeClass;
         contBadgeEl.innerHTML = `<span class="metric-badge-dot"></span>${K.category || "—"}`;
+      }
+      if (shockBarEl) {
+        const v = typeof shockScore === "number" ? Math.max(0, Math.min(1, shockScore)) : null;
+        shockBarEl.style.width = v != null ? (v * 100).toFixed(0) + "%" : "0%";
+      }
+      if (contBarEl) {
+        const v = typeof contScore === "number" ? Math.max(0, Math.min(1, contScore)) : null;
+        contBarEl.style.width = v != null ? (v * 100).toFixed(0) + "%" : "0%";
       }
 
       // Intraday tab
@@ -1323,7 +1485,7 @@
         optNotesDiv.appendChild(span);
       });
 
-      // Regime chip click -> explanation swap
+      // Regime chip click -> explanation + submetrics swap
       const inputs = regime.inputs || {};
       const inputMap = {
         C: inputs.C || {},
@@ -1340,6 +1502,7 @@
           const info = inputMap[key] || {};
           document.getElementById("regime-explainer").textContent =
             info.explanation || "No explanation available for this component.";
+          updateSubmetricPills(key);
         });
       });
     }
