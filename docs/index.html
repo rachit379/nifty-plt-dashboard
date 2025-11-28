@@ -305,6 +305,102 @@
       .meta { text-align: left; }
       .arms-grid { grid-template-columns: minmax(0, 1fr); }
     }
+
+/* ==== VISUAL ENHANCEMENTS ==== */
+
+/* Softer glassmorphism feel on all cards */
+.card {
+  position: relative;
+  backdrop-filter: blur(14px);
+  background: radial-gradient(circle at top left, #111827 0, #020617 70%);
+  border-radius: 0.9rem;
+  border: 1px solid rgba(31, 41, 55, 0.85);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    border-color 0.15s ease-out,
+    background 0.2s ease-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.85);
+  border-color: rgba(148, 163, 184, 0.7);
+}
+
+/* Top summary feels a bit more “panel-like” */
+.summary-card {
+  margin-bottom: 1.2rem;
+  padding: 1rem 1.1rem 1.3rem;
+}
+
+/* Compact the arms and align text nicely */
+.arm-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+}
+
+.arm-title-row {
+  margin-bottom: 0.35rem;
+}
+
+/* Category-based colour accents for summary + 4 arms */
+#summary-card[data-category="Low"],
+.arm-card[data-category="Low"] {
+  border-top: 2px solid var(--low);
+  box-shadow: 0 18px 50px rgba(22, 163, 74, 0.25);
+}
+
+#summary-card[data-category="Moderate"],
+.arm-card[data-category="Moderate"] {
+  border-top: 2px solid var(--moderate);
+  box-shadow: 0 18px 50px rgba(234, 179, 8, 0.25);
+}
+
+#summary-card[data-category="Elevated"],
+.arm-card[data-category="Elevated"] {
+  border-top: 2px solid var(--elevated);
+  box-shadow: 0 18px 50px rgba(251, 146, 60, 0.3);
+}
+
+#summary-card[data-category="Critical"],
+.arm-card[data-category="Critical"] {
+  border-top: 2px solid var(--critical);
+  box-shadow: 0 20px 65px rgba(239, 68, 68, 0.35);
+}
+
+/* If N/A, keep it neutral and subtle */
+#summary-card[data-category="N/A"],
+.arm-card[data-category="N/A"],
+#summary-card:not([data-category]),
+.arm-card:not([data-category]) {
+  border-top: 2px solid rgba(55, 65, 81, 0.9);
+}
+
+/* Make key numbers stand out slightly more in summary */
+#summary-triggers-grid .summary-value,
+#summary-regime-grid .summary-value {
+  font-size: 0.85rem;
+}
+
+#summary-triggers-grid .summary-value:nth-child(2),
+#summary-regime-grid .summary-value:nth-child(2) {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Sidebar: slightly tighter spacing */
+.sidebar-card {
+  padding-top: 0.9rem;
+}
+
+.rss-item {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.45rem;
+}
   </style>
 </head>
 <body>
@@ -446,6 +542,12 @@
       const shortPlan = optionsState.short_plan || {};
       const opt = optionsState.options || {};
       const inputs = extractInputs(regimeState);
+      // Color-code the top summary card using C(t) bucket
+	const summaryCard = document.getElementById("summary-card");
+	if (summaryCard) {
+  	summaryCard.setAttribute("data-category", inputs.C.category || "N/A");
+}
+
 
       // Regime block
       const regime = regimeState.regime || {};
@@ -518,31 +620,55 @@
     }
 
     function renderArms(snapshot) {
-      const regimeState = snapshot.regime_state || {};
-      const inputs = extractInputs(regimeState);
+  const regimeState = snapshot.regime_state || {};
+  const inputs = extractInputs(regimeState);
 
-      function fillArm(idPrefix, label, obj, neutralDefault=false) {
-        const pillId = "arm-" + idPrefix + "-pill";
-        const bodyId = "arm-" + idPrefix + "-body";
-        document.getElementById(pillId).innerHTML = badge(obj.category || (neutralDefault ? "Neutral" : "N/A"), neutralDefault);
+  const cardIdMap = {
+    C: "arm-criticality",
+    S: "arm-shocks",
+    K: "arm-contagion",
+    D: "arm-direction",
+  };
 
-        const valStr = fmtNum(obj.value, label === "D" ? 2 : 2);
-        const expl = obj.explanation || "";
-        const html = `
-          <div class="metric-row">
-            <span class="metric-label">Score</span>
-            <span class="metric-value">${valStr}</span>
-          </div>
-          <div class="metric-note">${esc(expl || "No explanation available.")}</div>
-        `;
-        document.getElementById(bodyId).innerHTML = html;
-      }
+  function fillArm(key, label, obj, neutralDefault = false) {
+    const pillId = "arm-" + key + "-pill";
+    const bodyId = "arm-" + key + "-body";
 
-      fillArm("C", "C", inputs.C);
-      fillArm("S", "S", inputs.S);
-      fillArm("K", "K", inputs.K);
-      fillArm("D", "D", inputs.D, true);
+    // Badge
+    document.getElementById(pillId).innerHTML = badge(
+      obj.category || (neutralDefault ? "Neutral" : "N/A"),
+      neutralDefault
+    );
+
+    // Body text
+    const valStr = fmtNum(obj.value, label === "D" ? 2 : 2);
+    const expl = obj.explanation || "";
+    const html = `
+      <div class="metric-row">
+        <span class="metric-label">Score</span>
+        <span class="metric-value">${valStr}</span>
+      </div>
+      <div class="metric-note">${esc(expl || "No explanation available.")}</div>
+    `;
+    document.getElementById(bodyId).innerHTML = html;
+
+    // NEW: set data-category for colour-coding the card
+    const cardId = cardIdMap[key];
+    const cardEl = cardId ? document.getElementById(cardId) : null;
+    if (cardEl) {
+      cardEl.setAttribute(
+        "data-category",
+        obj.category || (neutralDefault ? "Neutral" : "N/A")
+      );
     }
+  }
+
+  fillArm("C", "C", inputs.C);
+  fillArm("S", "S", inputs.S);
+  fillArm("K", "K", inputs.K);
+  fillArm("D", "D", inputs.D, true);
+}
+
 
     function renderRSS(news) {
       const listEl = document.getElementById("rss-list");
