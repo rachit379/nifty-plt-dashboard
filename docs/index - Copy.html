@@ -632,7 +632,8 @@
       color: var(--fg-muted);
     }
 
-    /* MAIN LAYOUT (legacy .main-grid styles left in case of reuse, but no longer used) */
+    /* MAIN LAYOUT */
+
     .main-grid {
       margin-top: 1.4rem;
       display: grid;
@@ -1121,7 +1122,173 @@
         <div class="brand-footer-row">
           <span id="regime-asof">As of —</span>
         </div>
-      
+      </section>
+
+      <div class="nifty-column">
+<section class="nifty-card">
+        <div class="nifty-header">
+          <div class="nifty-label">Nifty 50 Snapshot</div>
+          <div class="nifty-asof" id="spot-asof">Spot levels as of —</div>
+        </div>
+        <div class="nifty-main">
+          <div>
+            <div class="nifty-spot" id="nifty-spot">—</div>
+            <div class="nifty-change" id="nifty-change"></div>
+          </div>
+          <div class="nifty-range" id="nifty-range">Day range —</div>
+        </div>
+        <div class="nifty-mini-grid">
+          <div class="mini-stat">
+            <div class="mini-stat-label">20D Range</div>
+            <div class="mini-stat-value" id="range-20d">—</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">52W Range</div>
+            <div class="mini-stat-value" id="range-52w">—</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">ATR(14)</div>
+            <div class="mini-stat-value" id="atr-14">—</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="events-card">
+        <div class="events-header">
+          <div class="events-title">Upcoming Events</div>
+          <div class="events-subtitle">Key macro releases · India / Global</div>
+        </div>
+        <div class="events-filter-row">
+          <button class="events-filter-button active" data-scope="INR">India</button>
+          <button class="events-filter-button" data-scope="USD">Global</button>
+        </div>
+        <div class="events-list" id="events-list">
+          <div class="events-empty">Loading events…</div>
+        </div>
+      </section>
+
+      </div>
+    </div>
+
+    <!-- REGIME CHIP ROW -->
+    <div class="chip-row">
+      <button class="regime-chip active" data-regime="C">
+        <span class="chip-dot elevated" id="chip-dot-C"></span>
+        <span class="regime-chip-label">Criticality</span>
+        <span class="regime-chip-category" id="chip-cat-C">—</span>
+      </button>
+      <button class="regime-chip" data-regime="S">
+        <span class="chip-dot low" id="chip-dot-S"></span>
+        <span class="regime-chip-label">Shocks</span>
+        <span class="regime-chip-category" id="chip-cat-S">—</span>
+      </button>
+      <button class="regime-chip" data-regime="K">
+        <span class="chip-dot moderate" id="chip-dot-K"></span>
+        <span class="regime-chip-label">Contagion</span>
+        <span class="regime-chip-category" id="chip-cat-K">—</span>
+      </button>
+      <button class="regime-chip" data-regime="D">
+        <span class="chip-dot neutral" id="chip-dot-D"></span>
+        <span class="regime-chip-label">Direction</span>
+        <span class="regime-chip-category" id="chip-cat-D">—</span>
+      </button>
+    </div>
+    <div class="regime-explainer" id="regime-explainer">
+      Loading current fragility narrative…
+    </div>
+    <div class="regime-submetrics" id="regime-submetrics"></div>
+    <div class="regime-sub-defs" id="regime-sub-defs"></div>
+
+    <!-- DEFINITIONS TOGGLE + PANEL -->
+    <div class="defs-row">
+      <button class="defs-toggle" id="defs-toggle">
+        <span class="icon">🛈</span>
+        <span class="label">Definitions</span>
+      </button>
+    </div>
+    <section class="defs-panel" id="defs-panel">
+      <div class="defs-header">
+        <div class="defs-header-title">Key Terms</div>
+        <div class="defs-header-note">Quick glossary for PLT concepts · Hover over ⓘ icons for context in-place.</div>
+      </div>
+      <div class="defs-grid">
+        <div>
+          <div class="defs-item-title">Dryness</div>
+          <div class="defs-item-body">
+            How “quiet” the tape is relative to normal — realised volatility and intraday ranges vs typical levels.
+            High dryness = calm price action where risk quietly builds because positioning and options can be crowded.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">IV vs RV</div>
+          <div class="defs-item-body">
+            Implied volatility from options (what traders are pricing) vs realised volatility (what actually happened).
+            Elevated or critical IV vs RV = options are rich vs realised moves, often reflecting hedging demand / fear premia.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Crowding / Gamma</div>
+          <div class="defs-item-body">
+            How concentrated open interest and gamma exposure are around current spot. Critical crowding = heavy dealer
+            gamma hedging nearby; intraday flows can pin or accelerate moves when spot moves through loaded strikes.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Put–Call Positioning (PCR)</div>
+          <div class="defs-item-body">
+            Put–call open interest balance and where risk is parked. One-sided PCR (too many puts or calls) means
+            unwinds and dealer hedging can add fuel to moves when the market surprises the crowd.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Shock Score (S)</div>
+          <div class="defs-item-body">
+            How “jumpy” the tape has been: gaps, intraday range, and volume vs history. Elevated or critical = markets
+            are already in a shocky state, making follow-through and overshoots more likely.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Contagion Score (K)</div>
+          <div class="defs-item-body">
+            Breadth, co-movement, and correlation across sectors / assets. High contagion = moves in one pocket of the
+            market quickly spill into others — good for trend trades, bad for complacent carry.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Regime C · Criticality</div>
+          <div class="defs-item-body">
+            System-wide fragility from dryness, IV vs RV, crowding, and PCR rolled up into a single state.
+            Critical = small shocks can create large, non-linear moves; low = shocks are more easily absorbed.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Regime S / K / D</div>
+          <div class="defs-item-body">
+            <b>S</b> captures shockiness (gap/range/volume), <b>K</b> captures contagion / breadth, and <b>D</b> captures directional bias:
+            trend vs mean reversion. Together with C, they summarise how jumpy, connected, and directional NIFTY feels.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Long vs Short Gamma</div>
+          <div class="defs-item-body">
+            Long gamma = buying optionality (e.g., long options) and benefiting from realised moves.
+            Short gamma = selling optionality and betting moves stay contained. In fragile regimes, short gamma is
+            higher risk, especially overnight.
+          </div>
+        </div>
+        <div>
+          <div class="defs-item-title">Breakout / Breakdown Plans</div>
+          <div class="defs-item-body">
+            Systematic levels for trend trades (long breakout / short breakdown) using spot, stops, and targets.
+            R multiples show reward vs risk if the plan plays out to T1 or T2, so you know if the setup is worth taking.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+      <!-- LEFT: TABS -->
       <section class="panel">
         <div class="panel-header">
           <h2>State &amp; Playbook</h2>
@@ -1319,51 +1486,7 @@
         </div>
       </section>
 
-      </section>
-
-      <div class="nifty-column">
-<section class="nifty-card">
-        <div class="nifty-header">
-          <div class="nifty-label">Nifty 50 Snapshot</div>
-          <div class="nifty-asof" id="spot-asof">Spot levels as of —</div>
-        </div>
-        <div class="nifty-main">
-          <div>
-            <div class="nifty-spot" id="nifty-spot">—</div>
-            <div class="nifty-change" id="nifty-change"></div>
-          </div>
-          <div class="nifty-range" id="nifty-range">Day range —</div>
-        </div>
-        <div class="nifty-mini-grid">
-          <div class="mini-stat">
-            <div class="mini-stat-label">20D Range</div>
-            <div class="mini-stat-value" id="range-20d">—</div>
-          </div>
-          <div class="mini-stat">
-            <div class="mini-stat-label">52W Range</div>
-            <div class="mini-stat-value" id="range-52w">—</div>
-          </div>
-          <div class="mini-stat">
-            <div class="mini-stat-label">ATR(14)</div>
-            <div class="mini-stat-value" id="atr-14">—</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="events-card">
-        <div class="events-header">
-          <div class="events-title">Upcoming Events</div>
-          <div class="events-subtitle">Key macro releases · India / Global</div>
-        </div>
-        <div class="events-filter-row">
-          <button class="events-filter-button active" data-scope="INR">India</button>
-          <button class="events-filter-button" data-scope="USD">Global</button>
-        </div>
-        <div class="events-list" id="events-list">
-          <div class="events-empty">Loading events…</div>
-        </div>
-      </section>
-
+      <!-- RIGHT: NEWS -->
       <section class="panel">
         <div class="panel-header">
           <h2>Market &amp; NIFTY News</h2>
@@ -1387,124 +1510,7 @@
           Indicative only; not advice. Always cross-check with full data and your own judgement.
         </div>
       </section>
-
-      </div>
     </div>
-
-    <!-- REGIME CHIP ROW -->
-    <div class="chip-row">
-      <button class="regime-chip active" data-regime="C">
-        <span class="chip-dot elevated" id="chip-dot-C"></span>
-        <span class="regime-chip-category" id="chip-cat-C">—</span>
-      </button>
-      <button class="regime-chip" data-regime="S">
-        <span class="chip-dot low" id="chip-dot-S"></span>
-        <span class="regime-chip-label">Shocks</span>
-        <span class="regime-chip-category" id="chip-cat-S">—</span>
-      </button>
-      <button class="regime-chip" data-regime="K">
-        <span class="chip-dot moderate" id="chip-dot-K"></span>
-        <span class="regime-chip-label">Contagion</span>
-        <span class="regime-chip-category" id="chip-cat-K">—</span>
-      </button>
-      <button class="regime-chip" data-regime="D">
-        <span class="chip-dot neutral" id="chip-dot-D"></span>
-        <span class="regime-chip-label">Direction</span>
-        <span class="regime-chip-category" id="chip-cat-D">—</span>
-      </button>
-    </div>
-    <div class="regime-explainer" id="regime-explainer">
-      Loading current fragility narrative…
-    </div>
-    <div class="regime-submetrics" id="regime-submetrics"></div>
-    <div class="regime-sub-defs" id="regime-sub-defs"></div>
-
-    <!-- DEFINITIONS TOGGLE + PANEL -->
-    <div class="defs-row">
-      <button class="defs-toggle" id="defs-toggle">
-        <span class="icon">🛈</span>
-        <span class="label">Definitions</span>
-      </button>
-    </div>
-    <section class="defs-panel" id="defs-panel">
-      <div class="defs-header">
-        <div class="defs-header-title">Key Terms</div>
-        <div class="defs-header-note">Quick glossary for PLT concepts · Hover over ⓘ icons for context in-place.</div>
-      </div>
-      <div class="defs-grid">
-        <div>
-          <div class="defs-item-title">Dryness</div>
-          <div class="defs-item-body">
-            How “quiet” the tape is relative to normal — realised volatility and intraday ranges vs typical levels.
-            High dryness = calm price action where risk quietly builds because positioning and options can be crowded.
-          </div>
-        </div>
-        <div>
-          <div class="defs-item-title">IV vs RV</div>
-          <div class="defs-item-body">
-            Implied volatility from options (what traders are pricing) vs realised volatility (what actually happened).
-            Elevated or critical IV vs RV = options are rich vs realised moves, often reflecting hedging demand / fear premia.
-          </div>
-        </div>
-        <div>
-          <div class="defs-item-title">Crowding / Gamma</div>
-          <div class="defs-item-body">
-            How concentrated open interest and gamma exposure are around current spot. Critical crowding = heavy dealer
-            gamma hedging nearby; intraday flows can pin or accelerate moves when spot moves through loaded strikes.
-          </div>
-        </div>
-        <div>
-          <div class="defs-item-title">Put–Call Positioning (PCR)</div>
-          <div class="defs-item-body">
-            Put–call open interest balance and where risk is parked. One-sided PCR (too many puts or calls) means
-            unwinds and dealer hedging can add fuel to moves when the market surprises the crowd.
-          </div>
-        </div>
-        <div>
-          <div class="defs-item-title">Shock Score (S)</div>
-          <div class="defs-item-body">
-            How “jumpy” the tape has been: gaps, intraday range, and volume vs history. Elevated or critical = markets
-            are already in a shocky state, making follow-through and overshoots more likely.
-          </div>
-        </div>
-        <div>
-          <div class="defs-item-title">Contagion Score (K)</div>
-          <div class="defs-item-body">
-            Breadth, co-movement, and correlation across sectors / assets. High contagion = moves in one pocket of the
-            market quickly spill into others — good for trend trades, bad for complacent carry.
-          </div>
-        </div>
-        <div>
-          <div class="defs-item-title">Regime C · Criticality</div>
-          <div class="defs-item-body">
-            System-wide fragility from dryness, IV vs RV, crowding, and PCR rolled up into a single state.
-            Critical = small shocks can create large, non-linear moves; low = shocks are more easily absorbed.
-          </div>
-        </div>
-        <div>
-          <div class="defs-item-title">Regime S / K / D</div>
-          <div class="defs-item-body">
-            <b>S</b> captures shockiness (gap/range/volume), <b>K</b> captures contagion / breadth, and <b>D</b> captures directional bias:
-            trend vs mean reversion. Together with C, they summarise how jumpy, connected, and directional NIFTY feels.
-          </div>
-        </div>
-        <div>
-          <div class="defs-item-title">Long vs Short Gamma</div>
-          <div class="defs-item-body">
-            Long gamma = buying optionality (e.g., long options) and benefiting from realised moves.
-            Short gamma = selling optionality and betting moves stay contained. In fragile regimes, short gamma is
-            higher risk, especially overnight.
-          </div>
-        </div>
-        <div>
-          <div class="defs-item-title">Breakout / Breakdown Plans</div>
-          <div class="defs-item-body">
-            Systematic levels for trend trades (long breakout / short breakdown) using spot, stops, and targets.
-            R multiples show reward vs risk if the plan plays out to T1 or T2, so you know if the setup is worth taking.
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 
   <script>
@@ -1906,45 +1912,37 @@
       });
 
       const now = new Date();
-      filtered = filtered.filter((ev) => {
-        const dt = parseEventDate(ev.date_time);
-        return dt && dt >= now;
-      });
+      filtered = filtered.filter((ev) => ev.date && ev.date >= now);
 
-      filtered.sort((a, b) => {
-        const da = parseEventDate(a.date_time);
-        const db = parseEventDate(b.date_time);
-        return da - db;
-      });
+      filtered.sort((a, b) => a.date - b.date);
 
-      const nextFive = filtered.slice(0, 5);
-
-      if (!nextFive.length) {
-        const empty = document.createElement("div");
-        empty.className = "events-empty";
-        empty.textContent = "No upcoming events for this scope.";
-        container.appendChild(empty);
+      if (!filtered.length) {
+        const div = document.createElement("div");
+        div.className = "events-empty";
+        div.textContent = "No upcoming events in this bucket.";
+        container.appendChild(div);
         return;
       }
 
-      nextFive.forEach((ev) => {
-        const dt = parseEventDate(ev.date_time);
+      filtered.slice(0, 5).forEach((ev) => {
         const item = document.createElement("div");
         item.className = "events-item";
+
+        const impactClass = (ev.impact || "").toLowerCase();
+        const countryLabel = ev.currency === "INR" ? "India" : "Global";
+        const countryEmoji = ev.currency === "INR" ? "🇮🇳" : "🌍";
+
         item.innerHTML = `
           <div class="events-row-top">
-            <div class="events-name">${ev.event_name || "Event"}</div>
-            <div class="events-time">${formatIST(dt)}</div>
+            <div class="events-name">${ev.name || "Unnamed event"}</div>
+            <div class="events-time">${formatIST(ev.date)}</div>
           </div>
           <div class="events-row-bottom">
-            <span class="events-impact-pill ${ev.impact_level ? ev.impact_level.toLowerCase() : ""}">
-              ${ev.impact_level || "MEDIUM"}
-            </span>
-            <span class="events-country-pill">
-              ${ev.currency === "INR" ? "🇮🇳 India" : "🌎 Global"}
-            </span>
+            <span class="events-impact-pill ${impactClass}">${(ev.impact || "Medium").toUpperCase()}</span>
+            <span class="events-country-pill">${countryEmoji}&nbsp;${countryLabel}</span>
           </div>
         `;
+
         container.appendChild(item);
       });
     }
@@ -1954,16 +1952,25 @@
         const res = await fetch(EVENTS_URL, { cache: "no-store" });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const text = await res.text();
-        const lines = text.trim().split("\n");
-        const headers = lines[0].split(",").map((h) => h.trim());
+        const lines = text.trim().split(/\r?\n/);
+        if (!lines.length) return;
+
+        const headers = lines[0].split(",");
+        const idxStart = headers.findIndex((h) => h.trim().toLowerCase() === "start");
+        const idxName = headers.findIndex((h) => h.trim().toLowerCase() === "name");
+        const idxImpact = headers.findIndex((h) => h.trim().toLowerCase() === "impact");
+        const idxCurrency = headers.findIndex((h) => h.trim().toLowerCase() === "currency");
+
         globalEvents = lines.slice(1).map((line) => {
           const cols = line.split(",");
-          const obj = {};
-          headers.forEach((h, idx) => {
-            obj[h] = cols[idx] ? cols[idx].trim() : "";
-          });
-          return obj;
-        });
+          const dateStr = cols[idxStart] || "";
+          return {
+            date: parseEventDate(dateStr),
+            name: cols[idxName] || "",
+            impact: (cols[idxImpact] || "").toUpperCase(),
+            currency: (cols[idxCurrency] || "").toUpperCase(),
+          };
+        }).filter((ev) => ev.date);
 
         renderEvents("INR");
 
@@ -1972,7 +1979,7 @@
           btn.addEventListener("click", () => {
             buttons.forEach((b) => b.classList.remove("active"));
             btn.classList.add("active");
-            const scope = btn.getAttribute("data-scope");
+            const scope = btn.getAttribute("data-scope") || "INR";
             renderEvents(scope);
           });
         });
@@ -1980,9 +1987,85 @@
         console.error("Error loading events:", err);
         const container = document.getElementById("events-list");
         if (container) {
-          container.innerHTML = '<div class="events-empty">Unable to load events.</div>';
+          container.innerHTML = '<div class="events-empty">Error loading events.</div>';
         }
       }
+    }
+
+let globalNewsItems = [];
+
+    function renderNews(filter) {
+      const container = document.getElementById("news-list");
+      container.innerHTML = "";
+
+      const items = globalNewsItems.filter((item) => {
+        const bucket = classifyNewsItem(item);
+        if (filter === "all") return true;
+        if (filter === "macro") return bucket === "macro";
+        if (filter === "index") return bucket === "index";
+        if (filter === "stocks") return bucket === "stocks";
+        if (filter === "fx") return bucket === "fx";
+        if (filter === "flows") return bucket === "flows";
+        return true;
+      });
+
+      if (!items.length) {
+        const div = document.createElement("div");
+        div.className = "news-empty";
+        div.textContent = "No news items for this filter.";
+        container.appendChild(div);
+        return;
+      }
+
+      items.slice(0, 18).forEach((n) => {
+  const bucket = classifyNewsItem(n);
+  const article = document.createElement("article");
+  article.className = "news-item";
+
+  const tagLabel =
+    bucket === "macro"
+      ? "Macro"
+      : bucket === "index"
+      ? "Index"
+      : bucket === "stocks"
+      ? "Stocks"
+      : bucket === "fx"
+      ? "FX / Commodities"
+      : bucket === "flows"
+      ? "Flows / Policy"
+      : "Other";
+
+  const score = typeof n.sentiment_score === "number" ? n.sentiment_score : null;
+  const label = (n.sentiment_label || "neutral").toLowerCase();
+  const mag = score != null ? Math.round(Math.abs(score) * 100) / 10 : null; // 0.95 -> 9.5
+  const magText = mag != null ? mag.toFixed(1) : "—";
+  const sentimentClass =
+    label === "positive" ? "positive" :
+    label === "negative" ? "negative" :
+    "neutral";
+
+  article.innerHTML = `
+    <div class="news-title-row">
+      <span class="news-tag">${tagLabel}</span>
+      <div class="news-title">
+        <a href="${n.link || "#"}" target="_blank" rel="noopener noreferrer">${n.title || "Untitled"}</a>
+      </div>
+    </div>
+    <div class="news-meta">
+      ${n.source || ""}${n.published ? " · " + n.published : ""}
+    </div>
+    <div class="news-sentiment">
+      <div class="sentiment-score-circle ${sentimentClass}">
+        ${magText}
+      </div>
+      <span class="sentiment-pill ${sentimentClass}">
+        ${(label || "neutral").toUpperCase()}
+      </span>
+    </div>
+  `;
+
+  container.appendChild(article);
+});
     }
 
     async function loadNews() {
@@ -1991,89 +2074,23 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         const items = data.items || [];
+        globalNewsItems = items;
+        renderNews("all");
 
-        const enriched = items.map((item) => ({
-          ...item,
-          topic: classifyNewsItem(item),
-        }));
-
-        const listEl = document.getElementById("news-list");
         const filters = document.querySelectorAll(".news-filter");
-
-        function render(filter) {
-          listEl.innerHTML = "";
-          const subset =
-            filter === "all" ? enriched : enriched.filter((it) => (it.topic || "other") === filter);
-
-          if (!subset.length) {
-            const empty = document.createElement("div");
-            empty.className = "news-empty";
-            empty.textContent = "No headlines for this filter right now.";
-            listEl.appendChild(empty);
-            return;
-          }
-
-          subset.slice(0, 25).forEach((item) => {
-            const sentimentLabel = (item.sentiment_label || "").toLowerCase();
-            const score = typeof item.sentiment_score === "number" ? item.sentiment_score.toFixed(1) : "—";
-            const sentimentClass =
-              sentimentLabel === "positive"
-                ? "positive"
-                : sentimentLabel === "negative"
-                ? "negative"
-                : "neutral";
-
-            const div = document.createElement("div");
-            div.className = "news-item";
-
-            div.innerHTML = `
-              <div class="news-title-row">
-                <span class="news-tag">${item.topic?.toUpperCase() || "OTHER"}</span>
-                <div class="news-title">
-                  <a href="${item.link}" target="_blank" rel="noopener noreferrer">
-                    ${item.title || "Untitled headline"}
-                  </a>
-                </div>
-              </div>
-              <div class="news-meta">
-                ${item.source || "Source"} · ${item.published || ""}
-              </div>
-              <div class="news-sentiment">
-                <span class="sentiment-score-circle ${sentimentClass}">${score}</span>
-                <span class="sentiment-pill ${sentimentClass}">${sentimentLabel || "NEUTRAL"}</span>
-              </div>
-            `;
-            listEl.appendChild(div);
-          });
-        }
-
         filters.forEach((btn) => {
           btn.addEventListener("click", () => {
             filters.forEach((b) => b.classList.remove("active"));
             btn.classList.add("active");
-            const filter = btn.getAttribute("data-filter");
-            render(filter);
+            const f = btn.getAttribute("data-filter");
+            renderNews(f);
           });
         });
-
-        render("all");
       } catch (err) {
         console.error("Error loading news:", err);
-        const listEl = document.getElementById("news-list");
-        if (listEl) {
-          listEl.innerHTML = '<div class="news-empty">Unable to load news.</div>';
-        }
+        const container = document.getElementById("news-list");
+        container.innerHTML = '<div class="news-empty">Error loading news feed.</div>';
       }
-    }
-
-    // DEFINITIONS TOGGLE
-    function initDefinitions() {
-      const toggle = document.getElementById("defs-toggle");
-      const panel = document.getElementById("defs-panel");
-      if (!toggle || !panel) return;
-      toggle.addEventListener("click", () => {
-        panel.classList.toggle("open");
-      });
     }
 
     // TABS INIT
@@ -2092,10 +2109,20 @@
           btn.classList.add("active");
 
           Object.entries(panels).forEach(([key, panel]) => {
-            if (!panel) return;
             panel.classList.toggle("active", key === tab);
           });
         });
+      });
+    }
+
+    // DEFINITIONS TOGGLE
+    function initDefinitions() {
+      const toggle = document.getElementById("defs-toggle");
+      const panel = document.getElementById("defs-panel");
+      if (!toggle || !panel) return;
+
+      toggle.addEventListener("click", () => {
+        panel.classList.toggle("open");
       });
     }
 
