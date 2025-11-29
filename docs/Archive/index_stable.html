@@ -138,173 +138,6 @@
     .brand-footer-row span {
       opacity: 0.9;
     }
-    .nifty-column {
-      flex: 0.85;
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
-    }
-
-    @media (max-width: 900px) {
-      .nifty-column {
-        width: 100%;
-      }
-    }
-
-    .events-card {
-      border-radius: var(--radius-lg);
-      background:
-        radial-gradient(circle at top right, rgba(96, 165, 250, 0.16), transparent 65%),
-        linear-gradient(to bottom left, #020617, #020617);
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      padding: 0.7rem 0.85rem 0.8rem;
-      box-shadow: var(--shadow-soft);
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      font-size: 0.75rem;
-    }
-
-    .events-header {
-      display: flex;
-      flex-direction: column;
-      gap: 0.12rem;
-    }
-
-    .events-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: rgba(248, 250, 252, 0.9);
-    }
-
-    .events-subtitle {
-      font-size: 0.7rem;
-      color: var(--fg-muted);
-    }
-
-    .events-filter-row {
-      display: inline-flex;
-      gap: 0.35rem;
-      margin-top: 0.4rem;
-      margin-bottom: 0.4rem;
-      font-size: 0.72rem;
-    }
-
-    .events-filter-button {
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      background: rgba(15, 23, 42, 0.95);
-      color: var(--fg-muted);
-      font-size: 0.7rem;
-      padding: 0.18rem 0.6rem;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      transition: background 120ms ease-out, color 120ms ease-out, border-color 120ms ease-out, transform 100ms ease-out;
-    }
-
-    .events-filter-button.active {
-      background: var(--accent-soft);
-      border-color: var(--accent);
-      color: #e5e7eb;
-      transform: translateY(-1px);
-    }
-
-    .events-list {
-      border-radius: var(--radius-md);
-      background: rgba(15, 23, 42, 0.96);
-      border: 1px solid rgba(31, 41, 55, 0.95);
-      padding: 0.45rem 0.5rem;
-      font-size: 0.72rem;
-      max-height: 210px;
-      overflow-y: auto;
-    }
-
-    .events-item {
-      padding: 0.3rem 0.35rem;
-      border-radius: 0.55rem;
-      background: rgba(15, 23, 42, 0.96);
-      border: 1px solid rgba(31, 41, 55, 0.95);
-      margin-bottom: 0.3rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.18rem;
-    }
-
-    .events-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .events-row-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.4rem;
-      align-items: baseline;
-    }
-
-    .events-name {
-      font-size: 0.74rem;
-      color: #e5e7eb;
-    }
-
-    .events-time {
-      font-size: 0.7rem;
-      color: var(--fg-muted);
-      white-space: nowrap;
-    }
-
-    .events-row-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.68rem;
-      color: var(--fg-muted);
-    }
-
-    .events-impact-pill {
-      padding: 0.08rem 0.42rem;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-    }
-
-    .events-impact-pill.high {
-      border-color: rgba(239, 68, 68, 0.9);
-      background: rgba(239, 68, 68, 0.16);
-      color: #fecaca;
-    }
-
-    .events-impact-pill.medium {
-      border-color: rgba(250, 204, 21, 0.9);
-      background: rgba(250, 204, 21, 0.16);
-      color: #fef9c3;
-    }
-
-    .events-impact-pill.low {
-      border-color: rgba(34, 197, 94, 0.9);
-      background: rgba(34, 197, 94, 0.16);
-      color: #bbf7d0;
-    }
-
-    .events-country-pill {
-      padding: 0.08rem 0.42rem;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-      color: var(--fg-muted);
-    }
-
-    .events-empty {
-      font-size: 0.72rem;
-      color: var(--fg-muted);
-    }
-
 
     .nifty-card {
       flex: 0.85;
@@ -414,7 +247,6 @@
       background: rgba(15, 23, 42, 0.8);
       font-size: 0.7rem;
       cursor: pointer;
-      color: #f9fafb !important;
       transition: background 120ms ease-out, border-color 120ms ease-out, transform 100ms ease-out;
     }
 
@@ -443,14 +275,13 @@
     .regime-chip-label {
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: #f9fafb !important;
+ color: #f9fafb !important;
 
     }
 
     .regime-chip-category {
       opacity: 0.9;
-      color: #f9fafb !important;
-
+ color: #f9fafb !important;
     }
 
     .regime-explainer {
@@ -963,73 +794,6 @@
       color: #e5e7eb;
       transform: translateY(-1px);
     }
-    .news-sentiment {
-  margin-top: 0.25rem;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.72rem;
-  color: var(--fg-muted);
-}
-
-.sentiment-score-circle {
-  width: 1.35rem;
-  height: 1.35rem;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  font-weight: 650;
-  border: 1px solid rgba(148, 163, 184, 0.7);
-  background: rgba(15, 23, 42, 0.95);
-  color: #e5e7eb;
-}
-
-.sentiment-score-circle.positive {
-  border-color: rgba(34, 197, 94, 0.9);
-  background: rgba(34, 197, 94, 0.18);
-  color: #bbf7d0;
-}
-
-.sentiment-score-circle.negative {
-  border-color: rgba(239, 68, 68, 0.9);
-  background: rgba(239, 68, 68, 0.18);
-  color: #fecaca;
-}
-
-.sentiment-score-circle.neutral {
-  border-color: rgba(148, 163, 184, 0.9);
-  background: rgba(30, 41, 59, 0.95);
-  color: #e5e7eb;
-}
-
-.sentiment-pill {
-  padding: 0.12rem 0.5rem;
-  border-radius: 999px;
-  border: 1px solid rgba(55, 65, 81, 0.9);
-  font-size: 0.62rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.sentiment-pill.positive {
-  border-color: rgba(34, 197, 94, 0.9);
-  background: rgba(34, 197, 94, 0.12);
-  color: #4ade80;
-}
-
-.sentiment-pill.negative {
-  border-color: rgba(239, 68, 68, 0.9);
-  background: rgba(239, 68, 68, 0.12);
-  color: #fca5a5;
-}
-
-.sentiment-pill.neutral {
-  border-color: rgba(148, 163, 184, 0.9);
-  background: rgba(30, 41, 59, 0.9);
-  color: var(--fg-muted);
-}
 
     .news-list {
       display: flex;
@@ -1101,6 +865,76 @@
       color: var(--fg-muted);
       text-align: right;
     }
+
+    /* Sentiment visuals */
+
+    .news-sentiment {
+      margin-top: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      color: var(--fg-muted);
+    }
+
+    .sentiment-score-circle {
+      width: 1.35rem;
+      height: 1.35rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 650;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+    }
+
+    .sentiment-score-circle.positive {
+      border-color: rgba(34, 197, 94, 0.9);
+      background: rgba(34, 197, 94, 0.18);
+      color: #bbf7d0;
+    }
+
+    .sentiment-score-circle.negative {
+      border-color: rgba(239, 68, 68, 0.9);
+      background: rgba(239, 68, 68, 0.18);
+      color: #fecaca;
+    }
+
+    .sentiment-score-circle.neutral {
+      border-color: rgba(148, 163, 184, 0.9);
+      background: rgba(30, 41, 59, 0.95);
+      color: #e5e7eb;
+    }
+
+    .sentiment-pill {
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .sentiment-pill.positive {
+      border-color: rgba(34, 197, 94, 0.9);
+      background: rgba(34, 197, 94, 0.12);
+      color: #4ade80;
+    }
+
+    .sentiment-pill.negative {
+      border-color: rgba(239, 68, 68, 0.9);
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+    }
+
+    .sentiment-pill.neutral {
+      border-color: rgba(148, 163, 184, 0.9);
+      background: rgba(30, 41, 59, 0.9);
+      color: var(--fg-muted);
+    }
   </style>
 </head>
 <body>
@@ -1124,8 +958,7 @@
         </div>
       </section>
 
-      <div class="nifty-column">
-<section class="nifty-card">
+      <section class="nifty-card">
         <div class="nifty-header">
           <div class="nifty-label">Nifty 50 Snapshot</div>
           <div class="nifty-asof" id="spot-asof">Spot levels as of —</div>
@@ -1152,22 +985,6 @@
           </div>
         </div>
       </section>
-
-      <section class="events-card">
-        <div class="events-header">
-          <div class="events-title">Upcoming Events</div>
-          <div class="events-subtitle">Key macro releases · India / Global</div>
-        </div>
-        <div class="events-filter-row">
-          <button class="events-filter-button active" data-scope="INR">India</button>
-          <button class="events-filter-button" data-scope="USD">Global</button>
-        </div>
-        <div class="events-list" id="events-list">
-          <div class="events-empty">Loading events…</div>
-        </div>
-      </section>
-
-      </div>
     </div>
 
     <!-- REGIME CHIP ROW -->
@@ -1516,7 +1333,6 @@
   <script>
     const SNAPSHOT_URL = "data/nifty_snapshot.json";
     const NEWS_URL = "data/news.json";
-    const EVENTS_URL = "data/events.csv";
 
     function setText(id, value) {
       const el = document.getElementById(id);
@@ -1869,130 +1685,26 @@
       return "other";
     }
 
-    
-    // EVENTS
+    function toIST(dateStr) {
+      if (!dateStr) return "";
+      const d = new Date(dateStr);
+      if (isNaN(d)) return dateStr;
 
-    let globalEvents = [];
-    let currentEventScope = "INR"; // INR = India, USD = Global
+      const utcMs = d.getTime();
+      const istOffsetMs = 5.5 * 60 * 60 * 1000;
+      const istDate = new Date(utcMs + istOffsetMs);
 
-    function parseEventDate(str) {
-      if (!str) return null;
-      const parts = str.trim().split(" ");
-      if (parts.length < 2) return null;
-      const [d, m, y] = parts[0].split("/").map(Number);
-      const [hh, mm, ss] = parts[1].split(":").map(Number);
-      if (!d || !m || !y) return null;
-      // Interpret as local time (browser timezone)
-      return new Date(y, m - 1, d, hh || 0, mm || 0, ss || 0);
-    }
-
-    function formatIST(date) {
-      if (!date || isNaN(date)) return "";
-      const day = String(date.getDate()).padStart(2, "0");
+      const day = String(istDate.getDate()).padStart(2, "0");
       const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      const month = monthNames[date.getMonth()];
-      const year = date.getFullYear();
-      const hours = String(date.getHours()).padStart(2, "0");
-      const mins = String(date.getMinutes()).padStart(2, "0");
+      const month = monthNames[istDate.getMonth()];
+      const year = istDate.getFullYear();
+      const hours = String(istDate.getHours()).padStart(2, "0");
+      const mins = String(istDate.getMinutes()).padStart(2, "0");
+
       return `${day} ${month} ${year}, ${hours}:${mins} IST`;
     }
 
-    function renderEvents(scope) {
-      currentEventScope = scope || currentEventScope;
-      const container = document.getElementById("events-list");
-      if (!container) return;
-
-      container.innerHTML = "";
-
-      let filtered = globalEvents.filter((ev) => {
-        if (!ev.currency) return false;
-        if (currentEventScope === "INR") return ev.currency === "INR";
-        if (currentEventScope === "USD") return ev.currency === "USD";
-        return true;
-      });
-
-      const now = new Date();
-      filtered = filtered.filter((ev) => ev.date && ev.date >= now);
-
-      filtered.sort((a, b) => a.date - b.date);
-
-      if (!filtered.length) {
-        const div = document.createElement("div");
-        div.className = "events-empty";
-        div.textContent = "No upcoming events in this bucket.";
-        container.appendChild(div);
-        return;
-      }
-
-      filtered.slice(0, 5).forEach((ev) => {
-        const item = document.createElement("div");
-        item.className = "events-item";
-
-        const impactClass = (ev.impact || "").toLowerCase();
-        const countryLabel = ev.currency === "INR" ? "India" : "Global";
-        const countryEmoji = ev.currency === "INR" ? "🇮🇳" : "🌍";
-
-        item.innerHTML = `
-          <div class="events-row-top">
-            <div class="events-name">${ev.name || "Unnamed event"}</div>
-            <div class="events-time">${formatIST(ev.date)}</div>
-          </div>
-          <div class="events-row-bottom">
-            <span class="events-impact-pill ${impactClass}">${(ev.impact || "Medium").toUpperCase()}</span>
-            <span class="events-country-pill">${countryEmoji}&nbsp;${countryLabel}</span>
-          </div>
-        `;
-
-        container.appendChild(item);
-      });
-    }
-
-    async function loadEvents() {
-      try {
-        const res = await fetch(EVENTS_URL, { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const text = await res.text();
-        const lines = text.trim().split(/\r?\n/);
-        if (!lines.length) return;
-
-        const headers = lines[0].split(",");
-        const idxStart = headers.findIndex((h) => h.trim().toLowerCase() === "start");
-        const idxName = headers.findIndex((h) => h.trim().toLowerCase() === "name");
-        const idxImpact = headers.findIndex((h) => h.trim().toLowerCase() === "impact");
-        const idxCurrency = headers.findIndex((h) => h.trim().toLowerCase() === "currency");
-
-        globalEvents = lines.slice(1).map((line) => {
-          const cols = line.split(",");
-          const dateStr = cols[idxStart] || "";
-          return {
-            date: parseEventDate(dateStr),
-            name: cols[idxName] || "",
-            impact: (cols[idxImpact] || "").toUpperCase(),
-            currency: (cols[idxCurrency] || "").toUpperCase(),
-          };
-        }).filter((ev) => ev.date);
-
-        renderEvents("INR");
-
-        const buttons = document.querySelectorAll(".events-filter-button");
-        buttons.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            buttons.forEach((b) => b.classList.remove("active"));
-            btn.classList.add("active");
-            const scope = btn.getAttribute("data-scope") || "INR";
-            renderEvents(scope);
-          });
-        });
-      } catch (err) {
-        console.error("Error loading events:", err);
-        const container = document.getElementById("events-list");
-        if (container) {
-          container.innerHTML = '<div class="events-empty">Error loading events.</div>';
-        }
-      }
-    }
-
-let globalNewsItems = [];
+    let globalNewsItems = [];
 
     function renderNews(filter) {
       const container = document.getElementById("news-list");
@@ -2018,54 +1730,56 @@ let globalNewsItems = [];
       }
 
       items.slice(0, 18).forEach((n) => {
-  const bucket = classifyNewsItem(n);
-  const article = document.createElement("article");
-  article.className = "news-item";
+        const bucket = classifyNewsItem(n);
+        const article = document.createElement("article");
+        article.className = "news-item";
 
-  const tagLabel =
-    bucket === "macro"
-      ? "Macro"
-      : bucket === "index"
-      ? "Index"
-      : bucket === "stocks"
-      ? "Stocks"
-      : bucket === "fx"
-      ? "FX / Commodities"
-      : bucket === "flows"
-      ? "Flows / Policy"
-      : "Other";
+        const tagLabel =
+          bucket === "macro"
+            ? "Macro"
+            : bucket === "index"
+            ? "Index"
+            : bucket === "stocks"
+            ? "Stocks"
+            : bucket === "fx"
+            ? "FX / Commodities"
+            : bucket === "flows"
+            ? "Flows / Policy"
+            : "Other";
 
-  const score = typeof n.sentiment_score === "number" ? n.sentiment_score : null;
-  const label = (n.sentiment_label || "neutral").toLowerCase();
-  const mag = score != null ? Math.round(Math.abs(score) * 100) / 10 : null; // 0.95 -> 9.5
-  const magText = mag != null ? mag.toFixed(1) : "—";
-  const sentimentClass =
-    label === "positive" ? "positive" :
-    label === "negative" ? "negative" :
-    "neutral";
+        const score = typeof n.sentiment_score === "number" ? n.sentiment_score : null;
+        const label = (n.sentiment_label || "neutral").toLowerCase();
+        const mag = score != null ? Math.round(Math.abs(score) * 100) / 10 : null; // 0.95 -> 9.5
+        const magText = mag != null ? mag.toFixed(1) : "—";
+        const sentimentClass =
+          label === "positive" ? "positive" :
+          label === "negative" ? "negative" :
+          "neutral";
 
-  article.innerHTML = `
-    <div class="news-title-row">
-      <span class="news-tag">${tagLabel}</span>
-      <div class="news-title">
-        <a href="${n.link || "#"}" target="_blank" rel="noopener noreferrer">${n.title || "Untitled"}</a>
-      </div>
-    </div>
-    <div class="news-meta">
-      ${n.source || ""}${n.published ? " · " + n.published : ""}
-    </div>
-    <div class="news-sentiment">
-      <div class="sentiment-score-circle ${sentimentClass}">
-        ${magText}
-      </div>
-      <span class="sentiment-pill ${sentimentClass}">
-        ${(label || "neutral").toUpperCase()}
-      </span>
-    </div>
-  `;
+        const dateIST = n.published ? toIST(n.published) : "";
 
-  container.appendChild(article);
-});
+        article.innerHTML = `
+          <div class="news-title-row">
+            <span class="news-tag">${tagLabel}</span>
+            <div class="news-title">
+              <a href="${n.link || "#"}" target="_blank" rel="noopener noreferrer">${n.title || "Untitled"}</a>
+            </div>
+          </div>
+          <div class="news-meta">
+            ${n.source || ""}${dateIST ? " · " + dateIST : ""}
+          </div>
+          <div class="news-sentiment">
+            <div class="sentiment-score-circle ${sentimentClass}">
+              ${magText}
+            </div>
+            <span class="sentiment-pill ${sentimentClass}">
+              ${(label || "neutral").toUpperCase()}
+            </span>
+          </div>
+        `;
+
+        container.appendChild(article);
+      });
     }
 
     async function loadNews() {
@@ -2074,7 +1788,17 @@ let globalNewsItems = [];
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         const items = data.items || [];
-        globalNewsItems = items;
+
+        // sort by published date (newest first)
+        globalNewsItems = items.slice().sort((a, b) => {
+          const da = new Date(a.published);
+          const db = new Date(b.published);
+          if (isNaN(da) && isNaN(db)) return 0;
+          if (isNaN(da)) return 1;
+          if (isNaN(db)) return -1;
+          return db - da;
+        });
+
         renderNews("all");
 
         const filters = document.querySelectorAll(".news-filter");
@@ -2131,7 +1855,6 @@ let globalNewsItems = [];
       initDefinitions();
       loadSnapshot();
       loadNews();
-      loadEvents();
     })();
   </script>
 </body>
