@@ -1,5 +1,5 @@
 """
-generate_nifty_technicals.py  (v2 – handles MultiIndex columns)
+generate_nifty_technicals.py  (v3 – handles MultiIndex columns + NaN -> null)
 
 Fetch Nifty 50 intraday data from Yahoo Finance, compute:
 - Bollinger Bands (20, 2)
@@ -34,23 +34,32 @@ def _normalize_ohlc_columns(df: pd.DataFrame, symbol: str) -> pd.DataFrame:
     """Normalize yfinance output to have plain columns:
     Open, High, Low, Close, Adj Close, Volume
 
-    Handles both:
+    Handles:
     - Single-level columns (already fine)
+    - Columns like 'Open/^NSEI'
     - MultiIndex columns like ('Open', '^NSEI')
     """
     if isinstance(df.columns, pd.MultiIndex):
         # Try taking the slice for our symbol on the last level
         if symbol in df.columns.get_level_values(-1):
             df = df.xs(symbol, axis=1, level=-1)
-        # Or on the first level (rare, but just in case)
+        # Or on the first level
         elif symbol in df.columns.get_level_values(0):
             df = df[symbol]
 
-    # At this point we expect classic OHLC names
+    # If still not standard, flatten 'Open/^NSEI' -> 'Open'
+    flat_cols = []
+    for col in df.columns:
+        c = str(col)
+        if "/" in c:
+            c = c.split("/", 1)[0]
+        flat_cols.append(c)
+    df.columns = flat_cols
+
     expected = ["Open", "High", "Low", "Close"]
     missing = [c for c in expected if c not in df.columns]
     if missing:
-        raise RuntimeError(f"Missing OHLC columns after normalization: {missing}. Got: {list(df.columns)}")  # noqa: E501
+        raise RuntimeError(f"Missing OHLC columns after normalization: {missing}. Got: {list(df.columns)}")
 
     return df
 
@@ -65,7 +74,7 @@ def fetch_nifty_data(symbol: str = SYMBOL, period: str = PERIOD, interval: str =
         auto_adjust=False,
     )
     if df.empty:
-        raise RuntimeError("No data returned from Yahoo Finance. Check symbol/period/interval or your network.")  # noqa: E501
+        raise RuntimeError("No data returned from Yahoo Finance. Check symbol/period/interval or your network.")
 
     df = _normalize_ohlc_columns(df, symbol)
 
@@ -117,19 +126,15 @@ def compute_awesome_oscillator(df: pd.DataFrame, fast: int = 5, slow: int = 34) 
 
 
 def add_time_column(df: pd.DataFrame) -> pd.DataFrame:
-    """Add a 'time' column as UNIX timestamp (seconds).
-    This is a convenient format for Lightweight Charts.
-    """
+    """Add a 'time' column as UNIX timestamp (seconds)."""
     df = df.copy()
-    # DatetimeIndex in ns -> convert to seconds
     df["time"] = (df.index.view("int64") // 10**9).astype(int)
     return df
 
 
 def build_output_records(df: pd.DataFrame):
     """Convert DataFrame to a list of dict records suitable for JSON.
-    Be defensive about missing indicator columns so the script doesn't crash
-    if something upstream changes.
+    Uses pandas.to_json so NaN -> null, which is valid JSON.
     """
     # Ensure indicator columns exist even if upstream computation failed
     for col in ["bb_mid", "bb_upper", "bb_lower", "rsi", "ao"]:
@@ -162,8 +167,10 @@ def build_output_records(df: pd.DataFrame):
         }
     )
 
-    df_out = df_out.round(4)
-    return df_out.to_dict(orient="records")
+    # Use pandas' JSON serializer to convert NaN -> null
+    json_str = df_out.to_json(orient="records")
+    records = json.loads(json_str)
+    return records
 
 
 def main():
