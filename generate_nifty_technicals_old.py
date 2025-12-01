@@ -1,5 +1,5 @@
 """
-generate_nifty_technicals.py
+generate_nifty_technicals.py  (v3 – handles MultiIndex columns + NaN -> null)
 
 Fetch Nifty 50 intraday data from Yahoo Finance, compute:
 - Bollinger Bands (20, 2)
@@ -59,9 +59,7 @@ def _normalize_ohlc_columns(df: pd.DataFrame, symbol: str) -> pd.DataFrame:
     expected = ["Open", "High", "Low", "Close"]
     missing = [c for c in expected if c not in df.columns]
     if missing:
-        raise RuntimeError(
-            f"Missing OHLC columns after normalization: {missing}. Got: {list(df.columns)}"
-        )
+        raise RuntimeError(f"Missing OHLC columns after normalization: {missing}. Got: {list(df.columns)}")
 
     return df
 
@@ -80,12 +78,9 @@ def fetch_nifty_data(symbol: str = SYMBOL, period: str = PERIOD, interval: str =
 
     df = _normalize_ohlc_columns(df, symbol)
 
-    # Ensure timezone-aware and convert to IST (Asia/Kolkata)
-    if df.index.tz is None:
-        df.index = df.index.tz_localize("UTC").tz_convert("Asia/Kolkata")
-    else:
-        df.index = df.index.tz_convert("Asia/Kolkata")
-
+    # Drop timezone info for simplicity
+    if df.index.tz is not None:
+        df = df.tz_convert(None)
     return df
 
 
@@ -131,9 +126,8 @@ def compute_awesome_oscillator(df: pd.DataFrame, fast: int = 5, slow: int = 34) 
 
 
 def add_time_column(df: pd.DataFrame) -> pd.DataFrame:
-    """Add a 'time' column as UNIX timestamp (seconds) in IST."""
+    """Add a 'time' column as UNIX timestamp (seconds)."""
     df = df.copy()
-    # index is tz-aware IST; convert to epoch seconds
     df["time"] = (df.index.view("int64") // 10**9).astype(int)
     return df
 
