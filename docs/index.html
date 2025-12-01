@@ -62,7 +62,7 @@
       }
     }
   </style>
-  <!-- ✅ Use the standalone UMD build so LightweightCharts global works -->
+  <!-- Lightweight Charts v5 standalone build (global: window.LightweightCharts) -->
   <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
@@ -137,7 +137,8 @@
         },
       });
 
-      const candleSeries = chartApi.addCandlestickSeries({
+      // v5 API: addSeries(LightweightCharts.CandlestickSeries, options)
+      const candleSeries = chartApi.addSeries(LightweightCharts.CandlestickSeries, {
         upColor: "#26a69a",
         downColor: "#ef5350",
         borderDownColor: "#ef5350",
@@ -146,15 +147,15 @@
         wickUpColor: "#26a69a",
       });
 
-      const bbMidSeries = chartApi.addLineSeries({
+      const bbMidSeries = chartApi.addSeries(LightweightCharts.LineSeries, {
         color: "rgba(255, 255, 255, 0.7)",
         lineWidth: 1,
       });
-      const bbUpperSeries = chartApi.addLineSeries({
+      const bbUpperSeries = chartApi.addSeries(LightweightCharts.LineSeries, {
         color: "rgba(129, 212, 250, 0.8)",
         lineWidth: 1,
       });
-      const bbLowerSeries = chartApi.addLineSeries({
+      const bbLowerSeries = chartApi.addSeries(LightweightCharts.LineSeries, {
         color: "rgba(129, 212, 250, 0.8)",
         lineWidth: 1,
       });
@@ -212,7 +213,8 @@
         },
       });
 
-      const rsiSeries = chartApi.addHistogramSeries({
+      // v5 API: addSeries(LightweightCharts.HistogramSeries, options)
+      const rsiSeries = chartApi.addSeries(LightweightCharts.HistogramSeries, {
         priceFormat: { type: "price", precision: 2, minMove: 0.1 },
       });
 
@@ -274,7 +276,8 @@
         },
       });
 
-      const aoSeries = chartApi.addHistogramSeries({
+      // v5 API: addSeries(LightweightCharts.HistogramSeries, options)
+      const aoSeries = chartApi.addSeries(LightweightCharts.HistogramSeries, {
         priceFormat: { type: "price", precision: 4, minMove: 0.0001 },
       });
 
