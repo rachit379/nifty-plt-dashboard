@@ -39,7 +39,7 @@ jobs:
         run: |
           python generate_snapshot.py
           python generate_news.py
-          # python generate_nifty_technicals.py
+          python generate_nifty_technicals.py
 
           ls -R docs
 
