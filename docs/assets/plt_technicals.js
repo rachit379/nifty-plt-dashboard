@@ -1,5 +1,5 @@
 // plt_technicals.js
-// Nifty candlestick + Bollinger Bands + RSI + Awesome Oscillator
+// Nifty candlestick + Bollinger Bands + Stochastic RSI + Awesome Oscillator
 // Assumes:
 //  - LightweightCharts v5 standalone is loaded in <head>
 //  - This script is loaded after the DOM (e.g. end of <body>)
@@ -110,7 +110,7 @@
     return chartApi;
   }
 
-  function createRsiChart(data) {
+  function createStochRsiChart(data) {
     const container = document.getElementById("nifty-rsi");
     if (!container) {
       console.warn("No #nifty-rsi container found");
@@ -138,15 +138,15 @@
       },
     });
 
-    const rsiSeries = chartApi.addSeries(LightweightCharts.HistogramSeries, {
+    const stochSeries = chartApi.addSeries(LightweightCharts.HistogramSeries, {
       priceFormat: { type: "price", precision: 2, minMove: 0.1 },
     });
 
-    const rsiData = data.map(d => {
-      const v = d.rsi;
+    const stochData = data.map(d => {
+      const v = d.stoch_rsi;
       let color = "rgba(144, 202, 249, 0.7)"; // neutral
-      if (v >= 70) color = "rgba(239, 83, 80, 0.85)";      // overbought
-      else if (v <= 30) color = "rgba(102, 187, 106, 0.85)"; // oversold
+      if (v >= 80) color = "rgba(239, 83, 80, 0.85)";      // overbought
+      else if (v <= 20) color = "rgba(102, 187, 106, 0.85)"; // oversold
       return {
         time: d.time,
         value: v,
@@ -154,23 +154,23 @@
       };
     });
 
-    rsiSeries.setData(rsiData);
+    stochSeries.setData(stochData);
 
-    rsiSeries.createPriceLine({
-      price: 30,
+    stochSeries.createPriceLine({
+      price: 20,
       color: "rgba(102, 187, 106, 0.7)",
       lineWidth: 1,
       lineStyle: LightweightCharts.LineStyle.Dotted,
       axisLabelVisible: true,
-      title: "30",
+      title: "20",
     });
-    rsiSeries.createPriceLine({
-      price: 70,
+    stochSeries.createPriceLine({
+      price: 80,
       color: "rgba(239, 83, 80, 0.7)",
       lineWidth: 1,
       lineStyle: LightweightCharts.LineStyle.Dotted,
       axisLabelVisible: true,
-      title: "70",
+      title: "80",
     });
 
     charts.push(chartApi);
@@ -259,7 +259,7 @@
       String(dt.getMinutes()).padStart(2, "0");
     const el = document.getElementById("lastUpdated");
     if (el) {
-      el.textContent = "Last data point: " + formatted + " (IST, delayed)";
+      el.textContent = "Last data point: " + formatted + " (IST, daily)";
     }
   }
 
@@ -291,10 +291,10 @@
     }
 
     const mainChartApi = createMainChart(data);
-    const rsiChartApi = createRsiChart(data);
+    const stochRsiChartApi = createStochRsiChart(data);
     const aoChartApi = createAoChart(data);
 
-    syncTimeScales(mainChartApi, [rsiChartApi, aoChartApi]);
+    syncTimeScales(mainChartApi, [stochRsiChartApi, aoChartApi]);
     updateLastUpdated(data);
 
     window.addEventListener("resize", resizeAllCharts);

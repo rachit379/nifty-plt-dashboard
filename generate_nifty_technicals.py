@@ -1,9 +1,10 @@
 """
 generate_nifty_technicals.py
 
-Fetch Nifty 50 intraday data from Yahoo Finance, compute:
+Fetch Nifty 50 daily data from Yahoo Finance, compute:
 - Bollinger Bands (20, 2)
 - RSI (14)
+- Stochastic RSI (14)
 - Awesome Oscillator (5/34 median price)
 
 and write them to docs/data/nifty_technicals.json
@@ -24,8 +25,8 @@ import yfinance as yf
 
 
 SYMBOL = "^NSEI"
-PERIOD = "5d"       # last 5 days
-INTERVAL = "5m"     # 5-minute candles
+PERIOD = "1y"       # last 1 year
+INTERVAL = "1d"     # DAILY candles
 
 OUTPUT_REL_PATH = Path("docs") / "data" / "nifty_technicals.json"
 
@@ -67,7 +68,7 @@ def _normalize_ohlc_columns(df: pd.DataFrame, symbol: str) -> pd.DataFrame:
 
 
 def fetch_nifty_data(symbol: str = SYMBOL, period: str = PERIOD, interval: str = INTERVAL) -> pd.DataFrame:
-    """Download Nifty data from Yahoo Finance and normalize columns."""
+    """Download Nifty data from Yahoo Finance, normalize columns, convert to IST."""
     df = yf.download(
         symbol,
         period=period,
@@ -101,8 +102,8 @@ def compute_bollinger_bands(df: pd.DataFrame, period: int = 20, num_std: float =
     return df
 
 
-def compute_rsi(df: pd.DataFrame, period: int = 14) -> pd.DataFrame:
-    """Add RSI column using Wilder's smoothing."""
+def compute_rsi(df: pd.DataFrame, period: int = 14) -> pd.Series:
+    """Return RSI series using Wilder's smoothing."""
     close = df["Close"]
     delta = close.diff()
 
@@ -115,7 +116,21 @@ def compute_rsi(df: pd.DataFrame, period: int = 14) -> pd.DataFrame:
 
     rs = roll_up / roll_down
     rsi = 100 - (100 / (1 + rs))
+    return rsi
+
+
+def compute_stoch_rsi(df: pd.DataFrame, rsi_period: int = 14, stoch_period: int = 14) -> pd.DataFrame:
+    """Add RSI and Stochastic RSI columns.
+
+    StochRSI_t = (RSI_t - min(RSI_{t-n+1..t})) / (max(RSI_{t-n+1..t}) - min(...)) * 100
+    """
+    rsi = compute_rsi(df, period=rsi_period)
     df["rsi"] = rsi
+
+    min_rsi = rsi.rolling(window=stoch_period).min()
+    max_rsi = rsi.rolling(window=stoch_period).max()
+    stoch_rsi = (rsi - min_rsi) / (max_rsi - min_rsi)
+    df["stoch_rsi"] = stoch_rsi * 100.0  # scale to 0–100
     return df
 
 
@@ -143,7 +158,7 @@ def build_output_records(df: pd.DataFrame):
     Uses pandas.to_json so NaN -> null, which is valid JSON.
     """
     # Ensure indicator columns exist even if upstream computation failed
-    for col in ["bb_mid", "bb_upper", "bb_lower", "rsi", "ao"]:
+    for col in ["bb_mid", "bb_upper", "bb_lower", "rsi", "stoch_rsi", "ao"]:
         if col not in df.columns:
             df[col] = pd.NA
 
@@ -160,6 +175,7 @@ def build_output_records(df: pd.DataFrame):
         "bb_upper",
         "bb_lower",
         "rsi",
+        "stoch_rsi",
         "ao",
     ]
     cols = [c for c in cols if c in df.columns]
@@ -182,7 +198,7 @@ def build_output_records(df: pd.DataFrame):
 def main():
     df = fetch_nifty_data()
     df = compute_bollinger_bands(df)
-    df = compute_rsi(df)
+    df = compute_stoch_rsi(df, rsi_period=14, stoch_period=14)
     df = compute_awesome_oscillator(df)
     df = add_time_column(df)
 
