@@ -1,5 +1,5 @@
 // plt_technicals.js
-// Nifty candlestick + Bollinger Bands + Stochastic RSI + Awesome Oscillator
+// Nifty candlestick + Bollinger Bands + 2-line Stochastic RSI + Awesome Oscillator
 // Assumes:
 //  - LightweightCharts v5 standalone is loaded in <head>
 //  - This script is loaded after the DOM (e.g. end of <body>)
@@ -138,25 +138,40 @@
       },
     });
 
-    const stochSeries = chartApi.addSeries(LightweightCharts.HistogramSeries, {
-      priceFormat: { type: "price", precision: 2, minMove: 0.1 },
+    const kSeries = chartApi.addSeries(LightweightCharts.LineSeries, {
+      priceFormat: { type: "price", precision: 1, minMove: 0.1 },
+      lineWidth: 2,
+      color: "rgba(129, 212, 250, 0.9)", // %K
     });
 
-    const stochData = data.map(d => {
-      const v = d.stoch_rsi;
-      let color = "rgba(144, 202, 249, 0.7)"; // neutral
-      if (v >= 80) color = "rgba(239, 83, 80, 0.85)";      // overbought
-      else if (v <= 20) color = "rgba(102, 187, 106, 0.85)"; // oversold
-      return {
+    const dSeries = chartApi.addSeries(LightweightCharts.LineSeries, {
+      priceFormat: { type: "price", precision: 1, minMove: 0.1 },
+      lineWidth: 2,
+      color: "rgba(255, 171, 145, 0.9)", // %D
+    });
+
+    const kData = data
+      .map(d => ({
         time: d.time,
-        value: v,
-        color,
-      };
-    });
+        value: d.stoch_k,
+      }))
+      .filter(p => typeof p.value === "number" && isFinite(p.value));
 
-    stochSeries.setData(stochData);
+    const dData = data
+      .map(d => ({
+        time: d.time,
+        value: d.stoch_d,
+      }))
+      .filter(p => typeof p.value === "number" && isFinite(p.value));
 
-    stochSeries.createPriceLine({
+    console.log("StochRSI %K sample (last 5):", kData.slice(-5));
+    console.log("StochRSI %D sample (last 5):", dData.slice(-5));
+
+    kSeries.setData(kData);
+    dSeries.setData(dData);
+
+    // Overbought / oversold levels
+    kSeries.createPriceLine({
       price: 20,
       color: "rgba(102, 187, 106, 0.7)",
       lineWidth: 1,
@@ -164,7 +179,7 @@
       axisLabelVisible: true,
       title: "20",
     });
-    stochSeries.createPriceLine({
+    kSeries.createPriceLine({
       price: 80,
       color: "rgba(239, 83, 80, 0.7)",
       lineWidth: 1,

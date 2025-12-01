@@ -4,7 +4,7 @@ generate_nifty_technicals.py
 Fetch Nifty 50 daily data from Yahoo Finance, compute:
 - Bollinger Bands (20, 2)
 - RSI (14)
-- Stochastic RSI (14)
+- Stochastic RSI (RSI length 14, Stoch length 14, SmoothK 3, SmoothD 3)
 - Awesome Oscillator (5/34 median price)
 
 and write them to docs/data/nifty_technicals.json
@@ -119,18 +119,38 @@ def compute_rsi(df: pd.DataFrame, period: int = 14) -> pd.Series:
     return rsi
 
 
-def compute_stoch_rsi(df: pd.DataFrame, rsi_period: int = 14, stoch_period: int = 14) -> pd.DataFrame:
-    """Add RSI and Stochastic RSI columns.
+def compute_stoch_rsi(
+    df: pd.DataFrame,
+    rsi_period: int = 14,
+    stoch_period: int = 14,
+    smooth_k: int = 3,
+    smooth_d: int = 3,
+) -> pd.DataFrame:
+    """Add RSI and two-line Stochastic RSI (%K and %D).
 
-    StochRSI_t = (RSI_t - min(RSI_{t-n+1..t})) / (max(RSI_{t-n+1..t}) - min(...)) * 100
+    Steps:
+    1) Compute RSI(rsi_period)
+    2) Raw StochRSI = (RSI - min(RSI_n)) / (max(RSI_n) - min(RSI_n))
+    3) %K = SMA(raw StochRSI, smooth_k) * 100
+    4) %D = SMA(%K, smooth_d)
+
+    All scaled 0–100.
     """
     rsi = compute_rsi(df, period=rsi_period)
     df["rsi"] = rsi
 
     min_rsi = rsi.rolling(window=stoch_period).min()
     max_rsi = rsi.rolling(window=stoch_period).max()
-    stoch_rsi = (rsi - min_rsi) / (max_rsi - min_rsi)
-    df["stoch_rsi"] = stoch_rsi * 100.0  # scale to 0–100
+    range_rsi = max_rsi - min_rsi
+
+    # Avoid division by zero
+    raw_stoch = (rsi - min_rsi) / range_rsi.where(range_rsi != 0)
+    # Smooth %K and %D with simple moving averages
+    k = raw_stoch.rolling(window=smooth_k).mean() * 100.0
+    d = k.rolling(window=smooth_d).mean()
+
+    df["stoch_k"] = k
+    df["stoch_d"] = d
     return df
 
 
@@ -158,7 +178,7 @@ def build_output_records(df: pd.DataFrame):
     Uses pandas.to_json so NaN -> null, which is valid JSON.
     """
     # Ensure indicator columns exist even if upstream computation failed
-    for col in ["bb_mid", "bb_upper", "bb_lower", "rsi", "stoch_rsi", "ao"]:
+    for col in ["bb_mid", "bb_upper", "bb_lower", "rsi", "stoch_k", "stoch_d", "ao"]:
         if col not in df.columns:
             df[col] = pd.NA
 
@@ -175,7 +195,8 @@ def build_output_records(df: pd.DataFrame):
         "bb_upper",
         "bb_lower",
         "rsi",
-        "stoch_rsi",
+        "stoch_k",
+        "stoch_d",
         "ao",
     ]
     cols = [c for c in cols if c in df.columns]
@@ -198,7 +219,7 @@ def build_output_records(df: pd.DataFrame):
 def main():
     df = fetch_nifty_data()
     df = compute_bollinger_bands(df)
-    df = compute_stoch_rsi(df, rsi_period=14, stoch_period=14)
+    df = compute_stoch_rsi(df, rsi_period=14, stoch_period=14, smooth_k=3, smooth_d=3)
     df = compute_awesome_oscillator(df)
     df = add_time_column(df)
 
