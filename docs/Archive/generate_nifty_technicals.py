@@ -32,8 +32,7 @@ OUTPUT_REL_PATH = Path("docs") / "data" / "nifty_technicals.json"
 
 def fetch_nifty_data(symbol: str = SYMBOL, period: str = PERIOD, interval: str = INTERVAL) -> pd.DataFrame:
     """Download Nifty data from Yahoo Finance."""
-    # auto_adjust=False so we keep raw OHLC as usual
-    df = yf.download(symbol, period=period, interval=interval, progress=False, auto_adjust=False)
+    df = yf.download(symbol, period=period, interval=interval, progress=False)
     if df.empty:
         raise RuntimeError("No data returned from Yahoo Finance. Check symbol/period/interval or your network.")
     # Drop timezone info for simplicity
@@ -87,24 +86,16 @@ def add_time_column(df: pd.DataFrame) -> pd.DataFrame:
     """Add a 'time' column as UNIX timestamp (seconds).
     This is a convenient format for Lightweight Charts.
     """
-    df = df.copy()
     # DatetimeIndex in ns -> convert to seconds
+    df = df.copy()
     df["time"] = (df.index.view("int64") // 10**9).astype(int)
     return df
 
 
 def build_output_records(df: pd.DataFrame):
-    """Convert DataFrame to a list of dict records suitable for JSON.
-    Be defensive about missing indicator columns so the script doesn't crash
-    if something upstream changes.
-    """
-    # Ensure indicator columns exist even if upstream computation failed
-    for col in ["bb_mid", "bb_upper", "bb_lower", "rsi", "ao"]:
-        if col not in df.columns:
-            df[col] = pd.NA
-
-    # Drop rows where we don't have proper price data
-    df = df.dropna(subset=["Open", "High", "Low", "Close"])
+    """Convert DataFrame to a list of dict records suitable for JSON."""
+    # Keep only rows where we have all indicator values
+    df = df.dropna(subset=["bb_mid", "bb_upper", "bb_lower", "rsi", "ao"])
 
     # Select and round columns
     cols = [
@@ -119,9 +110,6 @@ def build_output_records(df: pd.DataFrame):
         "rsi",
         "ao",
     ]
-    # Intersect with existing columns to be extra safe
-    cols = [c for c in cols if c in df.columns]
-
     df_out = df[cols].rename(
         columns={
             "Open": "open",
