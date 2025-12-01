@@ -62,7 +62,6 @@
       }
     }
   </style>
-  <!-- ✅ Use the standalone UMD build so LightweightCharts global works -->
   <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
@@ -93,27 +92,18 @@
     const charts = [];
 
     async function loadData() {
-      try {
-        const res = await fetch("data/nifty_technicals.json");
-        if (!res.ok) {
-          console.error("Failed to load data/nifty_technicals.json, status:", res.status);
-          return [];
-        }
-        const data = await res.json();
-        if (!Array.isArray(data)) {
-          console.error("Unexpected JSON shape for nifty_technicals.json");
-          return [];
-        }
-        return data;
-      } catch (err) {
-        console.error("Error loading nifty_technicals.json:", err);
+      const res = await fetch("data/nifty_technicals.json");
+      if (!res.ok) {
+        console.error("Failed to load data/nifty_technicals.json");
         return [];
       }
+      const data = await res.json();
+      return data;
     }
 
     function createMainChart(data) {
       const container = document.getElementById("nifty-candles");
-      const chartApi = LightweightCharts.createChart(container, {
+      const chart = LightweightCharts.createChart(container, {
         width: container.clientWidth,
         height: container.clientHeight,
         layout: {
@@ -137,7 +127,7 @@
         },
       });
 
-      const candleSeries = chartApi.addCandlestickSeries({
+      const candleSeries = chart.addCandlestickSeries({
         upColor: "#26a69a",
         downColor: "#ef5350",
         borderDownColor: "#ef5350",
@@ -146,15 +136,15 @@
         wickUpColor: "#26a69a",
       });
 
-      const bbMidSeries = chartApi.addLineSeries({
+      const bbMidSeries = chart.addLineSeries({
         color: "rgba(255, 255, 255, 0.7)",
         lineWidth: 1,
       });
-      const bbUpperSeries = chartApi.addLineSeries({
+      const bbUpperSeries = chart.addLineSeries({
         color: "rgba(129, 212, 250, 0.8)",
         lineWidth: 1,
       });
-      const bbLowerSeries = chartApi.addLineSeries({
+      const bbLowerSeries = chart.addLineSeries({
         color: "rgba(129, 212, 250, 0.8)",
         lineWidth: 1,
       });
@@ -185,13 +175,13 @@
       bbUpperSeries.setData(bbUpperData);
       bbLowerSeries.setData(bbLowerData);
 
-      charts.push(chartApi);
-      return chartApi;
+      charts.push(chart);
+      return chart;
     }
 
     function createRsiChart(data) {
       const container = document.getElementById("nifty-rsi");
-      const chartApi = LightweightCharts.createChart(container, {
+      const chart = LightweightCharts.createChart(container, {
         width: container.clientWidth,
         height: container.clientHeight,
         layout: {
@@ -212,24 +202,24 @@
         },
       });
 
-      const rsiSeries = chartApi.addHistogramSeries({
+      const rsiSeries = chart.addHistogramSeries({
         priceFormat: { type: "price", precision: 2, minMove: 0.1 },
       });
 
       const rsiData = data.map(d => {
-        const v = d.rsi;
         let color = "rgba(144, 202, 249, 0.7)"; // neutral
-        if (v >= 70) color = "rgba(239, 83, 80, 0.85)";      // overbought
-        else if (v <= 30) color = "rgba(102, 187, 106, 0.85)"; // oversold
+        if (d.rsi >= 70) color = "rgba(239, 83, 80, 0.85)";      // overbought
+        else if (d.rsi <= 30) color = "rgba(102, 187, 106, 0.85)"; // oversold
         return {
           time: d.time,
-          value: v,
+          value: d.rsi,
           color,
         };
       });
 
       rsiSeries.setData(rsiData);
 
+      // Reference lines at 30 and 70
       rsiSeries.createPriceLine({
         price: 30,
         color: "rgba(102, 187, 106, 0.7)",
@@ -247,13 +237,13 @@
         title: "70",
       });
 
-      charts.push(chartApi);
-      return chartApi;
+      charts.push(chart);
+      return chart;
     }
 
     function createAoChart(data) {
       const container = document.getElementById("nifty-ao");
-      const chartApi = LightweightCharts.createChart(container, {
+      const chart = LightweightCharts.createChart(container, {
         width: container.clientWidth,
         height: container.clientHeight,
         layout: {
@@ -274,7 +264,7 @@
         },
       });
 
-      const aoSeries = chartApi.addHistogramSeries({
+      const aoSeries = chart.addHistogramSeries({
         priceFormat: { type: "price", precision: 4, minMove: 0.0001 },
       });
 
@@ -295,12 +285,13 @@
         title: "0",
       });
 
-      charts.push(chartApi);
-      return chartApi;
+      charts.push(chart);
+      return chart;
     }
 
-    function syncTimeScales(mainChartApi, otherCharts) {
-      const mainTimeScale = mainChartApi.timeScale();
+    function syncTimeScales(mainChart, otherCharts) {
+      const mainTimeScale = mainChart.timeScale();
+
       mainTimeScale.subscribeVisibleLogicalRangeChange(range => {
         if (!range) return;
         otherCharts.forEach(ch => {
@@ -336,14 +327,14 @@
       const aoContainer = document.getElementById("nifty-ao");
 
       const sizes = [
-        { chartApi: charts[0], container: mainContainer },
-        { chartApi: charts[1], container: rsiContainer },
-        { chartApi: charts[2], container: aoContainer },
+        { chart: charts[0], container: mainContainer },
+        { chart: charts[1], container: rsiContainer },
+        { chart: charts[2], container: aoContainer },
       ];
 
       sizes.forEach(item => {
-        if (!item.chartApi || !item.container) return;
-        item.chartApi.applyOptions({
+        if (!item.chart || !item.container) return;
+        item.chart.applyOptions({
           width: item.container.clientWidth,
           height: item.container.clientHeight,
         });
@@ -352,16 +343,13 @@
 
     window.addEventListener("load", async () => {
       const data = await loadData();
-      if (!data || !data.length) {
-        console.error("No data available for nifty_technicals.json");
-        return;
-      }
+      if (!data.length) return;
 
-      const mainChartApi = createMainChart(data);
-      const rsiChartApi = createRsiChart(data);
-      const aoChartApi = createAoChart(data);
+      const mainChart = createMainChart(data);
+      const rsiChart = createRsiChart(data);
+      const aoChart = createAoChart(data);
 
-      syncTimeScales(mainChartApi, [rsiChartApi, aoChartApi]);
+      syncTimeScales(mainChart, [rsiChart, aoChart]);
       updateLastUpdated(data);
 
       window.addEventListener("resize", resizeAllCharts);
