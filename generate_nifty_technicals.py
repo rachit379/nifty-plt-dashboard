@@ -1,5 +1,5 @@
 """
-generate_nifty_technicals.py
+generate_nifty_technicals.py  (v2 – handles MultiIndex columns)
 
 Fetch Nifty 50 intraday data from Yahoo Finance, compute:
 - Bollinger Bands (20, 2)
@@ -30,12 +30,45 @@ INTERVAL = "5m"     # 5-minute candles
 OUTPUT_REL_PATH = Path("docs") / "data" / "nifty_technicals.json"
 
 
+def _normalize_ohlc_columns(df: pd.DataFrame, symbol: str) -> pd.DataFrame:
+    """Normalize yfinance output to have plain columns:
+    Open, High, Low, Close, Adj Close, Volume
+
+    Handles both:
+    - Single-level columns (already fine)
+    - MultiIndex columns like ('Open', '^NSEI')
+    """
+    if isinstance(df.columns, pd.MultiIndex):
+        # Try taking the slice for our symbol on the last level
+        if symbol in df.columns.get_level_values(-1):
+            df = df.xs(symbol, axis=1, level=-1)
+        # Or on the first level (rare, but just in case)
+        elif symbol in df.columns.get_level_values(0):
+            df = df[symbol]
+
+    # At this point we expect classic OHLC names
+    expected = ["Open", "High", "Low", "Close"]
+    missing = [c for c in expected if c not in df.columns]
+    if missing:
+        raise RuntimeError(f"Missing OHLC columns after normalization: {missing}. Got: {list(df.columns)}")  # noqa: E501
+
+    return df
+
+
 def fetch_nifty_data(symbol: str = SYMBOL, period: str = PERIOD, interval: str = INTERVAL) -> pd.DataFrame:
-    """Download Nifty data from Yahoo Finance."""
-    # auto_adjust=False so we keep raw OHLC as usual
-    df = yf.download(symbol, period=period, interval=interval, progress=False, auto_adjust=False)
+    """Download Nifty data from Yahoo Finance and normalize columns."""
+    df = yf.download(
+        symbol,
+        period=period,
+        interval=interval,
+        progress=False,
+        auto_adjust=False,
+    )
     if df.empty:
-        raise RuntimeError("No data returned from Yahoo Finance. Check symbol/period/interval or your network.")
+        raise RuntimeError("No data returned from Yahoo Finance. Check symbol/period/interval or your network.")  # noqa: E501
+
+    df = _normalize_ohlc_columns(df, symbol)
+
     # Drop timezone info for simplicity
     if df.index.tz is not None:
         df = df.tz_convert(None)
@@ -106,7 +139,6 @@ def build_output_records(df: pd.DataFrame):
     # Drop rows where we don't have proper price data
     df = df.dropna(subset=["Open", "High", "Low", "Close"])
 
-    # Select and round columns
     cols = [
         "time",
         "Open",
@@ -119,7 +151,6 @@ def build_output_records(df: pd.DataFrame):
         "rsi",
         "ao",
     ]
-    # Intersect with existing columns to be extra safe
     cols = [c for c in cols if c in df.columns]
 
     df_out = df[cols].rename(
